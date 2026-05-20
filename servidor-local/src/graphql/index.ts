@@ -12,6 +12,7 @@ import { prestadorResolver } from "./resolvers/prestador.resolver.js"
 export const resolvers = {
     Query: {
         ...userResolver.Query,
+<<<<<<< HEAD
         ...prestacaoResolver.Query,
         ...empresaResolver.Query,
         ...categoriaResolver.Query,
@@ -35,3 +36,30 @@ export const resolvers = {
 
 
 export default { typeDefs }
+=======
+        ...ServiceResolver.Query,
+        ...CategoryResolver.Query,
+        ...ProviderResolver.Query,
+        ...CompanyResolver.Query,
+        ...BudgetResolver.Query,
+        ...ProposalResolver.Query,
+        ...ServiceProvResolver.Query,
+    },
+    Mutation: {
+        ...userResolver.Mutation,
+        ...ServiceResolver.Mutation,
+        ...CategoryResolver.Mutation,
+        ...ProviderResolver.Mutation,
+        ...CompanyResolver.Mutation,
+        ...BudgetResolver.Mutation,
+        ...ProposalResolver.Mutation,
+        ...ServiceProvResolver.Mutation,
+    }
+}
+
+<<<<<<< HEAD
+export { typeDefs }
+=======
+export {typeDefs}
+>>>>>>> c28e2e3614e8f286824b23d44b0167534bba70b8
+>>>>>>> refs/remotes/origin/dev

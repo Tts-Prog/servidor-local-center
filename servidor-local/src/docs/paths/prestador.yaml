@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 # paths/prestador.yaml
@@ -6,14 +7,29 @@
 paths:
   #buscar todos os prestadores
   /prestador:
+=======
+#paths/Prestador.yaml
+
+paths:
+  /provider:
+>>>>>>> refs/remotes/origin/dev
     get:
+      summary: Listar todos os prestadores
       tags:
+<<<<<<< HEAD
         - Prestador *
       summary: Buscar todos os prestadores
       description: Retorna todos os prestadores
       responses:
         "200":
           description: Prestadores encontrados com sucesso
+=======
+        - Provider
+      description: Retorna uma lista de todos os prestadores disponiveis
+      responses:
+        "200":
+          description: Lista de prestadores
+>>>>>>> refs/remotes/origin/dev
           content:
             application/json:
               schema:
@@ -21,6 +37,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Prestador"
         "404":
+<<<<<<< HEAD
           description: Prestadores nao encontrados
           content:
             application/json:
@@ -30,16 +47,32 @@ paths:
 
   #criar prestador
   /create/prestador:
+=======
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestador"
+  /provider/create:
+>>>>>>> refs/remotes/origin/dev
     post:
+      summary: criar novo Prestador
       tags:
+<<<<<<< HEAD
         - Prestador *
       summary: Criar um novo prestador
       description: Insere um novo prestador
+=======
+        - Provider
+      description: cria um novo Prestador
+>>>>>>> refs/remotes/origin/dev
       requestBody:
         required: true
         content:
           application/json:
             schema:
+              type: object
               $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
@@ -47,6 +80,7 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 $ref: "#/components/schemas/Prestador"
         "400":
           description: Dados invalidos
@@ -58,15 +92,34 @@ paths:
 
   #buscar prestador por id
   /prestador/get-prestador-by-id/{id}:
+=======
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestador"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestador"
+  /provider/get-by-id/{id}:
+>>>>>>> refs/remotes/origin/dev
     get:
+      summary: Buscar um Prestador
       tags:
+<<<<<<< HEAD
         - Prestador *
       summary: Buscar prestador por ID
       description: Retorna um prestador pelo seu ID
+=======
+        - Provider
+      description: Retorna um Prestador especifico pelo ID
+>>>>>>> refs/remotes/origin/dev
       parameters:
         - name: id
           in: path
           required: true
+<<<<<<< HEAD
           description: id do prestador
           schema:
             type: string
@@ -88,31 +141,68 @@ paths:
 
   #atualizar prestador
   /prestador/update/{id}:
+=======
+          description: ID do Prestador a ser buscado
+          schema:
+            type: string
+            example: "uuid-123-456"
+      responses:
+        "200":
+          description: Prestador encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestador"
+        "404":
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestador"
+  /provider/update/{id}:
+>>>>>>> refs/remotes/origin/dev
     put:
+      summary: atualizar um Prestador
       tags:
+<<<<<<< HEAD
         - Prestador *
       summary: Atualizar prestador
       description: Atualiza um prestador existente
+=======
+        - Provider
+      description: Atualizar Prestador pelo id
+>>>>>>> refs/remotes/origin/dev
       parameters:
         - name: id
           in: path
           required: true
+<<<<<<< HEAD
           description: id do prestador a ser atualizado
           schema:
             type: string
             example: "1"
+=======
+          description: ID do Prestador a ser atualizado
+          schema:
+            type: string
+            example: "uuid-123-456"
+>>>>>>> refs/remotes/origin/dev
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdatePrestador"
+              type: object
+              $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
           description: Prestador atualizado com sucesso
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 $ref: "#/components/schemas/Prestador"
         "400":
           description: Dados invalidos
@@ -130,25 +220,58 @@ paths:
 
   #deletar prestador
   /prestador/delete/{id}:
+=======
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestador"
+        "400":
+          description: Dados inválidos fornecidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestador"
+        "404":
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestador"
+  /provider/delete/{id}:
+>>>>>>> refs/remotes/origin/dev
     delete:
+      summary: Deletar um Prestador
       tags:
+<<<<<<< HEAD
         - Prestador *
       summary: Deletar prestador
       description: Deleta um prestador existente
+=======
+        - Provider
+      description: Deletar Prestador pelo id
+>>>>>>> refs/remotes/origin/dev
       parameters:
         - name: id
           in: path
           required: true
+<<<<<<< HEAD
           description: id do prestador a ser deletado
           schema:
             type: string
             example: "1"
+=======
+          description: ID do Prestador a ser deletado
+          schema:
+            type: string
+            example: "uuid-123-456"
+>>>>>>> refs/remotes/origin/dev
       responses:
         "200":
           description: Prestador deletado com sucesso
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 $ref: "#/components/schemas/Prestador"
         "400":
           description: Dados invalidos
@@ -165,3 +288,43 @@ paths:
 
 
           
+=======
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoPrestador"
+        "404":
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroPrestador"
+        /provider/get-preco-hora/{id}:
+          get:
+            summary: Buscar o preco hora de um prestador
+            tags:
+              - Provider
+            description: Retorna o preco hora de um prestador especifico pelo ID
+            parameters:
+              - name: id
+                in: path
+                required: true
+                description: ID do prestador a ser buscado
+                schema:
+                  type: string
+                  example: "uuid-123-456"
+            responses:
+              "200":
+                description: Prestador encontrado
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      $ref: "#/components/schemas/ResponseSucessoPrestador"
+              "404":
+                description: Prestador não encontrado
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      $ref: "#/components/schemas/ResponseErroPrestador"
+>>>>>>> refs/remotes/origin/dev

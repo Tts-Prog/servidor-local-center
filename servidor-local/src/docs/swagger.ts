@@ -23,8 +23,8 @@ const options: swaggerJsdoc.Options = {
                     type: "http",
                     scheme: "bearer",
                     bearerFormat: "JWT",
-                },
-            },
+                }
+            }
         },
         security: [
             {
@@ -42,4 +42,4 @@ const options: swaggerJsdoc.Options = {
 }
 
 
-export const swaggerSpec = swaggerJsdoc(options);
+export const swaggerSpec = swaggerJsdoc(opitions);

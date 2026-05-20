@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
+// rota para adicionar um serviço novo
+app.post("/adicionar-servico", (req: Request, res: Response) => {
+    const novoServico = req.body
 
 // rota para adicionar um serviço
 app.post("/adicionar-servico", (req: Request, res: Response) => {
@@ -74,6 +77,9 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
     res.json(calcularOrcamentoresponse)
 });
 
+//rota para listar todos os prestadores de servico
+app.get("/listar-prestadores", (req: Request, res: Response) => {
+    const listPrestadoresServicoResponse = listarPrestadoresServicos()
 
 // rota para selecionar prestadores
 app.post("/selecionar-prestador", (req: Request, res: Response) => {

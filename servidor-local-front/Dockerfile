@@ -1,4 +1,24 @@
+<<<<<<< HEAD
 #verifica o sistema operacional base
+=======
+<<<<<<< HEAD
+FROM node:24.13.0-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD [ "npm", "run", "dev" ]
+=======
+# especifica versao de sistema operacional base
+
+>>>>>>> refs/remotes/origin/dev
 FROM node:20-alpine
 
 #cria a pasta /app
@@ -16,5 +36,7 @@ COPY . .
 #expõe a porta 3000
 EXPOSE 3000
 
-# comando que vai ser executado quando o container for iniciado
+
+# Comando para executar a aplicacao em modo de desenvolvimento 
 CMD ["npm", "run", "dev"]
+

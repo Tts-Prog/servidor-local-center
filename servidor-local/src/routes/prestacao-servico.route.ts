@@ -1,0 +1,24 @@
+import { Router } from "express"
+import { PrestacaoServicoController } from "../controllers/prestacao_servico.controller.js"
+
+const PrestacaoServicoRoute = {
+    create: "/create",
+    getAll: "/",
+    getById: "/get-by-id/:id",
+    update: "/update/:id",
+    delete: "/delete/:id",
+    getAllPrestacaoServicoDetalhada: "/get-all-detalhado",
+    getPrestacaoServicoByCategoriaDetalhado: "/get-by-categoria/:categoria"
+}
+
+const router = Router()
+
+router.post(PrestacaoServicoRoute.create, PrestacaoServicoController.create)
+router.get(PrestacaoServicoRoute.getAll, PrestacaoServicoController.getAll)
+router.get(PrestacaoServicoRoute.getById, PrestacaoServicoController.get)
+router.put(PrestacaoServicoRoute.update, PrestacaoServicoController.update)
+router.delete(PrestacaoServicoRoute.delete, PrestacaoServicoController.delete)
+router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, PrestacaoServicoController.getAllPrestacaoServicoDetalhada)
+router.get(PrestacaoServicoRoute.getPrestacaoServicoByCategoriaDetalhado, PrestacaoServicoController.getAllPrestacaoServicoByCategoria)
+
+export { router }
