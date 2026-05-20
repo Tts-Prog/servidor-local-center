@@ -108,5 +108,17 @@ export const orcamentoModel = {
             console.log(error);
             return null;
         }
+    },
+
+    async createBudget(id: string): Promise<orcamentoDBType | null> {
+        try {
+            const query = `SELECT * FROM tabela_orcamento (id, total, id_utilizadores, enabled, created_at, updated_at) values (?,?,?,?,?,?)`;  
+            const value = [id];
+            const [rows] = await db.execute<orcamentoDBType & RowDataPacket[]>(query, value);
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] as orcamentoDBType : null;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     }
 };
