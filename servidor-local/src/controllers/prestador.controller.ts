@@ -1,145 +1,154 @@
-import type { Request, Response } from "express"
-import type { PrestadorDBType } from "../utils/types.js"
-import { PrestadorModel } from "../models/prestador.model.js"
+import type { Request, Response } from "express";
+import type { PrestacaoServicoPorCategoriaType, PrestadorTypeDB, ResponseType } from "../utils/types.js";
+import { FreelancerModel } from "../models/prestador.model.js";
+import { PrestacaoServicoModel } from "../models/prestacao-servico.models.js";
 
-export const PrestadorController = {
+export const FreelancerController = {
+
+    // criar um novo Freelancer
     async create(req: Request, res: Response) {
-        const prestador: PrestadorDBType = req.body
+        const newFreelancer: PrestadorTypeDB = req.body
 
-        if (!prestador) {
+        if (!newFreelancer) {
             return res.status(400).json({
-                status:         "error",
-                message:        "Dados de prestador invalidos",
-                data:           null
+                status: "error",
+                message: "Dados de Freelancer invalido",
+                data: null
             })
-        }
+        } else
+            console.log(newFreelancer)
 
-        const createPrestadorResponse = await PrestadorModel.create(prestador)
+        const createServiceResponse = await FreelancerModel.create(newFreelancer)
 
-        if (!createPrestadorResponse) {
-            return res.status(500).json({
-                status:         "error",
-                message:        "Erro ao criar prestador",
-                data:           null
-            })
-        }
-
-        return res.status(201).json({
-            status:             "success",
-            message:            "Prestador criado com sucesso",
-            data:               createPrestadorResponse
-        })
-    },
-
-    async getAll(req: Request, res: Response) {
-        const getAllPrestadoresResponse = await PrestadorModel.getAll()
-
-        if (!getAllPrestadoresResponse) {
-            return res.status(500).json({
-                status:         "error",
-                message:        "Erro ao buscar prestadores",
-                data:           null
+        if (createServiceResponse === null) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao criar Freelancer",
+                data: null
             })
         }
 
         return res.status(200).json({
-            status:             "success",
-            message:            "Prestadores buscados com sucesso",
-            data:               getAllPrestadoresResponse
+            status: "sucesso",
+            message: "Freelancer adicionado",
+            data: createServiceResponse
         })
     },
 
+    // listar todos os Freelancers
+    async getAll(req: Request, res: Response) {
+        const getAllServicesResponse = await FreelancerModel.getAll()
+
+        if (!getAllServicesResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao encontrar Freelancers",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "sucesso",
+            mensagem: "Freelancers encontrado",
+            data: getAllServicesResponse
+        })
+    },
+
+    // selecionar Freelancer por id
     async get(req: Request, res: Response) {
         const { id } = req.params
 
         if (!id) {
             return res.status(400).json({
-                status:         "error",
-                message:        "ID obrigatorio",
-                data:           null
+                status: "error",
+                message: "Id eh obrigatorio",
+                data: null
             })
         }
 
-        const getPrestadorByIdResponse = await PrestadorModel.get(id as string)
+        const getUserResponse = await FreelancerModel.get(id as string)
 
-        if (!getPrestadorByIdResponse) {
+        if (!getUserResponse) {
             return res.status(404).json({
-                status:         "error",
-                message:        "Prestador nao encontrado",
-                data:           null
+                status: "error",
+                message: "Freelancer nao encontrado",
+                data: null
             })
         }
-
         return res.status(200).json({
-            status:             "success",
-            message:            "Prestador encontrado com sucesso",
-            data:               getPrestadorByIdResponse
+            status: "success",
+            message: "Freelancer encontrado com sucesso",
+            data: getUserResponse
         })
+
     },
 
+    // atualizar dados de Freelancers
     async update(req: Request, res: Response) {
         const { id } = req.params
 
-        const updatedPrestador: PrestadorDBType = req.body
+        const UpdateUser: PrestadorTypeDB = req.body
 
         if (!id) {
             return res.status(400).json({
-                status:         "error",
-                message:        "ID obrigatorio",
-                data:           null
+                status: "error",
+                message: "Id eh obrigatorio",
+                data: null
             })
         }
 
-        if (!updatedPrestador) {
+        if (!UpdateUser) {
             return res.status(400).json({
-                status:         "error",
-                message:        "Dados de prestador invalidos",
-                data:           null
+                status: "error",
+                message: "Dados de Freelancer invalidos",
+                data: null
             })
         }
 
-        const updatePrestadorResponse = await PrestadorModel.update(id as string, updatedPrestador)
+        const UpdateUserResponse = await FreelancerModel.update(id as string, UpdateUser)
 
-        if (!updatePrestadorResponse) {
+        if (!UpdateUserResponse) {
             return res.status(400).json({
-                status:         "error",
-                message:        "Erro ao atualizar prestador",
-                data:           null
+                status: "error",
+                message: "Erro ao atualizar Freelancer",
+                data: null
             })
         }
-
         return res.status(200).json({
-            status:             "success",
-            message:            "Prestador atualizado com sucesso",
-            data:               updatePrestadorResponse
+            status: "success",
+            message: "Freelancer atualizado com sucesso",
+            data: UpdateUserResponse
         })
     },
 
+    // apagar Freelancer de base de dados
     async delete(req: Request, res: Response) {
         const { id } = req.params
 
+
         if (!id) {
             return res.status(400).json({
-                status:         "error",
-                message:        "ID obrigatorio",
-                data:           null
+                status: "error",
+                message: "Id eh obrigatorio",
+                data: null
             })
         }
 
-        const deletePrestadorResponse = await PrestadorModel.delete(id as string)
+        const deleteServiceResponse = await FreelancerModel.delete(id as string)
 
-        if (!deletePrestadorResponse) {
+        if (!deleteServiceResponse) {
             return res.status(400).json({
-                status:         "error",
-                message:        "Erro ao apagar prestador",
-                data:           null
+                status: "error",
+                message: "Erro ao apagar Freelancer",
+                data: null
             })
         }
-
         return res.status(200).json({
-            status:             "success",
-            message:            "Prestador apagado com sucesso",
-            data:               deletePrestadorResponse
+            status: "success",
+            message: "Freelancer apagado com sucesso",
+            data: deleteServiceResponse
         })
     }
 }
+
+
+

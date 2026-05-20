@@ -1,16 +1,8 @@
-# schema/servico.yaml
-#  id: string,
-#  nome: string,
-#  descricao: string,
-#  categoria: string,
-#  enabled: boolean,
-#  created_at: string,
-#  updated_at: string
+#schema/servico.yaml
 
 components:
   schemas:
-    # shema principal de servico
-    Servico:
+    Service:
       type: object
       properties:
         id:
@@ -21,7 +13,7 @@ components:
           example: "Serviço de Limpeza"
         descricao:
           type: string
-          example: "Serviço de limpeza profissional para residências e empresas."
+          example: "Serviço de limpeza profissional para residências e "
         categoria:
           type: string
           example: "Limpeza"
@@ -30,66 +22,75 @@ components:
           example: true
         created_at:
           type: string
-          example: "2022-01-01T00:00:00.000Z"
+          example: "2010-12-10T00:00:00.000Z"
         updated_at:
-          type: string
-          example: "2022-01-01T00:00:00.000Z"
-
-    # schema para criar um novo servico
+            typr: string
+            example: "2010-12-10T00:00.000Z"
+  
     CreateService:
       type: object
       properties:
         nome:
           type: string
-          example: Servico de Limpeza
+          example: "Servico de limpeza"
         descricao:
           type: string
-          example: Servico de limpeza profissional para residências e empresas.
+          example: "Servico de limpeza profissional para residencia e empresa"
         categoria:
           type: string
-          example: Limpeza
+          example: "Limpeza"
         enabled:
           type: boolean
           example: true
+      required:
+        - nome
+        - descricao
+        - categoria
+        - enabled
 
-    
     ServicoDetalhado:
       type: object
       properties:
-        id: 
-          type: number
+        id:
+          type: integer
           example: 1
         nome:
           type: string
-          example: Servico de Limpeza
+          example: "Serviço de Limpeza"
         descricao:
           type: string
-          example: Servico de limpeza profissional para residências e empresas.
+          example: "Serviço de limpeza profissional para residências e "
         designacao_categoria:
           type: string
-          example: Limpeza
+          example: "Limpeza"
         icone_categoria:
           type: string
           example: ""
+        id_cempresa:
+          type: string
+          example: 1
+        designacao_empresa:
+          type: string
+          example: "empresa de limpeza"
+        icone_empresa:
+          type: string
+          example: ""
         enabled:
-          type: boolean
+          type: string
           example: true
-
-    # schema generico para sucesso
-    ResponseSuccess:
-      type: object
-      properties:
+        
+    #Schema generico para sucesso
+    ResponseSucess:
+      ttpe: object
+      propreties:
         message:
           type: string
-          example: "Serviço criado com sucesso"
+          example: "Servico criado com sucesso"
         status:
           type: boolean
           example: true
-        data:
-          type: object
-          $ref: "#/components/schemas/Servico"
 
-    # schema generico de resposta de erro
+    #servico generico de resposta de erro
     ResponseError:
       type: object
       properties:
@@ -101,4 +102,4 @@ components:
           example: false
         data:
           type: object
-          properties: null
+

@@ -1,5 +1,8 @@
 import { Router } from "express"
-import { PrestacaoServicoController } from "../controllers/prestacao_servico.controller.js"
+import { PrestacaoServicoController } from "../controllers/prestacao-servico.controller.js"
+import authMiddleware, { authorize, isOwner } from "../security/auth.middleware.js"
+import { Role } from "../utils/types.js"
+import { PrestacaoServicoModel } from "../models/prestacao-servico.models.js"
 
 const PrestacaoServicoRoute = {
     create: "/create",
@@ -8,17 +11,21 @@ const PrestacaoServicoRoute = {
     update: "/update/:id",
     delete: "/delete/:id",
     getAllPrestacaoServicoDetalhada: "/get-all-detalhado",
-    getPrestacaoServicoByCategoriaDetalhado: "/get-by-categoria/:categoria"
+    getByCategoria: "/get-by-categoria"
 }
 
-const router = Router()
+const PrestacaoServicoRouter = Router()
 
-router.post(PrestacaoServicoRoute.create, PrestacaoServicoController.create)
-router.get(PrestacaoServicoRoute.getAll, PrestacaoServicoController.getAll)
-router.get(PrestacaoServicoRoute.getById, PrestacaoServicoController.get)
-router.put(PrestacaoServicoRoute.update, PrestacaoServicoController.update)
-router.delete(PrestacaoServicoRoute.delete, PrestacaoServicoController.delete)
-router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, PrestacaoServicoController.getAllPrestacaoServicoDetalhada)
-router.get(PrestacaoServicoRoute.getPrestacaoServicoByCategoriaDetalhado, PrestacaoServicoController.getAllPrestacaoServicoByCategoria)
+PrestacaoServicoRouter.get(PrestacaoServicoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PrestacaoServicoController.get)
+PrestacaoServicoRouter.get(PrestacaoServicoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PrestacaoServicoController.getAll)
+PrestacaoServicoRouter.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PrestacaoServicoController.getAllPrestacaoServicoDetalhado)
+PrestacaoServicoRouter.get(PrestacaoServicoRoute.getByCategoria, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PrestacaoServicoController.PrestacaoServicoPorCategoria)
 
-export { router }
+
+PrestacaoServicoRouter.use(authMiddleware)
+
+PrestacaoServicoRouter.post(PrestacaoServicoRoute.create, authorize([Role.ADMIN]), PrestacaoServicoController.create)
+PrestacaoServicoRouter.put(PrestacaoServicoRoute.update, authorize([Role.ADMIN]), isOwner(PrestacaoServicoModel, "isOwner"), PrestacaoServicoController.update)
+PrestacaoServicoRouter.delete(PrestacaoServicoRoute.delete, authorize([Role.ADMIN]), isOwner(PrestacaoServicoModel, "isOwner"), PrestacaoServicoController.delete)
+
+export { PrestacaoServicoRouter }

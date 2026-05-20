@@ -1,20 +1,22 @@
+
+import type { RowDataPacket } from "mysql2/promise"
 import db from "../lib/db.js"
-import { EstadoProposta, type PropostaDBType } from "../utils/types.js"
-import  generateUUID  from "../utils/uuid_generate.js"
-import { type RowDataPacket } from "mysql2"
+import type { PropostaDBType } from "../utils/types.js"
+import { generateUUID } from "../utils/uuid.js"
+
 
 export const PropostaModel = {
     async create(proposta: PropostaDBType) {
         try {
             const [rows] = await db.execute(
-                `INSERT INTO tbl_propostas 
+                `INSERT INTO tbl_proposta
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 
                 [
-                    generateUUID(),
-                    proposta.idPrestacaoServico,
-                    proposta.precoHora,
-                    proposta.horasEstimadas,
+                    null,
+                    proposta.id_prestacao_servico,
+                    proposta.preco_hora,
+                    proposta.horas_estimadas,
                     proposta.estado,
                     proposta.enabled,
                     new Date(),
@@ -30,28 +32,27 @@ export const PropostaModel = {
     },
 
     async getAll() {
-        const [rows] = await db.execute("SELECT * FROM tbl_propostas")
+        const [rows] = await db.execute("SELECT * FROM tbl_proposta")
 
         return rows
     },
 
-    async get(id: string): Promise<PropostaDBType | null> {
+    async get(id: string) {
         try {
-
-            const [rows] = await db.execute<PropostaDBType[] & RowDataPacket[]>(
-               `SELECT DISTINCT 
-                    pt.*, 
-                    pr.id as owner 
-                FROM tbl_propostas pt
+            const [rows] = await db.execute(
+                `SELECT DISTINCT
+                    pt.* ,
+                    pr.id as owner
+                FROM tbl_proposta pt
                 INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
-                INNER JOIN tbl_utilizadores u ON pr.id_utilizador = u.id
+                INNER JOIN tbl_Useres u ON pr.id_User = u.id
                 WHERE pt.id = ?`,
 
                 [id]
             )
 
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0]! : null
+            return Array.isArray(rows) ? rows[0] : null
         } catch (err) {
             console.log(err)
             return null
@@ -61,7 +62,7 @@ export const PropostaModel = {
     async update(id: string, proposta: PropostaDBType) {
         try {
             const [rows] = await db.execute(
-                `UPDATE tbl_propostas 
+                `UPDATE tbl_proposta 
                 SET id_prestacao_servico = ?, 
                 preco_hora = ?, 
                 horas_estimadas = ?, 
@@ -71,9 +72,9 @@ export const PropostaModel = {
                 WHERE id = ?`,
 
                 [
-                    proposta.idPrestacaoServico,
-                    proposta.precoHora,
-                    proposta.horasEstimadas,
+                    proposta.id_prestacao_servico,
+                    proposta.preco_hora,
+                    proposta.horas_estimadas,
                     proposta.estado,
                     proposta.enabled,
                     new Date(),
@@ -91,7 +92,7 @@ export const PropostaModel = {
     async delete(id: string) {
         try {
             const rows: any = await db.execute(
-                `DELETE FROM tbl_propostas 
+                `DELETE FROM tbl_proposta 
                 WHERE id = ?`,
 
                 [id]
@@ -104,13 +105,12 @@ export const PropostaModel = {
         }
     },
 
-    async getByPrestacaoServico(idPrestacaoServico: string): Promise<PropostaDBType[] | null> {
+    async getByIdPrestacaoServico(id_prestacao_servico: string): Promise<PropostaDBType[] | null> {
         try {
             const [rows] = await db.execute<PropostaDBType[] & RowDataPacket[]>(
-                `SELECT * FROM tbl_propostas 
-                WHERE tbl_propostas.id_prestacao_servico = ?`,
-
-                [idPrestacaoServico]
+                `SELECT * FROM tbl_proposta 
+                WHERE tbl_proposta.id_prestacao_servico = ?`,
+                [id_prestacao_servico]
             )
 
             if (Array.isArray(rows) && rows.length === 0) return null
@@ -119,27 +119,5 @@ export const PropostaModel = {
             console.log(err)
             return null
         }
-    },
-
-    async acceptProposal(id: string) {
-        try {
-            const [rows] = await db.execute(
-                `UPDATE tbl_propostas 
-                SET estado = ?, 
-                updated_at = ?
-                WHERE id = ?`,
-
-                [
-                    EstadoProposta.ACEITE,
-                    new Date(),
-                    id
-                ]
-            )
-            console.log({ rows })
-            return rows
-        } catch (err) {
-            console.log(err)
-            return null
-        }
-    },
+    }
 }
