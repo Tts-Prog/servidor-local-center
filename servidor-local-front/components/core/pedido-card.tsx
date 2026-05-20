@@ -114,5 +114,9 @@ export const PedidoCard = (pedidoCardProps: PedidoCardProps) => {
             </CardFooter>
         </Card>
     );
+<<<<<<< HEAD
 >>>>>>> e97e37db1fb3c2f6b59ebd6c3c8e607010fbb8f3
 }
+=======
+}
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73

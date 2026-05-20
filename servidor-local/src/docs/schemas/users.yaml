@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   # schemas/users.yaml
 #id: string;
 #nome: string;
@@ -15,10 +16,28 @@
 components:
   schemas:
     # schema principal de uilizador
+=======
+# id: string,
+# nome: string,
+# numero_identificacao: string,
+# data_nascimento: string,
+# email: string,
+# telefone: string,
+# pais: string,
+# localidade: string,
+# password: string,
+# enabled: boolean,
+# created_at: string,
+# updated_at: string
+
+components:
+  schemas:
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
     Users:
       type: object
       properties:
         id:
+<<<<<<< HEAD
           type: string
           example: 1
         nome:
@@ -46,10 +65,40 @@ components:
           type: string
           example: "Monte Grande"
         enebled_at:
+=======
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "Usuário 1"
+        numero_identificacao:
+          type: string
+          example: "123456789"
+        data_nascimento:
+          type: string
+          example: "2000-01-01"
+        email:
+          type: string
+          example: "[EMAIL_ADDRESS]"
+        password:
+          type: string
+          example: "senha123"
+        telefone:
+          type: string
+          example: "123456789"
+        pais:
+          type: string
+          example: "Brasil"
+        localidade:
+          type: string
+          example: "São Paulo"
+        enabled:
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
           type: boolean
           example: true
         created_at:
           type: string
+<<<<<<< HEAD
           example: "2012-09-12T00:00:00.000Z"
         updated_at:
           type: string
@@ -57,10 +106,19 @@ components:
 
     # schemas para criar um novo utilizador
     CreateUsers:
+=======
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+
+    CreateUser:
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       type: object
       properties:
         nome:
           type: string
+<<<<<<< HEAD
           example: "Djeison Santos"
         numero_identidade:
           type: string
@@ -128,10 +186,93 @@ components:
 
               # schemas generico para sucesso
     UsersResponseSucess:
+=======
+          example: "Usuário 1"
+        numero_identificacao:
+          type: string
+          example: "123456789"
+        data_nascimento:
+          type: string
+          example: "2000-01-01"
+        email:
+          type: string
+          example: "[EMAIL_ADDRESS]"
+        password:
+          type: string
+          example: "senha123"
+        telefone:
+          type: string
+          example: "123456789"
+        pais:
+          type: string
+          example: "Brasil"
+        localidade:
+          type: string
+          example: "São Paulo"
+        enabled:
+          type: boolean
+          example: true
+
+    UpdateUser:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "Usuário 1"
+        numero_identificacao:
+          type: string
+          example: "123456789"
+        data_nascimento:
+          type: string
+          example: "2000-01-01"
+        email:
+          type: string
+          example: "[EMAIL_ADDRESS]"
+        telefone:
+          type: string
+          example: "123456789"
+        pais:
+          type: string
+          example: "Brasil"
+        localidade:
+          type: string
+          example: "São Paulo"
+        enabled:
+          type: boolean
+          example: true
+
+    ResetPassword:    
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          example: "senha123"
+        newPassword:
+          type: string
+          example: "senha123"
+        passwordConfirmed:
+          type: string
+          example: "senha123"
+        
+
+
+    LoginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        password:
+          type: string
+          example: "senha123"
+
+    UserResponseError:
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       type: object
       properties:
         message:
           type: string
+<<<<<<< HEAD
           example: "Utilizadores criado com sucess"
         status:
           type: boolean
@@ -161,10 +302,30 @@ components:
         message:
           type: string
           example: "Erro ao buscar Utilizadores"
+=======
+          example: "Erro ao buscar usuários"
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
         status:
           type: boolean
           example: false
         data:
           type: object
+<<<<<<< HEAD
           properties:
             null
+=======
+          properties: null
+
+    UserResponseSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Usuário criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/User"
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73

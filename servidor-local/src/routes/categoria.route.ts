@@ -3,7 +3,9 @@ import { CategoriaController } from "../controllers/categoria.controller.js";
 import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
 import { Role } from "../utils/types.js";
 
-const CategoriaRoute = {
+
+
+const CategoryRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",

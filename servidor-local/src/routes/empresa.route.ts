@@ -3,7 +3,7 @@ import { EmpresaController } from "../controllers/empresa.controller.js";
 import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
 import { Role } from "../utils/types.js";
 
-const EmpresaRoute = {
+const CompanyRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",

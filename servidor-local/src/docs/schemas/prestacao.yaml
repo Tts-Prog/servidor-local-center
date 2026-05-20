@@ -1,185 +1,190 @@
+
+
+#--schema/prestacao.yaml--#
+
+# id: string,
+# disignacao: string,
+# subtotal: number,
+# hora_estimadas: number,
+# id_prestador: string,
+# id_servico: string,
+# preco_hora: number,
+# estado: string,
+# id_orcamento: string,
+# enabled: boolean,
+# created_at: string,
+# updated_at: string
+
 components:
-  schemas:
-    PrestacaoServico:
-      type: object
-      description: Representa uma prestacao de servico da tabela_prestacao_servicos.
-      properties:
-        id:
-          type: integer
-          example: 1
-        designacao:
-          type: string
-          example: "Instalacao de rede"
-        subtotal:
-          type: number
-          format: float
-          example: 280
-        horas_estimadas:
-          type: number
-          format: float
-          example: 8
-        id_prestador:
-          type: string
-          example: "660e8400-e29b-41d4-a716-446655440000"
-        id_servico:
-          type: string
-          example: "770e8400-e29b-41d4-a716-446655440000"
-        preco_hora:
-          type: number
-          format: float
-          example: 35
-        estado:
-          type: string
-          example: "pendente"
-        id_orcamento:
-          type: integer
-          example: 5
-        enabled:
-          type: boolean
-          example: true
-        created_at:
-          type: string
-          format: date-time
-          example: "2026-03-27T10:00:00.000Z"
-        updated_at:
-          type: string
-          format: date-time
-          example: "2026-03-27T10:00:00.000Z"
-      required:
-        - id
-        - designacao
-        - subtotal
-        - horas_estimadas
-        - id_prestador
-        - id_servico
-        - preco_hora
-        - estado
-        - id_orcamento
-        - enabled
+    schemas:
+        #schema principal para buscar prestacao
+        prestacao_servico:
+            type: object
+            properties:
+                id: 
+                    type: string
+                    example: "1"
+                disignacao: 
+                    type: string
+                    example: "Eletricista"
+                subtotal: 
+                    type: number
+                    example: 10
+                hora_estimadas: 
+                    type: number
+                    example: 10
+                id_prestador: 
+                    type: string
+                    example: "1"
+                id_servico: 
+                    type: string
+                    example: "1"
+                preco_hora: 
+                    type: number
+                    example: 10
+                estado: 
+                    type: string
+                    example: "pendente"
+                id_orcamento: 
+                    type: string
+                    example: "1"
+                enabled: 
+                    type: boolean
+                    example: true
+                created_at: 
+                    type: string
+                    example: "2026-03-25"
+                updated_at: 
+                    type: string
+                    example: "2026-03-25"
 
-    CreatePrestacaoServico:
-      type: object
-      properties:
-        designacao:
-          type: string
-          example: "Instalacao de rede"
-        subtotal:
-          type: number
-          format: float
-          example: 280
-        horas_estimadas:
-          type: number
-          format: float
-          example: 8
-        id_prestador:
-          type: string
-          example: "660e8400-e29b-41d4-a716-446655440000"
-        id_servico:
-          type: string
-          example: "770e8400-e29b-41d4-a716-446655440000"
-        preco_hora:
-          type: number
-          format: float
-          example: 35
-        estado:
-          type: string
-          example: "pendente"
-        id_orcamento:
-          type: integer
-          example: 5
-        enabled:
-          type: boolean
-          example: true
-      required:
-        - designacao
-        - subtotal
-        - horas_estimadas
-        - id_prestador
-        - id_servico
-        - preco_hora
-        - estado
-        - id_orcamento
-        - enabled
 
-    UpdatePrestacaoServico:
-      type: object
-      properties:
-        designacao:
-          type: string
-          example: "Instalacao de rede empresarial"
-        subtotal:
-          type: number
-          format: float
-          example: 350
-        horas_estimadas:
-          type: number
-          format: float
-          example: 10
-        id_prestador:
-          type: string
-          example: "660e8400-e29b-41d4-a716-446655440000"
-        id_servico:
-          type: string
-          example: "770e8400-e29b-41d4-a716-446655440000"
-        preco_hora:
-          type: number
-          format: float
-          example: 35
-        estado:
-          type: string
-          example: "em_andamento"
-        id_orcamento:
-          type: integer
-          example: 5
-        enabled:
-          type: boolean
-          example: true
-      required:
-        - designacao
-        - subtotal
-        - horas_estimadas
-        - id_prestador
-        - id_servico
-        - preco_hora
-        - estado
-        - id_orcamento
-        - enabled
+        #schema para criar prestacao
+        createprestacao_servico:
+            type: object
+            properties:
+                disignacao: 
+                    type: string
+                    example: "Eletricista"
+                subtotal: 
+                    type: number
+                    example: 10
+                hora_estimadas: 
+                    type: number
+                    example: 10
+                id_prestador: 
+                    type: string
+                    example: "1"
+                id_servico: 
+                    type: string
+                    example: "1"
+                preco_hora: 
+                    type: number
+                    example: 10
+                estado: 
+                    type: string
+                    example: "pendente"
+                id_orcamento: 
+                    type: string
+                    example: "1"
+                enabled: 
+                    type: boolean
+                    example: true
 
-    ResponseSuccessPrestacaoServico:
-      type: object
-      properties:
-        status:
-          type: string
-          example: "success"
-        message:
-          type: string
-          example: "Prestacao de servico encontrada com sucesso"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/PrestacaoServico"
-            - type: array
-              items:
-                $ref: "#/components/schemas/PrestacaoServico"
-            - type: object
-              additionalProperties: true
-      required:
-        - status
-        - message
-        - data
 
-    ResponseErrorPrestacaoServico:
-      type: object
-      properties:
-        status:
-          type: string
-          example: "error"
-        message:
-          type: string
-          example: "Erro ao processar a requisicao"
-        data:
-          nullable: true
-          example: null
-      required:
-        - status
-        - message
-        - data
+        #schema para atualizar prestacao
+        updateprestacao_servico:
+            type: object
+            properties:
+                id: 
+                    type: string
+                    example: "1"
+                disignacao: 
+                    type: string
+                    example: "Eletricista"
+                subtotal: 
+                    type: number
+                    example: 10
+                hora_estimadas: 
+                    type: number
+                    example: 10
+                id_prestador: 
+                    type: string
+                    example: "1"
+                id_servico: 
+                    type: string
+                    example: "1"
+                preco_hora: 
+                    type: number
+                    example: 10
+                estado: 
+                    type: string
+                    example: "pendente"
+                id_orcamento: 
+                    type: string
+                    example: "1"
+                enabled: 
+                    type: boolean
+                    example: true
+
+
+        #schema para buscar prestacao por id
+        getprestacao_servico_by_id:
+            type: object
+            properties:
+                id: 
+                    type: string
+                    example: "1"
+
+
+        #schema para deletar prestacao
+        deleteprestacao_servico:
+            type: object
+            properties:
+                id: 
+                    type: string
+                    example: "1"
+
+
+        #schema para buscar prestacao detalhada
+        getprestacao_servico_detalhada:
+            type: object
+            properties:
+                limit: 
+                    type: number
+                    example: 10
+                offset: 
+                    type: number
+                    example: 0
+
+        #schema para buscar prestacao detalhada por categoria
+        getprestacaocategoria:
+            type: object
+            properties:
+                categoria: 
+                    type: string
+                    example: "Eletricista"
+
+
+        #schema para resposta de sucesso
+        prestacaoResponseSuccess:
+            type: object
+            properties:
+                message:
+                    type: string
+                    example: "Prestacao criada com sucesso"
+                data:
+                    $ref: "#/components/schemas/prestacao"
+
+        #schema para resposta de erro
+        prestacaoResponseError:
+            type: object
+            properties:
+                message:
+                    type: string
+                    example: "Prestacao nao encontrada"
+                data:
+                    $ref: "#/components/schemas/prestacaoResponseError"
+
+
+

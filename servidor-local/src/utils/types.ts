@@ -3,6 +3,7 @@ export enum Role {
     CLIENTE = "cliente",
     ADMIN = "admin",
     PRESTADOR = "prestador",
+    ADMIN = "administrador",
     EMPRESA = "empresa"
 }
 
@@ -18,7 +19,6 @@ export enum EstadoPrestacaoServico {
     FINALIZADO = "FINALIZADO",
     CANALIZADO = "CANALIZADO"
 }
-
 export enum TipoPrestador {
     PARTICULAR = "particular",
     EMPRESA = "empresa"
@@ -30,6 +30,7 @@ export interface pedidoServicoType {
     horasEstimadas: number;
     urgente: boolean;
 }
+
 
 export interface ServicoType {
     nome: string;

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 
+=======
+import type { Request, Response, NextFunction } from "express"
+import jwt from "jsonwebtoken"
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
 
 declare global {
     namespace Express {
@@ -15,6 +20,7 @@ declare global {
 }
 
 export default function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+<<<<<<< HEAD
     const authHeader = req.headers.authorization;
     // "Bearer", "qwertyuioplkjhgfdsazxcvbnm"
 
@@ -60,10 +66,38 @@ export function authorize(roles: string[]) {
 
         next();
     }
+=======
+    const authHeader = req.headers.authorization
+    // Bearer fsdrfbdsknoicnoinicuckdcbscbscbs.dociabsciusbc8ewdbceiucbeiubfeuibf
+
+    if (!authHeader) {
+        return res.status(401).json({ message: "Utilizador nao authenticado" })
+    }
+
+    const token = authHeader.split(" ")[1]
+    // ["Bearer", "fsdrfbdsknoicnoinicuckdcbscbscbs.dociabsciusbc8ewdbceiucbeiubfeuibf"]
+
+    try {
+        const decodedToken = jwt.verify(token as string, process.env.JWT_SECRET as string) as { id: string, email: string, role: string }
+
+        req.user = {
+            id: decodedToken.id,
+            email: decodedToken.email,
+            role: decodedToken.role
+        }
+
+        next()
+
+    } catch (error) {
+        return res.status(401).json({ message: "Token invalido" })
+    }
+
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
 }
 
 export function isOwner(model: any, field: string) {
     return async (req: Request, res: Response, next: NextFunction) => {
+<<<<<<< HEAD
         const userId = req.user?.id;
         const { id } = req.params;
         const entity = await model.get(id as string);
@@ -113,3 +147,29 @@ req: {
 }
 }
 */
+=======
+        const userId = req.user?.id
+        const { id } = req.params
+        const entity = await model.get(id as string)
+        if (!entity) return res.status(404).json({ message: "Entidade nao encontrada" })
+        if (!userId) return res.status(401).json({ message: "Utilizador nao authenticado" })
+        if (entity[field] !== userId) return res.status(403).json({ message: "Permissao insuficiente" })
+        next()
+    }
+}
+
+// RBAC - Role Based Access Control
+export function authorize(roles: string[]) {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.user) {
+            return res.status(401).json({ message: "Utilizador nao authenticado" })
+        }
+
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({ message: "Permissao insuficiente" })
+        }
+
+        next()
+    }
+}
+>>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73

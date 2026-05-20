@@ -11,8 +11,17 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "picsum.photos",
       },
+      {
+        protocol: "https",
+        hostname: "t3.ftcdn.net",
+      },
+      {
+        protocol: "https",
+        hostname: "aiwallpaperarts.com",
+      },
     ],
   },
+
 };
 
 export default nextConfig;
