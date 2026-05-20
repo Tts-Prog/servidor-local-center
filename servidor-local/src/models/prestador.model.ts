@@ -1,103 +1,116 @@
-import db from "../lib/db.js"
-import type { PrestadorDBType } from "../utils/types.js"
-import  generateUUID  from "../utils/uuid_generate.js"
-
+import type { RowDataPacket } from "mysql2";
+import db from "../lib/db.js";
+import type { prestadorDBType } from "../utils/types.js";
 
 export const PrestadorModel = {
-    async create(prestador: PrestadorDBType) {
+    async create(newPrestador: prestadorDBType): Promise<prestadorDBType | null> {
         try {
-            const [rows] = await db.execute(
-                `INSERT INTO table_prestadores 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            const query = `
+                INSERT INTO tabela_prestadores (
+                    id,
+                    nif,
+                    profissao,
+                    taxa_urgencia,
+                    minimo_desconto,
+                    percentagem_desconto,
+                    enabled,
+                    created_at,
+                    updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `;
 
-                [
-                    generateUUID(),
-                    prestador.taxa_urgencia,
-                    prestador.percentagem_desconto,
-                    prestador.minimo_desconto,
-                    prestador.nif,
-                    prestador.profissao,
-                    prestador.enable,
-                    new Date(),
-                    new Date()
-                ]
-            )
-            console.log({ rows })
-            return rows
-        } catch (err) {
-            console.log(err)
-            return null
+            const values = [
+                newPrestador.id ?? crypto.randomUUID(),
+                newPrestador.nif,
+                newPrestador.profissao,
+                newPrestador.taxa_urgencia,
+                newPrestador.minimo_desconto,
+                newPrestador.percentagem_desconto,
+                newPrestador.enabled,
+                new Date(),
+                new Date(),
+            ];
+
+            const [rows] = await db.execute<prestadorDBType & RowDataPacket[]>(query, values);
+            return rows;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
 
-    async getAll() {
-        const [rows] = await db.execute("SELECT * FROM table_prestadores")
-
-        return rows
-    },
-
-    async get(id: string): Promise<PrestadorDBType | null> {
+    async getAll(): Promise<prestadorDBType[] | null> {
         try {
-            const [rows] = await db.execute(
-                `SELECT * FROM table_prestadores 
-                WHERE table_prestadores.id = ?`,
+            const query = `SELECT * FROM tabela_prestadores`;
 
-                [id]
-            )
+            const [rows] = await db.execute<prestadorDBType[] & RowDataPacket[]>(query);
 
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as PrestadorDBType : null
-        } catch (err) {
-            console.log(err)
-            return null
+            return Array.isArray(rows) ? rows as prestadorDBType[] : [];
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
 
-    async update(id: string, prestador: PrestadorDBType) {
+    async get(id: string): Promise<prestadorDBType | null> {
         try {
-            const [rows] = await db.execute(
-                `UPDATE table_prestadores 
-                SET taxa_urgencia = ?, 
-                percentagem_desconto = ?, 
-                minimo_desconto = ?, 
-                nif = ?, 
-                profissao = ?, 
-                enable = ?, 
-                updated_at = ?
-                WHERE id = ?`,
+            const query = `SELECT * FROM tabela_prestadores WHERE id = ?`;
 
-                [
-                    prestador.taxa_urgencia,
-                    prestador.percentagem_desconto,
-                    prestador.minimo_desconto,
-                    prestador.nif,
-                    prestador.profissao,
-                    prestador.enable,
-                    new Date(),
-                    id
-                ]
-            )
-            console.log({ rows })
-            return rows
-        } catch (err) {
-            console.log(err)
-            return null
+            const value = [id];
+
+            const [rows] = await db.execute<prestadorDBType & RowDataPacket[]>(query, value);
+            return Array.isArray(rows) ? rows[0] as prestadorDBType : null;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     },
 
-    async delete(id: string) {
+    async update(id: string, updatedPrestador: prestadorDBType): Promise<prestadorDBType | null> {
         try {
-            const rows: any = await db.execute(
-                `DELETE FROM table_prestadores 
-                WHERE id = ?`,
+            const query = `UPDATE tabela_prestadores 
+                        SET 
+                            nif=?,
+                            profissao=?,
+                            taxa_urgencia=?,
+                            minimo_desconto=?,
+                            percentagem_desconto=?,
+                            enabled=?,
+                            updated_at=?
+                        WHERE
+                            id=?
+                        ;`;
 
-                [id]
-            )
+            const values = [
+                updatedPrestador.nif,
+                updatedPrestador.profissao,
+                updatedPrestador.taxa_urgencia,
+                updatedPrestador.minimo_desconto,
+                updatedPrestador.percentagem_desconto,
+                updatedPrestador.enabled,
+                new Date(),
+                id,
+            ];
 
-            return rows[0].affectedRows === 0 ? null : rows[0]
-        } catch (err) {
-            console.log(err)
-            return null
+            const [rows] = await db.execute<prestadorDBType & RowDataPacket[]>(query, values);
+            return rows;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+
+    async delete(id: string): Promise<prestadorDBType | null> {
+        try {
+            const query = `DELETE FROM tabela_prestadores WHERE id = ?`;
+
+            const value = [id];
+
+            const [rows]: any = await db.execute<prestadorDBType & RowDataPacket[]>(query, value);
+            return rows?.affectedRows === 0 ? null : rows;
+        } catch (error) {
+            console.log(error);
+            return null;
         }
     }
-}
+};

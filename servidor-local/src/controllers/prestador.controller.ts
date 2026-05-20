@@ -1,145 +1,158 @@
-import type { Request, Response } from "express"
-import type { PrestadorDBType } from "../utils/types.js"
-import { PrestadorModel } from "../models/prestador.model.js"
+import type { Request, Response } from "express";
+import { PrestadorModel } from "../models/prestador.model.js";
+import type { prestadorDBType, ResponseType } from "../utils/types.js";
 
 export const PrestadorController = {
     async create(req: Request, res: Response) {
-        const prestador: PrestadorDBType = req.body
+        const newPrestador: prestadorDBType = req.body;
 
-        if (!prestador) {
+        if (!newPrestador) {
             return res.status(400).json({
-                status:         "error",
-                message:        "Dados de prestador invalidos",
-                data:           null
-            })
+                status: "error",
+                message: "Dados de prestador invalidos",
+                data: null
+            });
         }
 
-        const createPrestadorResponse = await PrestadorModel.create(prestador)
+        const createPrestadorResponse: prestadorDBType | null = await PrestadorModel.create(newPrestador);
 
-        if (!createPrestadorResponse) {
-            return res.status(500).json({
-                status:         "error",
-                message:        "Erro ao criar prestador",
-                data:           null
-            })
+        if (createPrestadorResponse === null) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar prestador",
+                data: null
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(201).json({
-            status:             "success",
-            message:            "Prestador criado com sucesso",
-            data:               createPrestadorResponse
-        })
+        const response: ResponseType<prestadorDBType> = {
+            status: "sucess",
+            message: "Prestador criado com sucesso",
+            data: createPrestadorResponse
+        };
+        return res.status(200).json(response);
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllPrestadoresResponse = await PrestadorModel.getAll()
+        const getAllPrestadorResponse: prestadorDBType[] | null = await PrestadorModel.getAll();
 
-        if (!getAllPrestadoresResponse) {
-            return res.status(500).json({
-                status:         "error",
-                message:        "Erro ao buscar prestadores",
-                data:           null
-            })
+        if (!getAllPrestadorResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar prestadores",
+                data: null
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status:             "success",
-            message:            "Prestadores buscados com sucesso",
-            data:               getAllPrestadoresResponse
-        })
+        const response: ResponseType<prestadorDBType[]> = {
+            status: "sucess",
+            message: "Prestadores buscados com sucesso",
+            data: getAllPrestadorResponse
+        };
+        return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
-        const { id } = req.params
+        const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status:         "error",
-                message:        "ID obrigatorio",
-                data:           null
-            })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID de prestador nao fornecido",
+                data: null
+            };
+            return res.status(400).json(response);
         }
 
-        const getPrestadorByIdResponse = await PrestadorModel.get(id as string)
+        const getPrestadorResponse: prestadorDBType | null = await PrestadorModel.get(id as string);
 
-        if (!getPrestadorByIdResponse) {
-            return res.status(404).json({
-                status:         "error",
-                message:        "Prestador nao encontrado",
-                data:           null
-            })
+        if (!getPrestadorResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Prestador nao encontrado",
+                data: null
+            };
+            return res.status(404).json(response);
         }
 
-        return res.status(200).json({
-            status:             "success",
-            message:            "Prestador encontrado com sucesso",
-            data:               getPrestadorByIdResponse
-        })
+        const response: ResponseType<prestadorDBType> = {
+            status: "sucess",
+            message: "Prestador encontrado com sucesso",
+            data: getPrestadorResponse
+        };
+        return res.status(200).json(response);
     },
 
     async update(req: Request, res: Response) {
-        const { id } = req.params
-
-        const updatedPrestador: PrestadorDBType = req.body
+        const { id } = req.params;
+        const updatedPrestador: prestadorDBType = req.body;
 
         if (!id) {
-            return res.status(400).json({
-                status:         "error",
-                message:        "ID obrigatorio",
-                data:           null
-            })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
         if (!updatedPrestador) {
-            return res.status(400).json({
-                status:         "error",
-                message:        "Dados de prestador invalidos",
-                data:           null
-            })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Dados de prestador invalidos",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        const updatePrestadorResponse = await PrestadorModel.update(id as string, updatedPrestador)
+        const updatePrestadorResponse: prestadorDBType | null = await PrestadorModel.update(id as string, updatedPrestador);
 
         if (!updatePrestadorResponse) {
-            return res.status(400).json({
-                status:         "error",
-                message:        "Erro ao atualizar prestador",
-                data:           null
-            })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao atualizar prestador",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status:             "success",
-            message:            "Prestador atualizado com sucesso",
-            data:               updatePrestadorResponse
-        })
+        const response: ResponseType<prestadorDBType> = {
+            status: "sucess",
+            message: "Prestador atualizado com sucesso",
+            data: updatePrestadorResponse,
+        };
+        return res.status(200).json(response);
     },
 
     async delete(req: Request, res: Response) {
-        const { id } = req.params
+        const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
-                status:         "error",
-                message:        "ID obrigatorio",
-                data:           null
-            })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        const deletePrestadorResponse = await PrestadorModel.delete(id as string)
+        const deletePrestadorResponse: prestadorDBType | null = await PrestadorModel.delete(id as string);
 
         if (!deletePrestadorResponse) {
-            return res.status(400).json({
-                status:         "error",
-                message:        "Erro ao apagar prestador",
-                data:           null
-            })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao apagar prestador",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status:             "success",
-            message:            "Prestador apagado com sucesso",
-            data:               deletePrestadorResponse
-        })
+        const response: ResponseType<prestadorDBType> = {
+            status: "sucess",
+            message: "Prestador apagado com sucesso",
+            data: deletePrestadorResponse,
+        };
+        return res.status(200).json(response);
     }
-}
+};

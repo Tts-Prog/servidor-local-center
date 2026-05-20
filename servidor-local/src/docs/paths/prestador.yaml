@@ -1,42 +1,30 @@
-# create: "/create",
-# getById: "/get-by-id/:id",
-# getAll: "/",
-# update: "/update/:id",
-# delete: "/delete/:id"
-
 paths:
-  /prestador:
+  /prestadores:
     get:
-      summary: Buscar todos os prestadores
       tags:
-        - Prestador
-      description: Retorna uma lista de todos os prestadores
+        - Prestadores
+      summary: Listar prestadores
+      description: Retorna todos os prestadores cadastrados.
       responses:
         "200":
-          description: Prestadores encontrados com sucesso
+          description: Lista de prestadores retornada com sucesso.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestador inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseSuccessPrestador"
         "500":
-          description: Erro ao buscar prestadores
+          description: Erro ao buscar prestadores.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseErrorPrestador"
 
-  /prestador/create:
+  /prestadores/create:
     post:
-      summary: Criar um novo prestador
       tags:
-        - Prestador
-      description: Cria um novo prestador
+        - Prestadores
+      summary: Criar prestador
+      description: Cria um novo prestador.
       requestBody:
         required: true
         content:
@@ -45,125 +33,110 @@ paths:
               $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
-          description: Prestador criado com sucesso
+          description: Prestador criado com sucesso.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/ResponseSuccessPrestador"
         "400":
-          description: Dados de prestador inválidos
+          description: Dados invalidos para criar prestador.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao criar prestador
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseErrorPrestador"
 
-  /prestador/get-by-id/{id}:
+  /prestadores/get-by-id/{id}:
     get:
-      summary: Buscar um prestador por ID
       tags:
-        - Prestador
-      description: Retorna um prestador por ID
+        - Prestadores
+      summary: Buscar prestador por ID
+      description: Retorna um prestador especifico pelo seu identificador.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
+          description: ID do prestador.
           schema:
             type: string
-            example: "1"
+            example: "550e8400-e29b-41d4-a716-446655440000"
       responses:
         "200":
-          description: Prestador encontrado com sucesso
+          description: Prestador encontrado.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/ResponseSuccessPrestador"
         "400":
-          description: Dados de prestador inválidos
+          description: ID do prestador invalido ou ausente.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar prestador
+                $ref: "#/components/schemas/ResponseErrorPrestador"
+        "404":
+          description: Prestador nao encontrado.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseErrorPrestador"
 
-  /prestador/update/{id}:
+  /prestadores/update/{id}:
     put:
-      summary: Atualizar um prestador
       tags:
-        - Prestador
-      description: Atualiza um prestador
+        - Prestadores
+      summary: Atualizar prestador
+      description: Atualiza as informacoes de um prestador existente pelo seu ID.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
+          description: ID do prestador a ser atualizado.
           schema:
             type: string
-            example: "1"
+            example: "550e8400-e29b-41d4-a716-446655440000"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/UpdatePrestador"
       responses:
         "200":
-          description: Prestador atualizado com sucesso
+          description: Prestador atualizado com sucesso.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/ResponseSuccessPrestador"
         "400":
-          description: Dados de prestador inválidos
+          description: Dados invalidos para atualizar prestador.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao atualizar prestador
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseErrorPrestador"
 
-  /prestador/delete/{id}:
+  /prestadores/delete/{id}:
     delete:
-      summary: Deletar um prestador
       tags:
-        - Prestador
-      description: Deleta um prestador
+        - Prestadores
+      summary: Apagar prestador
+      description: Apaga um prestador especificado pelo seu ID.
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: id
           required: true
+          description: ID do prestador a ser apagado.
           schema:
             type: string
-            example: "1"
+            example: "550e8400-e29b-41d4-a716-446655440000"
       responses:
         "200":
-          description: Prestador deletado com sucesso
+          description: Prestador apagado com sucesso.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/ResponseSuccessPrestador"
         "400":
-          description: Dados de prestador inválidos
+          description: Erro ao apagar prestador.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao deletar prestador
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseErrorPrestador"

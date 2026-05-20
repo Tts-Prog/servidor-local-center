@@ -1,69 +1,119 @@
-# id: string,
-# total: number,
-# id_utilizadores: string,
-# enabled: boolean,
-# created_at: string,
-# updated_at: string
-
 components:
   schemas:
     Orcamento:
       type: object
+      description: Representa um orcamento da tabela_orcamento.
       properties:
         id:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         total:
           type: number
-          example: 100
-        id_utilizadores:
+          format: float
+          example: 2500
+        id_utilizador:
           type: string
-          example: "1"
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        id_prestador:
+          type: string
+          example: "660e8400-e29b-41d4-a716-446655440000"
         enabled:
           type: boolean
           example: true
         created_at:
           type: string
-          example: "2022-01-01T00:00:00.000Z"
+          format: date-time
+          example: "2026-03-27T10:00:00.000Z"
         updated_at:
           type: string
-          example: "2022-01-01T00:00:00.000Z"
+          format: date-time
+          example: "2026-03-27T10:00:00.000Z"
+      required:
+        - id
+        - total
+        - id_utilizador
+        - id_prestador
+        - enabled
 
     CreateOrcamento:
       type: object
       properties:
         total:
           type: number
-          example: 100
-        id_utilizadores:
+          format: float
+          example: 2500
+        id_utilizador:
           type: string
-          example: "1"
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        id_prestador:
+          type: string
+          example: "660e8400-e29b-41d4-a716-446655440000"
         enabled:
           type: boolean
           example: true
+      required:
+        - total
+        - id_utilizador
+        - id_prestador
+        - enabled
 
-    ResponseSuccess:
+    UpdateOrcamento:
       type: object
       properties:
-        message:
+        total:
+          type: number
+          format: float
+          example: 3000
+        id_utilizador:
           type: string
-          example: "Orcamento criado com sucesso"
-        status:
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        id_prestador:
+          type: string
+          example: "660e8400-e29b-41d4-a716-446655440000"
+        enabled:
           type: boolean
           example: true
-        data:
-          type: object
-          $ref: "#/components/schemas/Orcamento"
+      required:
+        - total
+        - id_utilizador
+        - id_prestador
+        - enabled
 
-    ResponseError:
+    ResponseSuccessOrcamento:
       type: object
       properties:
+        status:
+          type: string
+          example: "success"
         message:
           type: string
-          example: "Erro ao buscar orcamentos"
-        status:
-          type: boolean
-          example: false
+          example: "Orcamento encontrado com sucesso"
         data:
-          type: object
-          properties: null
+          oneOf:
+            - $ref: "#/components/schemas/Orcamento"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Orcamento"
+            - type: object
+              additionalProperties: true
+      required:
+        - status
+        - message
+        - data
+
+    ResponseErrorOrcamento:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Erro ao processar a requisicao"
+        data:
+          nullable: true
+          example: null
+      required:
+        - status
+        - message
+        - data

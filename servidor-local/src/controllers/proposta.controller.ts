@@ -1,115 +1,159 @@
-
-import type { Request, Response } from "express"
-import { PropostaModel } from "../models/proposta.model.js"
-import type { PropostaDBType } from "../utils/types.js"
-import { PrestacaoServicoModel } from "../models/prestacao_servico.model.js"
-
+import type { Request, Response } from "express";
+import { PropostaModel } from "../models/proposta.model.js";
+import type { propostaDBType, ResponseType } from "../utils/types.js";
 
 export const PropostaController = {
     async create(req: Request, res: Response) {
-        try {
-            const propostaData = req.body as PropostaDBType
-            const propostaResponse = await PropostaModel.create(propostaData)
+        const newProposta: propostaDBType = req.body;
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao criar proposta" })
-
-            return res.status(201).json({ message: "Proposta criada com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao criar proposta" })
+        if (!newProposta) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Dados de proposta invalidos",
+                data: null
+            };
+            return res.status(400).json(response);
         }
+
+        const createPropostaResponse: propostaDBType | null = await PropostaModel.create(newProposta);
+
+        if (createPropostaResponse === null) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar proposta",
+                data: null
+            };
+            return res.status(400).json(response);
+        }
+
+        const response: ResponseType<propostaDBType> = {
+            status: "sucess",
+            message: "Proposta criada com sucesso",
+            data: createPropostaResponse
+        };
+        return res.status(200).json(response);
     },
 
     async getAll(req: Request, res: Response) {
-        try {
-            const propostaResponse = await PropostaModel.getAll()
+        const getAllPropostaResponse: propostaDBType[] | null = await PropostaModel.getAll();
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao buscar propostas" })
-
-            return res.status(200).json({ message: "Propostas encontradas com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao buscar propostas" })
+        if (!getAllPropostaResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar propostas",
+                data: null
+            };
+            return res.status(500).json(response);
         }
+
+        const response: ResponseType<propostaDBType[]> = {
+            status: "sucess",
+            message: "Propostas buscadas com sucesso",
+            data: getAllPropostaResponse
+        };
+        return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
-        const { id } = req.params
-        try {
-            const propostaResponse = await PropostaModel.get(id as string)
+        const { id } = req.params;
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao buscar proposta" })
-
-            return res.status(200).json({ message: "Proposta encontrada com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao buscar proposta" })
+        if (!id) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID de proposta nao fornecido",
+                data: null
+            };
+            return res.status(400).json(response);
         }
+
+        const getPropostaResponse: propostaDBType | null = await PropostaModel.get(id as string);
+
+        if (!getPropostaResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Proposta nao encontrada",
+                data: null
+            };
+            return res.status(404).json(response);
+        }
+
+        const response: ResponseType<propostaDBType> = {
+            status: "sucess",
+            message: "Proposta encontrada com sucesso",
+            data: getPropostaResponse
+        };
+        return res.status(200).json(response);
     },
 
     async update(req: Request, res: Response) {
-        const { id } = req.params
-        try {
-            const propostaData = req.body as PropostaDBType
-            const propostaResponse = await PropostaModel.update(id as string, propostaData)
+        const { id } = req.params;
+        const updatedProposta: propostaDBType = req.body;
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao atualizar proposta" })
-
-            return res.status(200).json({ message: "Proposta atualizada com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao atualizar proposta" })
+        if (!id) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
+
+        if (!updatedProposta) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Dados de proposta invalidos",
+                data: null,
+            };
+            return res.status(400).json(response);
+        }
+
+        const updatePropostaResponse: propostaDBType | null = await PropostaModel.update(id as string, updatedProposta);
+
+        if (!updatePropostaResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao atualizar proposta",
+                data: null,
+            };
+            return res.status(400).json(response);
+        }
+
+        const response: ResponseType<propostaDBType> = {
+            status: "sucess",
+            message: "Proposta atualizada com sucesso",
+            data: updatePropostaResponse,
+        };
+        return res.status(200).json(response);
     },
 
     async delete(req: Request, res: Response) {
-        const { id } = req.params
-        try {
-            const propostaResponse = await PropostaModel.delete(id as string)
+        const { id } = req.params;
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao deletar proposta" })
-
-            return res.status(200).json({ message: "Proposta deletada com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao deletar proposta" })
+        if (!id) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
-    },
 
-    async getByPrestacaoServico(req: Request, res: Response) {
-        const { id } = req.params
-        try {
-            const propostaResponse = await PropostaModel.get(id as string)
+        const deletePropostaResponse: propostaDBType | null = await PropostaModel.delete(id as string);
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao buscar proposta" })
-
-            return res.status(200).json({ message: "Proposta encontrada com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao buscar proposta" })
+        if (!deletePropostaResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao apagar proposta",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
-    },
 
-    async accept(req: Request, res: Response) {
-        const { id } = req.params
-        try {
-
-            const propostaAcceptanceResponse = await PropostaModel.acceptProposal(id as string)
-
-            // we should update prestacao servico fields once a accepted proposal based on the prestacao servico that has the orcamento id
-            //fetch proposal to get id_prestacao_servico as proposalResponse does not fetch 
-            //const propostaResponse = await PropostaModel.get(id as string)
-
-            // check utils/types.ts
-            //const prestacaoServicoResponse = await PrestacaoServicoModel.update(propostaResponse?.id_prestacao_servico as string, propostaResponse)
-
-            if (!propostaAcceptanceResponse) return res.status(400).json({ message: "Erro ao aceitar proposta" })
-
-            return res.status(200).json({ message: "Proposta aceite com sucesso", propostaAcceptanceResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao aceitar proposta" })
-        }
-    },
-}
-
+        const response: ResponseType<propostaDBType> = {
+            status: "sucess",
+            message: "Proposta apagada com sucesso",
+            data: deletePropostaResponse,
+        };
+        return res.status(200).json(response);
+    }
+};

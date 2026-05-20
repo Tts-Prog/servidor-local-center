@@ -1,34 +1,38 @@
 import { Router } from "express";
-import { UserController } from "../controllers/users.controller.js";
-import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
+import { userController } from "../controllers/user.controller.js";
+import AuthMiddleware, { authorize } from "../security/auth.middlerware.js";
 import { Role } from "../utils/types.js";
 
-const UserRoute = {
+
+const UsersRouter = {
     create: "/create",
+    getById: "/get-by-id/:id",
     getAll: "/",
-    getById: "/:id",
     update: "/update/:id",
     delete: "/delete/:id",
     resetPassword: "/reset-password/:id",
-    login: "/login"
+    login: "/login",
 }
 
 const router = Router()
 
-router.post(UserRoute.login, UserController.login)
 
-router.post(UserRoute.create, UserController.create)
+router.post(UsersRouter.login, userController.login)
+
+router.post(UsersRouter.create, userController.create)
 
 router.use(AuthMiddleware)
 
-router.get(UserRoute.getAll, authorize([Role.ADMIN]), UserController.getAll)
+router.get(UsersRouter.getAll, authorize([Role.ADMIN]), userController.getAll)
 
-router.get(UserRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UserController.getById)
+router.get(UsersRouter.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.getById)
 
-router.put(UserRoute.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UserController.update)
+router.put(UsersRouter.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.update)
 
-router.delete(UserRoute.delete, authorize([Role.ADMIN]), UserController.delete)
+router.delete(UsersRouter.delete, userController.delete)
 
-router.put(UserRoute.resetPassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UserController.resetPassword)
+// router.put(UsersRouter.resetPassword,authorize([Role.ADMIN,Role.CLIENTE,Role.PRESTADOR,Role.EMPRESA]), userController.resetPassword)
 
-export { router }
+
+
+export { router };
