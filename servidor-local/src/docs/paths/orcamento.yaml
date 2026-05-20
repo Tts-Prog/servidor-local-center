@@ -1,95 +1,96 @@
+#paths/orcamento.yaml
+
 paths:
-  /orcamentos:
+  /budget:
     get:
+      summary: Listar todos as orçamento
       tags:
-        - Orcamentos
-      summary: Listar orcamentos
-      description: Retorna todos os orcamentos cadastrados.
+        - Budget
+      description: Retorna uma lista de todas as orçamento disponiveis
       responses:
         "200":
-          description: Lista de orcamentos retornada com sucesso.
+          description: Lista de orçamento
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
-        "500":
-          description: Erro ao buscar orcamentos.
+                type: array
+                items:
+                  $ref: "#/components/schemas/Orcamento"
+        "404":
+          description: Orcamento Servico não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
-
-  /orcamentos/create:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/create:
     post:
+      summary: criar novo Orcamento Servico
       tags:
-        - Orcamentos
-      summary: Criar orcamento
-      description: Cria um novo orcamento.
+        - Budget
+      description: cria um novo Orcamento Servico
       requestBody:
         required: true
         content:
           application/json:
             schema:
+              type: object
               $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Orcamento criado com sucesso.
+          description: Orcamento Servico criado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "400":
-          description: Dados invalidos para criar orcamento.
+          description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
-
-  /orcamentos/get-by-id/{id}:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/get-by-id/{id}:
     get:
+      summary: Buscar um Orcamento Servico
       tags:
-        - Orcamentos
-      summary: Buscar orcamento por ID
-      description: Retorna um orcamento especifico pelo seu identificador.
+        - Budget
+      description: Retorna um Orcamento Servico especifico pelo ID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          description: ID do orcamento.
+          description: ID do Orcamento Servico a ser buscado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Orcamento encontrado.
+          description: Orcamento Servico encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
-        "400":
-          description: ID do orcamento invalido ou ausente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "404":
-          description: Orcamento nao encontrado.
+          description: Orcamento Servico não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
-
-  /orcamentos/update/{id}:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/update/{id}:
     put:
+      summary: atualizar um Orcamento Servico
       tags:
-        - Orcamentos
-      summary: Atualizar orcamento
-      description: Atualiza as informacoes de um orcamento existente pelo seu ID.
+        - Budget
+      description: Atualizar Orcamento Servico pelo id
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          description: ID do orcamento a ser atualizado.
+          description: ID do Orcamento Servico a ser atualizado
           schema:
             type: integer
             example: 1
@@ -98,45 +99,92 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateOrcamento"
+              type: object
+              $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Orcamento atualizado com sucesso.
+          description: Orcamento Servico atualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "400":
-          description: Dados invalidos para atualizar orcamento.
+          description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
-
-  /orcamentos/delete/{id}:
-    delete:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+        "404":
+          description: Orcamento Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/calcular/:id:
+    put:
+      summary: calcular um Orcamento Servico
       tags:
-        - Orcamentos
-      summary: Apagar orcamento
-      description: Apaga um orcamento especificado pelo seu ID.
+        - Budget
+      description: Calcular Orcamento Servico pelo id
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          description: ID do orcamento a ser apagado.
+          description: ID do Orcamento Servico a ser calculado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Orcamento apagado com sucesso.
+          description: Orcamento Servico calculado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
         "400":
-          description: Erro ao apagar orcamento.
+          description: Dados inválidos fornecidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+        "404":
+          description: Orcamento Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"
+  /budget/delete/{id}:
+    delete:
+      summary: Deletar um Orcamento Servico
+      tags:
+        - Budget
+      description: Deletar Orcamento Servico pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do Orcamento Servico a ser deletado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Orcamento Servico deletado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucessoOrcamento"
+        "404":
+          description: Orcamento Servico não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseErroOrcamento"

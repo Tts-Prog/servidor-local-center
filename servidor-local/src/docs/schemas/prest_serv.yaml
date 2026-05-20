@@ -1,18 +1,5 @@
 # schemas/prest_serv.yaml
 
-#id: string
-#disign: string
-#subtotal: number
-#horas_estimadas: number
-#id_prestador: string
-#id_servico: number
-#preco_hora: number
-#estado: string
-#id_orcamento: number
-#enabled: boolean
-#created_at: string
-#updated_at: string
-
 components:
   schemas:
     PrestacaoServico:

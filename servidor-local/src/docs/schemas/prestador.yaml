@@ -1,50 +1,57 @@
+# schemas/proposta.yaml
+
+#   id: string
+#   nif: number
+#   precoHora: number
+#   profissao: string
+#   minimoDesconto: number
+#   taxaUrgencia: number
+#   percentagemDesconto: number
+#   estado: boolean
+#   enabled: boolean
+#   created_at: string
+#   updated_at: string
+
 components:
   schemas:
     Prestador:
       type: object
-      description: Representa um prestador da tabela_prestadores.
       properties:
         id:
           type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
+          example: "uuid-9876-5432"
         nif:
           type: integer
           example: 123456789
         profissao:
           type: string
-          example: "Canalizador"
-        taxa_urgencia:
+          example: "Eletricista"
+        minimoDesconto:
           type: number
           format: float
-          example: 15
-        minimo_desconto:
+          example: 100.00
+        taxaUrgencia:
           type: number
           format: float
-          example: 100
-        percentagem_desconto:
+          example: 15.00
+        percentagemDesconto:
           type: number
           format: float
-          example: 10
+          example: 5.0
+        estado:
+          type: boolean
+          example: true
         enabled:
           type: boolean
           example: true
         created_at:
           type: string
           format: date-time
-          example: "2026-03-27T10:00:00.000Z"
+          example: "2023-10-27T09:00:00Z"
         updated_at:
           type: string
           format: date-time
-          example: "2026-03-27T10:00:00.000Z"
-      required:
-        - id
-        - nif
-        - profissao
-        - taxa_urgencia
-        - minimo_desconto
-        - percentagem_desconto
-        - enabled
-
+          example: "2023-10-27T10:00:00Z"
     CreatePrestador:
       type: object
       properties:
@@ -53,97 +60,58 @@ components:
           example: 123456789
         profissao:
           type: string
-          example: "Canalizador"
-        taxa_urgencia:
+          example: "Encanador"
+        minimoDesconto:
           type: number
-          format: float
-          example: 15
-        minimo_desconto:
+          example: 50.00
+        taxaUrgencia:
           type: number
-          format: float
-          example: 100
-        percentagem_desconto:
+          example: 10.00
+        percentagemDesconto:
           type: number
-          format: float
-          example: 10
+          example: 2.5
+        estado:
+          type: boolean
+          default: true
         enabled:
           type: boolean
-          example: true
-      required:
-        - nif
-        - profissao
-        - taxa_urgencia
-        - minimo_desconto
-        - percentagem_desconto
-        - enabled
-
-    UpdatePrestador:
+          default: true
+    PrecoHora:
       type: object
       properties:
-        nif:
-          type: integer
-          example: 123456789
-        profissao:
+        precohora:
+          type: number
+          format: float
+          example: 50.00
+        taxaurgency:
+          type: number
+          format: float
+          example: 15.00
+        taxadesconto:
+          type: number
+          format: float
+          example: 5.00
+    ResponseSucessoPrestador:
+      type: object
+      properties:
+        message:
           type: string
-          example: "Canalizador"
-        taxa_urgencia:
-          type: number
-          format: float
-          example: 20
-        minimo_desconto:
-          type: number
-          format: float
-          example: 150
-        percentagem_desconto:
-          type: number
-          format: float
-          example: 12
-        enabled:
+          example: "Prestador processado com sucesso"
+        status:
           type: boolean
           example: true
-      required:
-        - nif
-        - profissao
-        - taxa_urgencia
-        - minimo_desconto
-        - percentagem_desconto
-        - enabled
+        data:
+          $ref: "#/components/schemas/Prestador"
 
-    ResponseSuccessPrestador:
+    ResponseErroPrestador:
       type: object
       properties:
-        status:
-          type: string
-          example: "success"
         message:
           type: string
-          example: "Prestador encontrado com sucesso"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/Prestador"
-            - type: array
-              items:
-                $ref: "#/components/schemas/Prestador"
-            - type: object
-              additionalProperties: true
-      required:
-        - status
-        - message
-        - data
-
-    ResponseErrorPrestador:
-      type: object
-      properties:
+          example: "Erro na operação do prestador"
         status:
-          type: string
-          example: "error"
-        message:
-          type: string
-          example: "Erro ao processar a requisicao"
+          type: boolean
+          example: false
         data:
+          type: object
           nullable: true
-          example: null
-      required:
-        - status
-        - message
-        - data
