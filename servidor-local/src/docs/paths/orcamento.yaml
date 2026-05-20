@@ -1,39 +1,33 @@
-# create: "/create",
-# getAll: "/",
-# getById: "/get-by-id/:id",
-# update: "/update/:id",
-# delete: "/delete/:id"
-
+# paths/orcamento.yaml
 paths:
   /orcamento:
     get:
-      summary: Buscar todos os orçamentos
+      summary: Listar todos os orcamento
       tags:
         - Orcamento
+      description: Retorna uma lista de todos os orcamento disponíveis
       responses:
         "200":
-          description: Orçamentos buscados com sucesso
+          description: Lista de orcamento
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de orçamento inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar orçamentos
+                type: array
+                items:
+                  $ref: "#/components/schemas/Orcamento"
+        "404":
+          description: "Nenhum orcamento encontrado"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
+
   /orcamento/create:
     post:
-      summary: Criar um novo orçamento
+      summary: Criar um novo orcamento
       tags:
         - Orcamento
+      description: Cria um novo orcamento
       requestBody:
         required: true
         content:
@@ -42,19 +36,13 @@ paths:
               $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Orçamento criado com sucesso
+          description: Orcamento criado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
-          description: Dados de orçamento inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao criar orçamento
+          description: Erro ao criar orcamento
           content:
             application/json:
               schema:
@@ -62,143 +50,104 @@ paths:
 
   /orcamento/get-by-id/{id}:
     get:
-      summary: Buscar um orçamento por ID
+      summary: Buscar um orcamento por ID
       tags:
         - Orcamento
+      description: Retorna um orcamento especificado pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID do orcamento
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       responses:
         "200":
-          description: Orçamento encontrado com sucesso
+          description: Orcamento encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de orçamento inválidos
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Orcamento nao encontrado
           content:
             application/json:
               schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar orçamento
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
   /orcamento/update/{id}:
     put:
-      summary: Atualizar um orçamento
+      summary: Actualizar um orcamento por ID
       tags:
         - Orcamento
+      description: Actualiza um orcamento especificado pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID do orcamento
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateOrcamento"
+              type: object
+              $href: "#/components/schemas/CreateOrcamento" #tem mesma informacao de CreateUser
       responses:
         "200":
-          description: Orçamento atualizado com sucesso
+          description: Orcamento actualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
-          description: Dados de orçamento inválidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao atualizar orçamento
+        "404":
+          description: Orcamento nao encontrado
           content:
             application/json:
               schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
-
-
-  /orcamento/calcular/{id}:
-    put:
-      summary: Calcular um orçamento
-      tags:
-        - Orcamento
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "1"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CalcularOrcamento"
-      responses:
-        "200":
-          description: Orçamento calculado com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de orçamento inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao calcular orçamento
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
   /orcamento/delete/{id}:
     delete:
-      summary: Apagar um orçamento
+      summary: Apaga um orcamento
       tags:
         - Orcamento
+      description: Apaga um orcamento especificado pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID do orcamento
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       responses:
         "200":
-          description: Orçamento apagado com sucesso
+          description: Orcamento apagado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de orçamento inválidos
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Orcamento nao encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao apagar orçamento
-          content:
-            application/json:
-              schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
   /calcular/{id}:
     put:
@@ -229,4 +178,3 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
-        

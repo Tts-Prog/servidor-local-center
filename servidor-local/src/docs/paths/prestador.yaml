@@ -1,31 +1,22 @@
-# create: "/create",
-# getById: "/get-by-id/:id",
-# getAll: "/",
-# update: "/update/:id",
-# delete: "/delete/:id"
-
+# paths/prestador.yaml
 paths:
   /prestador:
     get:
-      summary: Buscar todos os prestadores
+      summary: Listar todos os prestadores
       tags:
         - Prestador
-      description: Retorna uma lista de todos os prestadores
+      description: Retorna uma lista de todos os prestadores disponíveis
       responses:
         "200":
-          description: Prestadores encontrados com sucesso
+          description: Lista de prestadores
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestador inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar prestadores
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prestador"
+        "404":
+          description: "Nenhum prestador encontrado"
           content:
             application/json:
               schema:
@@ -49,14 +40,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
-          description: Dados de prestador inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
           description: Erro ao criar prestador
           content:
             application/json:
@@ -68,102 +53,99 @@ paths:
       summary: Buscar um prestador por ID
       tags:
         - Prestador
-      description: Retorna um prestador por ID
+      description: Retorna um prestador especificado pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID do prestador
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 4f4662d3-27fc-4e29-ac53-1a9ecf73e69e
       responses:
         "200":
-          description: Prestador encontrado com sucesso
+          description: Prestador encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestador inválidos
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Prestador nao encontrado
           content:
             application/json:
               schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar prestador
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
   /prestador/update/{id}:
     put:
-      summary: Atualizar um prestador
+      summary: Actualizar um utiliazdor por ID
       tags:
         - Prestador
-      description: Atualiza um prestador
+      description: Actualiza um prestador especificado pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID do prestador
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 4f4662d3-27fc-4e29-ac53-1a9ecf73e69e
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+              type: object
+              $href: "#/components/schemas/CreateUser" #tem mesma informacao de CreateUser
       responses:
         "200":
-          description: Prestador atualizado com sucesso
+          description: Prestador actualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
-          description: Dados de prestador inválidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao atualizar prestador
+        "404":
+          description: Prestador nao encontrado
           content:
             application/json:
               schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
-
   /prestador/delete/{id}:
     delete:
-      summary: Deletar um prestador
+      summary: Apaga um prestador
       tags:
         - Prestador
-      description: Deleta um prestador
+      description: Apaga um prestador especificado pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID do prestador
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 4f4662d3-27fc-4e29-ac53-1a9ecf73e69e
       responses:
         "200":
-          description: Prestador deletado com sucesso
+          description: Prestador apagado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestador inválidos
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Prestador nao encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao deletar prestador
-          content:
-            application/json:
-              schema:
+                type: object
                 $ref: "#/components/schemas/ResponseError"
