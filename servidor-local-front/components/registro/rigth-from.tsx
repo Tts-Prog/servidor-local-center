@@ -1,0 +1,224 @@
+'use client'
+
+
+import { Label } from "../ui/label";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import { useState } from "react";
+import { toast,  } from "sonner";
+
+export const RegistroForm = () => {
+    const [nome, setNome] = useState('');
+    const [numeroIdentificacao, setNumeroIdentificacao] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [pais, setPais] = useState('');
+    const [localidade, setLocalidade] = useState('');
+    const [password, setPassword] = useState('');
+
+
+    const changeNome = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setNome(e.target.value)
+        } else {
+            setNome("")
+        }
+    };
+
+    const changeNumeroIdentificacao = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setNumeroIdentificacao(e.target.value)
+        } else {
+            setNumeroIdentificacao("")
+        }
+    };
+
+    const changeDataNascimento = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setDataNascimento(e.target.value)
+        } else {
+            setDataNascimento("")
+        }
+    };
+
+    const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setEmail(e.target.value)
+        } else {
+            setEmail("")
+        }
+    };
+
+    const changeTelefone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setTelefone(e.target.value)
+        } else {
+            setTelefone("")
+        }
+    };
+
+    const changePais = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setPais(e.target.value)
+        } else {
+            setPais("")
+        }
+    };
+
+    const changeLocalidade = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setLocalidade(e.target.value)
+        } else {
+            setLocalidade("")
+        }
+    };
+
+    const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setPassword(e.target.value)
+        } else {
+            setPassword("")
+        }
+    };
+
+    const handleRegistro = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        // fetch API
+        const response = await fetch("http://localhost:8080/users/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nome: nome,
+                numero_identificacao: numeroIdentificacao,
+                data_nascimento: dataNascimento,
+                email: email,
+                telefone: telefone,
+                pais: pais,
+                localidade: localidade,
+                password: password,
+                role: "cliente",
+                enabled: true
+            }),
+        });
+
+        if (response.status === 200) {
+            toast.success("Utilizador criado com sucesso")
+
+            if (typeof window !== "undefined") {
+                window.location.href = "/login";
+            }
+
+        } else {
+            toast.error("Não foi possível criar conta, tente novamente...")
+        }
+    };
+    console.log({ nome: nome, numero_identificacao: numeroIdentificacao, data_nascimento: dataNascimento, email: email, telefone: telefone, pais: pais, localidade: localidade, password: password })
+
+    return (
+        <div className="w-1/2 flex flex-col justify-center">
+            <Card className="h-full flex flex-col justify-center px-14 gap-16">
+                <CardHeader className="text-5xl font-bold">
+                    <span>Login</span>
+                </CardHeader>
+
+                <CardContent>
+                    <div className="flex flex-col gap-5">
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Nome</Label>
+                            <Input type="text"
+                                value={nome}
+                                onChange={changeNome}
+                                placeholder="Your name"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Número de identificação</Label>
+                            <Input type="text"
+                                value={numeroIdentificacao}
+                                onChange={changeNumeroIdentificacao}
+                                placeholder="Your identification number"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Data de nascimento</Label>
+                            <Input type="text"
+                                value={dataNascimento}
+                                onChange={changeDataNascimento}
+                                placeholder="YYYY-MM-DD"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Email</Label>
+                            <Input type="email"
+                                value={email}
+                                onChange={changeEmail}
+                                placeholder="[EMAIL_ADDRESS]"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Telefone</Label>
+                            <Input type="text"
+                                value={telefone}
+                                onChange={changeTelefone}
+                                placeholder="Your phone number"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>País</Label>
+                            <Input type="text"
+                                value={pais}
+                                onChange={changePais}
+                                placeholder="Your country"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Localidade</Label>
+                            <Input type="text"
+                                value={localidade}
+                                onChange={changeLocalidade}
+                                placeholder="Your city"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <Label>Senha</Label>
+                            <Input type="password"
+                                value={password}
+                                onChange={changePassword}
+                                placeholder="Your password"
+                                className="py-2 h-10 text-lg"></Input>
+                        </div>
+
+                        <Button
+                            onClick={handleRegistro}
+                            className="bg-[#13A4EC] rounded-md text-white font-bold py-3 drop-shadow-lg drop-shadow-gray-200">
+                            Registrar
+                        </Button>
+                    </div>
+
+                    <div>
+                        <span>Do you already have an account? </span>
+                        <Link href="/login" className="text-[#13A4EC] font-semibold">Login</Link>
+
+                    </div>
+
+                </CardContent>
+
+            </Card>
+
+        </div>
+    )
+}
