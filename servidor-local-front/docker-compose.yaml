@@ -19,7 +19,6 @@ services:
     container_name: servidor-local-front
     ports:
       - 3000:3000
-
     networks:
       - marketplace-net
 

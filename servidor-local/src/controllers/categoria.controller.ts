@@ -61,60 +61,51 @@ export const CategoriaController = {
         if (!id) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "ID da categoria não fornecido",
-                data: null,
+                message: "Dados de empresa invalidos",
+                data: null
             };
             return res.status(400).json(response);
         }
 
-        const getCategoriaResponse = await CategoriaModel.get(id as string);
+        const getCategoriaResponse: CategoriaDBType | null = await CategoriaModel.get(id as string);
 
-        if (!getCategoriaResponse) {
+        if (getCategoriaResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Categoria não encontrada",
-                data: null,
+                message: "Erro ao buscar categoria",
+                data: null
             };
-            return res.status(404).json(response);
+            return res.status(400).json(response);
         }
 
         const response: ResponseType<CategoriaDBType> = {
             status: "success",
             message: "Categoria encontrada com sucesso",
-            data: getCategoriaResponse,
+            data: getCategoriaResponse
         };
         return res.status(200).json(response);
     },
 
     async update(req: Request, res: Response) {
-        const { id } = req.params;
+        const id = req.params.id;
         const updatedCategoria: CategoriaDBType = req.body;
 
-        if (!id) {
+        if (!id || !updatedCategoria) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "ID da categoria é obrigatório",
-                data: null,
+                message: "Dados de categoria invalidos",
+                data: null
             };
             return res.status(400).json(response);
         }
 
-        if (!updatedCategoria) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Dados de categoria inválidos",
-                data: null,
-            };
-            return res.status(400).json(response);
-        }
+        const updateCategoriaResponse: CategoriaDBType | null = await CategoriaModel.update(id as string, updatedCategoria);
 
-        const updateCategoriaResponse = await CategoriaModel.update(id as string, updatedCategoria);
-
-        if (!updateCategoriaResponse) {
+        if (updateCategoriaResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar categoria",
-                data: null,
+                data: null
             };
             return res.status(400).json(response);
         }
@@ -139,13 +130,13 @@ export const CategoriaController = {
             return res.status(400).json(response);
         }
 
-        const deleteCategoriaResponse = await CategoriaModel.delete(id as string);
+        const deleteCategoriaResponse: CategoriaDBType | null = await CategoriaModel.delete(id as string);
 
-        if (!deleteCategoriaResponse) {
+        if (deleteCategoriaResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao apagar categoria",
-                data: null,
+                message: "Erro ao deletar categoria",
+                data: null
             };
             return res.status(400).json(response);
         }

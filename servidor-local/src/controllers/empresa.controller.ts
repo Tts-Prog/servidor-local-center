@@ -139,13 +139,13 @@ export const EmpresaController = {
             return res.status(400).json(response);
         }
 
-        const deleteEmpresaResponse = await EmpresaModel.delete(id as string);
+        const deleteEmpresaResponse: EmpresaDBType | null = await EmpresaModel.delete(id as string);
 
-        if (!deleteEmpresaResponse) {
+        if (deleteEmpresaResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao apagar empresa",
-                data: null,
+                message: "Erro ao deletar empresa",
+                data: null
             };
             return res.status(400).json(response);
         }

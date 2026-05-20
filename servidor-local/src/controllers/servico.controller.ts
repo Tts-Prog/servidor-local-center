@@ -1,4 +1,3 @@
-
 import { ServiceModel } from "../models/servico.model.js";
 import type { ResponseType, ServiceDBType } from "../utils/types.js";
 import type { Request, Response } from "express";
