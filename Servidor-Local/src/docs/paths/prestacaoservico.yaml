@@ -1,0 +1,222 @@
+# paths/prestacaoservico.yaml
+
+paths:
+  /prestacaoservico:
+    get:
+      summary: Listar todas as prestações
+      tags:
+        - Prestações de Serviços
+      responses:
+        "200":
+          description: Lista de prestações
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/prestacaoServico"
+
+        "404":
+          description: Nenhuma prestação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+
+  /prestacaoservico/create:
+    post:
+      summary: Criar prestação
+      tags:
+        - Prestações de Serviços
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrestacaoServico"
+      responses:
+        "200":
+          description: Criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSucessoPrestacao"
+
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+
+  /prestacaoservico/get-by-id/{id}:
+    get:
+      summary: Buscar prestação por ID
+      tags:
+        - Prestações de Serviços  
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "a12b34c5-d678-90ef-gh12-345ijk678lmn"
+      responses:
+        "200":
+          description: Prestação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/prestacaoServico"
+
+        "404":
+          description: Não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+
+  /prestacaoservico/update/{id}:
+    put:
+      summary: Atualizar prestação
+      tags:
+        - Prestações de Serviços
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrestacaoServico"
+      responses:
+        "200":
+          description: Atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/prestacaoServico"
+
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+
+        "404":
+          description: Não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+
+  /prestacaoservico/delete/{id}:
+    delete:
+      summary: Deletar prestação
+      tags:
+        - Prestações de Serviços  
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deletado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSucessoPrestacao"
+
+        "404":
+          description: Não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+  /prestacaoservico/get-all-detalhada:
+    get:
+      summary: Listar todas as prestações detalhadas
+      tags:
+        - Prestações de Serviços
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+            default: 10
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+            default: 0
+      responses:
+        "200":
+          description: Lista de prestações detalhadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/prestacaoServicoDetalhada"
+
+        "404":
+          description: Nenhuma prestação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+  /prestacaoservico/get-by-categoria/{categoria}:
+    get:
+      summary: Buscar prestações de serviço por categoria
+      tags:
+        - Prestações de Serviços
+      description: Retorna uma lista de prestações de serviço que pertencem a uma categoria específica.
+      parameters:
+        - name: categoria
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "1"
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "10"
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de prestações de serviço por categoria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/prestacaoServicoDetalhada"
+
+        "404":
+          description: dados de prestacão de serviço por categoria não encontrados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"
+        "500":
+          description: Erro ao buscar prestações de serviço por categoria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseErro"

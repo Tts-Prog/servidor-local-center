@@ -1,0 +1,162 @@
+
+
+import type { RowDataPacket } from "mysql2/promise"
+import db from "../lib/db.js"
+import { formatDateDDMMYYYY } from "../utils/date.js"
+import { hashPassword } from "../utils/password.js"
+import type { UserType } from "../utils/types.js"
+import { generateUUID } from "../utils/uuid.js"
+
+
+export const UserModel = {
+    // create user
+    async create(user: UserType) {
+        console.log(
+            user.nome,
+                    user.numero_identificado,
+                    formatDateDDMMYYYY(user.data_nascimento),
+                    user.email,
+                    user.telefone,
+                    user.pais,
+                    user.localidade,
+                    await hashPassword(user.password),
+                    user.enabled,
+                    new Date(),
+                    new Date(),
+                    user.role,
+        )
+        try {
+            const [rows] = await db.execute(
+                `INSERT INTO tbl_utilizadores 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    generateUUID(),
+                    user.nome,
+                    user.numero_identificado,
+                    formatDateDDMMYYYY(user.data_nascimento),
+                    user.email,
+                    user.telefone,
+                    user.pais,
+                    user.localidade,
+                    await hashPassword(user.password),
+                    user.enabled,
+                    new Date(),
+                    new Date(),
+                    user.role,
+                ]
+            )
+            console.log({ rows })
+            return rows
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+    // tosdos os user
+    async getAll() {
+        const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+
+        return rows
+    },
+
+    async get(id: string): Promise<UserType | null> {
+        try {
+            const [rows] = await db.execute <UserType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_utilizadores 
+                WHERE tbl_utilizadores.id = ?`,
+
+                [id]
+            )
+
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as UserType: null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+
+    async getByEmail(email: string): Promise<UserType | null> {
+        try {
+            const [rows] = await db.execute<UserType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_utilizadores 
+                WHERE tbl_utilizadores.email = ?`,
+
+                [email]
+            )  
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as UserType : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+
+    // update user
+    async update(id: string, user: UserType) {
+        try {
+            const [rows] = await db.execute<UserType[] & RowDataPacket[]>(
+                `UPDATE tbl_utilizadores 
+                SET nome = ?, 
+                numero_identificacao = ?, 
+                data_nascimento = ?, 
+                email = ?, 
+                telefone = ?, 
+                pais = ?, 
+                localidade = ?,
+                password = ?, 
+                enabled = ?, 
+                updated_at = ?
+                WHERE id = ?`,
+                [
+                    user.nome,
+                    user.numero_identificado,
+                    formatDateDDMMYYYY(user.data_nascimento),
+                    user.email,
+                    user.telefone,
+                    user.pais,
+                    user.localidade,
+                    await hashPassword(user.password),
+                    user.enabled,
+                    new Date(),
+                    id
+                ]
+            )
+
+
+            return rows
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+async resetPassword(id: string, password: string) {
+    try {
+        const hashed = await hashPassword(password);
+
+        const [result] = await db.execute(
+            `UPDATE tbl_utilizadores SET password = ? WHERE id = ?`,
+            [hashed, id]
+        );
+
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+},
+    // delete user
+    async delete(id: string): Promise<UserType | null>{
+    try {
+        const [rows] = await db.execute<UserType & RowDataPacket[]>(
+            `DELETE FROM tbl_utilizadores WHERE id = ?`,
+            [id]
+        );
+
+        return (rows as any).affectedRows === 0 ? null : rows;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}, 
+} 

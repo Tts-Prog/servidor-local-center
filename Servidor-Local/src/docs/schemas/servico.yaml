@@ -1,0 +1,113 @@
+# schema/servico.yaml
+
+components:
+  schemas:
+
+    servico:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: Serviço de limpeza
+        descricao:
+          type: string
+          example: Serviço de limpeza profissional para residências
+        categoria:
+          type: string
+          example: limpeza
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2022-02-02T00:00:00.000Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2022-02-02T00:00:00.000Z"
+
+    # schema para criar um novo serviço
+    CreateService:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Serviço de limpeza
+        descricao:
+          type: string
+          example: Serviço de limpeza profissional para residências e empresas
+        categoria:
+          type: string
+          example: limpeza
+        enabled:
+          type: boolean
+          example: true
+      required:
+        - nome
+        - descricao
+        - categoria
+        - enabled
+
+    # schema genérico para sucesso
+    servicoResponseSucesso:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Serviço criado com sucesso
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/servico"
+
+    # schema genérico de erro
+    servicoResponseErro:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Erro ao processar a requisição
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          null: true
+
+# schema para buscar servico detalhado
+    servicoDetalhada:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: Serviço de limpeza
+        descricao:
+          type: string
+          example: Serviço de limpeza profissional para residências e empresas
+        designacao_categoria:
+          type: string
+          example: limpeza
+        icone_categoria:
+          type: string
+          example: ""
+        id_empresa:
+          type: integer
+          example: 1
+        designacao_empresa:
+          type: string
+          example: "Empresa de Limpeza"
+        icone_empresa:
+          type: string
+          example: ""
+        enabled:
+          type: boolean
+          example: true
+            
