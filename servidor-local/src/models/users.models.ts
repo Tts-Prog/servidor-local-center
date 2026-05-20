@@ -2,7 +2,7 @@ import { error } from "node:console";
 import db from "../lib/db.js";
 import { formatDateDDMMYYYY } from "../utils/date.js";
 import { hashpassword } from "../utils/password.js";
-import type { prestadorDBType, UserType } from "../utils/types.js";
+import type { PrestadorDBType, UserType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 import type { RowDataPacket } from "mysql2";
 
@@ -129,7 +129,7 @@ export const usersModel = {
                 id
             ]
 
-            const [rows] = await db.execute<prestadorDBType & RowDataPacket[]>(query, values)
+            const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(query, values)
             return rows[0] as UserType
         } catch (err) {
             console.log(err)

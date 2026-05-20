@@ -1,6 +1,6 @@
 import { PrestacaoServicoModel } from "../../models/prestacao.servico.model.js"
 import { PrestadorModel } from "../../models/prestador.model.js";
-import type { prestacaoServicoDBType } from "../../utils/types.js";
+import type { PrestacaoServicoDBType } from "../../utils/types.js";
 
 export const prestacaoServicoResolver = {
     Query: {
@@ -12,10 +12,10 @@ export const prestacaoServicoResolver = {
         }
     },
     Mutation: {
-        createPrestacaoServico: async (_: any, args: { prestacaoServico: prestacaoServicoDBType }) => {
+        createPrestacaoServico: async (_: any, args: { prestacaoServico: PrestacaoServicoDBType }) => {
             return await PrestacaoServicoModel.create(args.prestacaoServico)
         },
-        updatePrestacaoServico: async (_: any, args: { id: string, prestacaoServico: prestacaoServicoDBType}) => {
+        updatePrestacaoServico: async (_: any, args: { id: string, prestacaoServico: PrestacaoServicoDBType}) => {
             return await PrestacaoServicoModel.update(args.id, args.prestacaoServico)
         },
         deletePrestacaoServico: async (_: any, args: { id: string }) => {
@@ -23,10 +23,10 @@ export const prestacaoServicoResolver = {
         }
     },
     PrestacaoServico: {
-        prestador: async (parent: prestacaoServicoDBType) => {
+        prestador: async (parent: PrestacaoServicoDBType) => {
             return await PrestadorModel.get(parent.id as any);
         },
-        empresa: async (parent: prestacaoServicoDBType) => {
+        empresa: async (parent: PrestacaoServicoDBType) => {
             return await PrestadorModel.get(parent.id as any);
         }
     }

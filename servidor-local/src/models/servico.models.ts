@@ -1,7 +1,7 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import { getAllServices, updateService } from "../servico.js";
-import { type PrestacaoServicoDetalhadoType, type prestacaoServicoDBType, type ServicoDBType, type ServicoDetalhadoType } from "../utils/types.js";
+import { getAllService, updateService } from "../servico.js";
+import { type PrestacaoServicoDetalhadoType, type PrestacaoServicoDBType, type ServicoDBType, type ServicoDetalhadoType } from "../utils/types.js";
 import { ca } from "date-fns/locale";
 
 export const ServicoModel = {
@@ -66,16 +66,16 @@ export const ServicoModel = {
         }
     },
 
-    async getByIdOrcamento(idOrcamento: string): Promise<prestacaoServicoDBType | null> {
+    async getByIdOrcamento(idOrcamento: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const [rows] = await db.execute<prestacaoServicoDBType[] & RowDataPacket[]>(`
+            const [rows] = await db.execute<PrestacaoServicoDBType[] & RowDataPacket[]>(`
                 SELECT * FROM tbl_prestacao_servico
                 WHERE tbl_prestacao_servico.id_orcamento = ?
                 `, [idOrcamento])
 
             if (Array.isArray(rows) && rows.length === 0) return null
 
-            return Array.isArray(rows) ? rows[0] as prestacaoServicoDBType : null
+            return Array.isArray(rows) ? rows[0] as PrestacaoServicoDBType : null
 
         } catch (error) {
             console.log(error);

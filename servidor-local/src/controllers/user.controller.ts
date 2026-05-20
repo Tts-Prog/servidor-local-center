@@ -30,7 +30,7 @@ export const userController = {
         }
 
         const response: ResponseType<UserType> = {
-            status: "sucess",
+            status: "success",
             message: "Utilizador criado com sucesso",
             data: createUserResponse,
         };
@@ -50,7 +50,7 @@ export const userController = {
         }
 
         const response: ResponseType<UserType[]> = {
-            status: "sucess",
+            status: "success",
             message: "Utilizadores buscados com sucesso",
             data: getUsersResponse,
         };
@@ -81,7 +81,7 @@ export const userController = {
         }
 
         const response: ResponseType<UserType> = {
-            status: "sucess",
+            status: "success",
             message: "Utilizador encontrado com sucesso",
             data: getUserResponse,
         };
@@ -122,7 +122,7 @@ export const userController = {
         }
 
         const response: ResponseType<UserType> = {
-            status: "sucess",
+            status: "success",
             message: "Utilizador atualizado com sucesso",
             data: updateUserResponse,
         };
@@ -176,7 +176,7 @@ export const userController = {
         const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
         const response: ResponseType<{ token: string, user: UserType }> = {
-            status: "sucess",
+            status: "success",
             message: "Login bem sucedido",
             data: {
                 token,
@@ -184,7 +184,7 @@ export const userController = {
             },
         };
         return res.status(200).json({
-            status: "sucess",
+            status: "success",
             message: "Login bem sucedido",
             data: {
                 token,
@@ -208,7 +208,7 @@ export const userController = {
         }
 
         const response: ResponseType<UserType> = {
-            status: "sucess",
+            status: "success",
             message: "Utilizador apagado com sucesso",
             data: null,
         };

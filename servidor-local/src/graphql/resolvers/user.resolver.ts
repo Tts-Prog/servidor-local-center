@@ -1,8 +1,8 @@
 
-import { empresaModel } from "../../models/empresa.model.js";
+import { EmpresaModel } from "../../models/empresa.model.js";
 import { PrestadorModel } from "../../models/prestador.model.js";
 import { usersModel } from "../../models/users.models.js";
-import type { UserType } from "../../utils/types.js";
+import type { UserDBType } from "../../utils/types.js";
 
 export const userResolver = {
     Query: {
@@ -14,10 +14,10 @@ export const userResolver = {
         }
     },
     Mutation: {
-        createUser: async (_: any, args: { user: UserType }) => {
+        createUser: async (_: any, args: { user: UserDBType }) => {
             return await usersModel.create(args.user);
         },
-        updateUser: async (_: any, args: { id: string, user: UserType }) => {
+        updateUser: async (_: any, args: { id: string, user: UserDBType }) => {
             return await usersModel.update(args.id, args.user);
         },
         deleteUser: async (_: any, args: { id: string }) => {
@@ -26,10 +26,10 @@ export const userResolver = {
     },
     // relacionamento 
     User: {
-        empresa: async (parent: UserType) => {
-            return await empresaModel.get(parent.id!);
+        empresa: async (parent: UserDBType) => {
+            return await EmpresaModel.get(parent.id!);
         },
-        prestador: async (parent: UserType) => {
+        prestador: async (parent: UserDBType) => {
             return await PrestadorModel.get(parent.id!);
         }
     }

@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import { PrestacaoServicoModel } from "../models/prestacao.servico.model.js";
-import type { prestacaoServicoDBType, PrestacaoServicoDetalhadoType, ResponseType } from "../utils/types.js";
+import type { PrestacaoServicoDBType, PrestacaoServicoDetalhadoType, ResponseType } from "../utils/types.js";
 
 
 export const PrestacaoServicoController = {
     async create(req: Request, res: Response) {
-        const newPrestacaoServico: prestacaoServicoDBType = req.body;
+        const newPrestacaoServico: PrestacaoServicoDBType = req.body;
 
         if (!newPrestacaoServico) {
             const response: ResponseType<null> = {
@@ -16,7 +16,7 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const createPrestacaoServicoResponse: prestacaoServicoDBType | null = await PrestacaoServicoModel.create(newPrestacaoServico);
+        const createPrestacaoServicoResponse: PrestacaoServicoDBType | null = await PrestacaoServicoModel.create(newPrestacaoServico);
 
         if (createPrestacaoServicoResponse === null) {
             const response: ResponseType<null> = {
@@ -27,8 +27,8 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<prestacaoServicoDBType> = {
-            status: "sucess",
+        const response: ResponseType<PrestacaoServicoDBType> = {
+            status: "success",
             message: "Prestacao de servico criada com sucesso",
             data: createPrestacaoServicoResponse
         };
@@ -36,7 +36,7 @@ export const PrestacaoServicoController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllPrestacaoServicoResponse: prestacaoServicoDBType[] | null = await PrestacaoServicoModel.getAll();
+        const getAllPrestacaoServicoResponse: PrestacaoServicoDBType[] | null = await PrestacaoServicoModel.getAll();
 
         if (!getAllPrestacaoServicoResponse) {
             const response: ResponseType<null> = {
@@ -47,8 +47,8 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<prestacaoServicoDBType[]> = {
-            status: "sucess",
+        const response: ResponseType<PrestacaoServicoDBType[]> = {
+            status: "success",
             message: "Prestacoes de servico buscadas com sucesso",
             data: getAllPrestacaoServicoResponse
         };
@@ -67,7 +67,7 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const getPrestacaoServicoResponse: prestacaoServicoDBType | null = await PrestacaoServicoModel.get(id as string);
+        const getPrestacaoServicoResponse: PrestacaoServicoDBType | null = await PrestacaoServicoModel.get(id as string);
 
         if (!getPrestacaoServicoResponse) {
             const response: ResponseType<null> = {
@@ -78,8 +78,8 @@ export const PrestacaoServicoController = {
             return res.status(404).json(response);
         }
 
-        const response: ResponseType<prestacaoServicoDBType> = {
-            status: "sucess",
+        const response: ResponseType<PrestacaoServicoDBType> = {
+            status: "success",
             message: "Prestacao de servico encontrada com sucesso",
             data: getPrestacaoServicoResponse
         };
@@ -88,7 +88,7 @@ export const PrestacaoServicoController = {
 
     async update(req: Request, res: Response) {
         const { id } = req.params;
-        const updatedPrestacaoServico: prestacaoServicoDBType = req.body;
+        const updatedPrestacaoServico: PrestacaoServicoDBType = req.body;
 
         if (!id) {
             const response: ResponseType<null> = {
@@ -108,7 +108,7 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const updatePrestacaoServicoResponse: prestacaoServicoDBType | null = await PrestacaoServicoModel.update(id as string, updatedPrestacaoServico);
+        const updatePrestacaoServicoResponse: PrestacaoServicoDBType | null = await PrestacaoServicoModel.update(id as string, updatedPrestacaoServico);
 
         if (!updatePrestacaoServicoResponse) {
             const response: ResponseType<null> = {
@@ -119,8 +119,8 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<prestacaoServicoDBType> = {
-            status: "sucess",
+        const response: ResponseType<PrestacaoServicoDBType> = {
+            status: "success",
             message: "Prestacao de servico atualizada com sucesso",
             data: updatePrestacaoServicoResponse,
         };
@@ -139,7 +139,7 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const deletePrestacaoServicoResponse: prestacaoServicoDBType | null = await PrestacaoServicoModel.delete(id as string);
+        const deletePrestacaoServicoResponse: PrestacaoServicoDBType | null = await PrestacaoServicoModel.delete(id as string);
 
         if (!deletePrestacaoServicoResponse) {
             const response: ResponseType<null> = {
@@ -150,8 +150,8 @@ export const PrestacaoServicoController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<prestacaoServicoDBType> = {
-            status: "sucess",
+        const response: ResponseType<PrestacaoServicoDBType> = {
+            status: "success",
             message: "Prestacao de servico apagada com sucesso",
             data: deletePrestacaoServicoResponse,
         };
@@ -179,7 +179,7 @@ export const PrestacaoServicoController = {
         }
 
         const response: ResponseType<PrestacaoServicoDetalhadoType[]> = {
-            status: "sucess",
+            status: "success",
             message: "Prestacao de servico buscadas com sucesso",
             data: getAllPrestacaoServicoDetalhadaResponse
         };
