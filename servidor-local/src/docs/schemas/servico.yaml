@@ -1,140 +1,151 @@
-
-#--schema/servico.yaml--#
-
-# id: string,
-# nome: string,
-# descricao: string,
-# categoria: string,
-# enabled: boolean,
-# created_at: string,
-# updated_at: string
-
-
 components:
   schemas:
-    #schema principal para buscar servico
     Servico:
       type: object
       properties:
         id:
           type: string
-          example: "1"
+          example: "serv1"
+          description: Identificador unico do servico.
         nome:
           type: string
-          example: Eletricista
+          example: "Instalacao de canalizacao"
+          description: Nome do servico.
         descricao:
           type: string
-          example: Reparação de curto-circuito
+          example: "Servico de instalacao e manutencao de canalizacao"
+          description: Descricao detalhada do servico.
         categoria:
           type: string
-          example: Eletricidade
+          example: "canalizacao"
+          description: Categoria do servico.
         enabled:
           type: boolean
           example: true
+          description: Indica se o servico esta ativo.
         created_at:
           type: string
-          example: "2026-03-25"
+          format: date-time
+          example: "2026-03-26T09:00:00.000Z"
         updated_at:
           type: string
-          example: "2026-03-25"
-
-    
-    # schema para criar servico
+          format: date-time
+          example: "2026-03-26T09:00:00.000Z"
+      required:
+        - id
+        - nome
+        - descricao
+        - categoria
+        - enabled
+    #schema para criar servico
     CreateServico:
       type: object
       properties:
         nome:
           type: string
-          example: Eletricista
+          example: "Instalacao de canalizacao"
         descricao:
           type: string
-          example: Reparação de curto-circuito
+          example: "Servico de instalacao e manutencao de canalizacao"
         categoria:
           type: string
-          example: Eletricidade
+          example: "canalizacao"
         enabled:
           type: boolean
           example: true
-
-
+      required:
+        - nome
+        - descricao
+        - categoria
+        - enabled
     #schema para atualizar servico
     UpdateServico:
       type: object
       properties:
         nome:
           type: string
-          example: Eletricista
+          example: "Instalacao de canalizacao"
         descricao:
           type: string
-          example: Reparação de curto-circuito
+          example: "Servico atualizado"
         categoria:
           type: string
-          example: Eletricidade
+          example: "canalizacao"
         enabled:
           type: boolean
           example: true
-
-
-          #schema para deletar servico
-    DeleteServico:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "1" 
-
-
+      required:
+        - nome
+        - descricao
+        - categoria
+        - enabled
     #schema para listar servicos detalhados
     ServicoDetalhado:
       type: object
       properties:
         id:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         nome:
           type: string
-          example: Eletricista
+          example: "Servico de Limpeza"
         descricao:
           type: string
-          example: Reparação de curto-circuito
-        designacao_categoria: 
+          example: "Servico de limpeza profissional para residencias e empresas"
+        designacao_categoria:
           type: string
-          example: "1"
+          example: "Limpeza"
         icone_categoria:
           type: string
-          example: "1"
+          example: ""
         id_empresa:
+          type: integer
+          example: 1
+        designacao_empresa:
           type: string
-          example: "1"
-        disignacao_empresa:
-          type: string
-          example: Eletricista
+          example: "Empresa de limpeza"
         icone_empresa:
           type: string
-          example: "1"
+          example: ""
         enabled:
           type: boolean
           example: true
-
-
     #schema para resposta de sucesso
-    servicoResponseSuccess:
-        type: object
-        properties:
-            message:
-                type: string
-                example: "Servico criado com sucesso"
-            data:
-                $ref: "#/components/schemas/servico"
-
-
+    ResponseSuccessServico:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Operacao realizada com sucesso"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/Servico"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Servico"
+            - type: object
+              additionalProperties: true
+      required:
+        - status
+        - message
+        - data
     #schema para resposta de erro
-    servicoResponseError:
-        type: object
-        properties:
-            message:
-                type: string
-                example: "Servico nao encontrado"
-            data:
-                $ref: "#/components/schemas/servicoResponseError"
-
+    ResponseErrorServico:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Erro ao processar a requisicao"
+        data:
+          nullable: true
+          example: null
+      required:
+        - status
+        - message
+        - data

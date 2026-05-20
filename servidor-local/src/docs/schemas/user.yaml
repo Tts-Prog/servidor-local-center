@@ -1,188 +1,211 @@
-
-
-#--schema/user.yaml--#
-
-# id: string
-# nome: string
-# numero_identificacao: string
-# data_nascimento: string
-# email: string
-# telefone: string
-# pais: string
-# localidade: string
-# password: string
-# enabled: boolean
-# created_at: string
-# updated_at: string
-
-
 components:
-  #schema principal para buscar utilizador
   schemas:
-    #schema principal para buscar utilizador
     User:
       type: object
+      description: Representa um utilizador da tabela_utilizadores.
       properties:
         id:
           type: string
-          example: 1
+          example: "550e8400-e29b-41d4-a716-446655440000"
+          description: Identificador unico do utilizador.
         nome:
           type: string
-          example: "Bruno Monteiro"
+          example: "Hericles Lopes"
+          description: Nome completo do utilizador.
         numero_identificacao:
           type: string
           example: "123456789"
+          description: Numero de identificacao do utilizador.
         data_nascimento:
           type: string
-          example: "2000-01-01"
+          format: date
+          example: "2004-08-17"
+          description: Data de nascimento do utilizador.
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          format: email
+          example: "hericles.lopes@example.com"
+          description: Email do utilizador.
         telefone:
           type: string
-          example: "123456789"
+          example: "+3515959140"
+          description: Telefone de contacto do utilizador.
         pais:
           type: string
-          example: "Portugal"
+          example: "Cabo Verde"
+          description: Pais do utilizador.
         localidade:
           type: string
-          example: "Lisboa"
-        password:
+          example: "Praia"
+          description: Localidade do utilizador.
+        "password":
           type: string
-          example: "123456789"
+          format: password
+          example: "password123"
+          description: Password do utilizador.
         enabled:
           type: boolean
           example: true
+          description: Indica se o utilizador esta ativo.
         created_at:
           type: string
-          example: "2000-01-01"
+          format: date-time
+          example: "2026-03-27T10:00:00.000Z"
         updated_at:
           type: string
-          example: "2000-01-01"
+          format: date-time
+          example: "2026-03-27T10:00:00.000Z"
+      required:
+        - id
+        - nome
+        - numero_identificacao
+        - data_nascimento
+        - email
+        - telefone
+        - pais
+        - localidade
+        - "password"
+        - enabled
 
-
-    #schema para criar utilizador
     CreateUser:
       type: object
       properties:
         nome:
           type: string
-          example: "Bruno Monteiro"
+          example: "Hericles Lopes"
         numero_identificacao:
           type: string
           example: "123456789"
         data_nascimento:
           type: string
-          example: "2000-01-01"
+          format: date
+          example: "2004-08-17"
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          format: email
+          example: "user@example.com"
         telefone:
           type: string
-          example: "123456789"
+          example: "+3515959140"
         pais:
           type: string
-          example: "Portugal"
+          example: "Cabo Verde"
         localidade:
           type: string
-          example: "Lisboa"
-        password:
+          example: "Praia"
+        "password":
           type: string
-          example: "123456789"
+          format: password
+          example: "password123"
         enabled:
           type: boolean
           example: true
+      required:
+        - nome
+        - numero_identificacao
+        - data_nascimento
+        - email
+        - telefone
+        - pais
+        - localidade
+        - "password"
+        - enabled
 
-
-    #schema para atualizar utilizador
     UpdateUser:
       type: object
       properties:
         nome:
           type: string
-          example: "Bruno Monteiro"
+          example: "user@example.com"
         numero_identificacao:
           type: string
           example: "123456789"
         data_nascimento:
           type: string
-          example: "2000-01-01"
+          format: date
+          example: "2004-08-17"
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          format: email
+          example: "user@example.com"
         telefone:
           type: string
-          example: "123456789"
+          example: "+3515959140"
         pais:
           type: string
-          example: "Portugal"
+          example: "Cabo Verde"
         localidade:
           type: string
-          example: "Lisboa"
-        password:
+          example: "Praia"
+        "password":
           type: string
-          example: "123456789"
+          format: password
+          example: "password123"
         enabled:
           type: boolean
           example: true
+      required:
+        - nome
+        - numero_identificacao
+        - data_nascimento
+        - email
+        - telefone
+        - pais
+        - localidade
+        - "password"
+        - enabled
 
+    ResponseSuccessUser:
+      type: object
+      description: Resposta de sucesso usada nos endpoints de utilizadores.
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Utilizador encontrado com sucesso"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/User"
+            - type: array
+              items:
+                $ref: "#/components/schemas/User"
+            - type: object
+              additionalProperties: true
+      required:
+        - status
+        - message
+        - data 
 
-          #schema para delete user
-          DeleteUser:
-            type: object
-            properties:
-              id:
-                type: string
-                example: "1"
-
-
-    #schema para login
-    Login:
+    LoginUser:
       type: object
       properties:
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          example: "user@example.com"
         password:
           type: string
-          example: "123456789"
+          format: password
+          example: "password123"
 
-    #schema para atualizar password
-    UpdatePassword:
+    ResponseErrorUser:
       type: object
+      description: Resposta de erro usada nos endpoints de utilizadores.
       properties:
-        oldPassword:
+        status:
           type: string
-          example: "123456789"
-        newPassword:
-          type: string
-          example: "123456788"
-
-    #schema para resetar password
-    ResetPassword:
-      type: object
-      properties:
-        newPassword:
-          type: string
-          example: "123456788"
-
-
-    #schema para resposta de sucesso
-    UserResponseSuccess:
-      type: object
-      properties:
+          example: "error"
         message:
           type: string
-          example: "Utilizador criado com sucesso"
+          example: "Erro ao processar a requisicao"
         data:
-          $ref: "#/components/schemas/User"
+          nullable: true
+          example: null
+      required:
+        - status
+        - message
+        - data
+        
 
-    #schema para resposta de erro
-    UserResponseError:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Utilizador nao encontrado"
-        data:
-          $ref: "#/components/schemas/UserResponseError"
+
