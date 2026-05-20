@@ -20,4 +20,24 @@ router.post(ServiceRoute.create,authorize([Role.ADMIN]), servicoControler.create
 router.put(ServiceRoute.update,authorize([Role.ADMIN]), servicoControler.update)
 router.delete(ServiceRoute.delete,authorize([Role.ADMIN]), servicoControler.delete)
 
+<<<<<<< HEAD
 export { router }
+=======
+
+router.get(ServicoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAll)
+router.get(ServicoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.get)
+router.get(ServicoRoute.getAllDetailed, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAllServicoDetalhado)
+
+
+
+router.use(AuthMiddleware)
+
+
+router.post(ServicoRoute.create, authorize([Role.ADMIN]), ServicoController.createServico)
+router.put(ServicoRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), ServicoController.update)
+router.delete(ServicoRoute.delete, authorize([Role.ADMIN]), ServicoController.delete)
+
+
+
+export { router };
+>>>>>>> c28e2e3614e8f286824b23d44b0167534bba70b8

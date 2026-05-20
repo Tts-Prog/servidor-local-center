@@ -32,4 +32,8 @@ export const resolvers = {
     }
 }
 
+<<<<<<< HEAD
 export { typeDefs }
+=======
+export {typeDefs}
+>>>>>>> c28e2e3614e8f286824b23d44b0167534bba70b8

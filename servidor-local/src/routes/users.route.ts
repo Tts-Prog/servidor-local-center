@@ -24,4 +24,27 @@ router.put(UserRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE
 router.delete(UserRoute.delete,authorize([Role.ADMIN]), UserControler.delete)
 router.put(UserRoute.updatePassword,authGuard,authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), UserControler.updatePassword)
 
+<<<<<<< HEAD
 export { router }
+=======
+
+router.post(UsersRouter.login, userController.login)
+
+router.post(UsersRouter.create, userController.create)
+
+router.use(AuthMiddleware)
+
+router.get(UsersRouter.getAll, authorize([Role.ADMIN]), userController.getAll)
+
+router.get(UsersRouter.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.getById)
+
+router.put(UsersRouter.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.update)
+
+router.delete(UsersRouter.delete, userController.delete)
+
+// router.put(UsersRouter.resetPassword,authorize([Role.ADMIN,Role.CLIENTE,Role.PRESTADOR,Role.EMPRESA]), userController.resetPassword)
+
+
+
+export { router };
+>>>>>>> c28e2e3614e8f286824b23d44b0167534bba70b8
