@@ -3,7 +3,7 @@ export enum Role {
     CLIENTE = "cliente",
     ADMIN = "admin",
     PRESTADOR = "prestador",
-    ADMIN = "administrador",
+    ADMINISTRADOR = "administrador",
     EMPRESA = "empresa"
 }
 
@@ -180,6 +180,12 @@ export interface ResponseType<T> {
     status: "success" | "error";
     message: string;
     data: T | null;
+}
+
+export interface PasswordRequestType {
+    oldPassword: string;
+    newPassword: string;
+    passwordConfirmed: string;
 }
 
 export interface PrestacaoServicoDetalhadoType {

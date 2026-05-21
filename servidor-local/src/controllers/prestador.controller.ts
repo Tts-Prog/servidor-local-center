@@ -157,8 +157,4 @@ export const PrestadorController = {
         };
         return res.status(200).json(response);
     }
-<<<<<<< HEAD
 }
-=======
-};
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73

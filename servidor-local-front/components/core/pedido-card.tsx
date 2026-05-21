@@ -1,122 +1,72 @@
-<<<<<<< HEAD
-import Image from "next/image"
-import { Card, CardContent, CardHeader } from "../ui/card"
+import Image from "next/image";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
-interface CategoriaType {
-    id: string
-    name: string
-    icone: string
-}
+type CategoryType = {
+  id: string | number;
+  name?: string;
+  nome?: string;
+  icone: string;
+  price?: string;
+};
 
 interface PedidoCardProps {
-    title: string
-    description: string
-    image: string
-    category: CategoriaType
+  title: string;
+  description: string;
+  image: string;
+  category: CategoryType;
+  text?: string;
 }
 
-export const PedidoCard = (pedidoCardProps: PedidoCardProps) => {
-    return (
-        <Card className="w-full h-[400px]">
-            <CardHeader>
-                <div className="w-full h-[200px] relative">
-                    <Image
-                        src={pedidoCardProps.image}
-                        alt={pedidoCardProps.title}
-                        fill 
-                        className="object-cover"
-                    />
-                    <div className="absolute top-1/2 left-1/2 bg-secondary/80 text-secondary p-2">
-                        <Image
-                            src={pedidoCardProps.category.icone}
-                            alt={pedidoCardProps.category.name}
-                            width={20}
-                            height={20}
-                        />
-                    </div>
-                </div>
-            </CardHeader>
-            <CardContent>
-                <div className="flex w-full items-center justify-between">
-                    <div>
-                        <span>Average Price:</span>
-                        <span>$100</span>
-                    </div>
-                    <Image
-                        src="/icons/arrow-right.svg"
-                        alt="Explore"
-                        width={20}
-                        height={20}
-                    />
-                </div>
-            </CardContent>
-        </Card>
-    )
-=======
+export const PedidoCard = ({
+  title,
+  description,
+  image,
+  category,
+  text = "Starting at",
+}: PedidoCardProps) => {
+  const displayPrice = category.price ?? "$89.00";
 
-import { Button } from "../ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+  return (
+    <Card className="rounded-xl shadow-sm bg-white p-4 py-0">
+      <CardHeader className="p-0 mb-2 relative -mx-4 -mt-0">
+        <div className="h-45 w-full overflow-hidden">
+          <div className="relative h-44 overflow-hidden bg-blue-50">
+            <Image
+              className="object-cover object-top opacity-50"
+              src={image || "/placeholder.png"}
+              alt={title}
+              width={1920}
+              height={1080}
+            />
+          </div>
 
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-white p-3 rounded-full shadow-md text-blue-500">
+              <span className="text-xl">{category.icone}</span>
+            </div>
+          </div>
+        </div>
+      </CardHeader>
 
-interface categoriaType {
-    id: number;
-    name: string;
-    icone: string;
+      <CardContent className="pt-2 px-0">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-xl font-medium text-slate-800">{title}</h3>
+          <p className="text-slate-600 text-sm leading-relaxed">{description}</p>
+        </div>
+      </CardContent>
 
-}
-interface PedidoCardProps {
-    title: string,
-    description: string,
-    image: string,
-    category: categoriaType,
-}
+      <CardFooter className="flex items-center justify-between px-0 pb-4">
+        <h4 className="font-semibold text-lg text-blue-600">
+          <p className="font-semibold text-slate-500 text-sm">{text}</p>
+          {displayPrice}
+        </h4>
 
-// PedidoCard.tsx
-export const PedidoCard = (pedidoCardProps: PedidoCardProps) => {
-    return (
-        // rounded-[2.5rem] para dar aquele efeito super arredondado da foto
-        <Card className="rounded-[2rem] overflow-hidden border-none shadow-sm bg-white p-4">
-            <CardHeader className="p-0 relative">
-                {/* Container da imagem com rounded interno */}
-                <div className="relative h-48 w-full rounded-[1.5rem] overflow-hidden bg-blue-50">
-                    <img 
-                        className="w-full h-full object-cover opacity-90" 
-                        src={pedidoCardProps.image} 
-                        alt={pedidoCardProps.title} 
-                    />
-                    {/* Badge do Ícone Centralizado (conforme a imagem) */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-white p-3 rounded-full shadow-md text-blue-500">
-                           <span className="text-xl">{pedidoCardProps.category.icone}</span>
-                        </div>
-                    </div>
-                </div>
-            </CardHeader>
-            
-            <CardContent className="pt-6 px-2">
-                <div className="flex flex-col gap-1">
-                    <h3 className="text-xl font-bold text-slate-800">{pedidoCardProps.title}</h3>
-                    <p className="text-black text-sm leading-snug line-clamp-2">
-                        {pedidoCardProps.description}
-                    </p>
-                </div>
-            </CardContent>
-
-            <CardFooter className="flex items-center justify-between px-2 pb-2">
-                <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Starting at</p>
-                    <p className="text-2xl font-black text-slate-800">$89.00</p>
-                </div>
-                <Button className="bg-blue-500 hover:bg-blue-600 rounded-xl px-4 py-2 font-bold h-auto">
-                    Browse Providers
-                </Button>
-            </CardFooter>
-        </Card>
-    );
-<<<<<<< HEAD
->>>>>>> e97e37db1fb3c2f6b59ebd6c3c8e607010fbb8f3
-}
-=======
-}
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
+        <Button className="bg-blue-500 hover:bg-blue-600 rounded-xl px-6 py-3 font-bold h-auto">
+          Browse Providers
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};

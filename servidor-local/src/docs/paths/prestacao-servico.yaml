@@ -1,17 +1,8 @@
-<<<<<<< HEAD
 # paths/prestacao-servico.yaml
-=======
-# create: "/create",
-# getAll: "/",
-# getById: "/get-by-id/:id",
-# update: "/update/:id",
-# delete: "/delete/:id"
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
 
 paths:
   /prestacao-servico:
     get:
-<<<<<<< HEAD
       summary: Listar todas as prestacao-servico
       tags:
         - prestacao-servico
@@ -39,44 +30,11 @@ paths:
       tags:
         - prestacao-servico
       description: Criar um novo Prestacao-servico
-=======
-      summary: Buscar todas as prestações de serviço
-      tags:
-        - Prestação de Serviço
-      description: Retorna uma lista de todas as prestações de serviço
-      responses:
-        "200":
-          description: Prestações de serviço encontradas com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestação de serviço inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar prestações de serviço
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
-  /prestacao-servico/create:
-    post:
-      summary: Criar uma nova prestação de serviço
-      tags:
-        - Prestação de Serviço
-      description: Cria uma nova prestação de serviço
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       requestBody:
         required: true
         content:
           application/json:
             schema:
-<<<<<<< HEAD
               $ref: "#/components/schemas/CreatePrestacao-servico"
       responses:
         "200":
@@ -98,40 +56,10 @@ paths:
       tags:
         - prestacao-servico
       description: Retorna um Prestacao-servico especifico pelo ID
-=======
-              $ref: "#/components/schemas/CreatePrestacaoServico"
-      responses:
-        "200":
-          description: Prestação de serviço criada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestação de serviço inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao criar prestação de serviço
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
-  /prestacao-servico/get-by-id/{id}:
-    get:
-      summary: Buscar uma prestação de serviço por ID
-      tags:
-        - Prestação de Serviço
-      description: Retorna uma prestação de serviço por ID
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       parameters:
         - name: id
           in: path
           required: true
-<<<<<<< HEAD
           description: ID do Prestacao-servico
           schema:
             type: integer
@@ -156,59 +84,19 @@ paths:
       tags:
         - prestacao-servico
       description: Atualizar um Prestacao-servico especifico pelo ID
-=======
-          schema:
-            type: string
-            example: "1"
-      responses:
-        "200":
-          description: Prestação de serviço encontrada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestação de serviço inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar prestação de serviço
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
-  /prestacao-servico/update/{id}:
-    put:
-      summary: Atualizar uma prestação de serviço
-      security:
-        - bearerAuth: []
-      tags:
-        - Prestação de Serviço
-      description: Atualiza uma prestação de serviço
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       parameters:
         - name: id
           in: path
           required: true
-<<<<<<< HEAD
           description: ID do Prestacao-servico
           schema:
             type: integer
             example: 1
-=======
-          schema:
-            type: string
-            example: "1"
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       requestBody:
         required: true
         content:
           application/json:
             schema:
-<<<<<<< HEAD
               $ref: "#/components/schemas/CreatePrestacao-servico"
       responses:
         "200":
@@ -236,40 +124,10 @@ paths:
       tags:
         - prestacao-servico
       description: Apagar um Prestacao-servico especifico pelo ID
-=======
-              $ref: "#/components/schemas/UpdatePrestacaoServico"
-      responses:
-        "200":
-          description: Prestação de serviço atualizada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestação de serviço inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao atualizar prestação de serviço
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
-  /prestacao-servico/delete/{id}:
-    delete:
-      summary: Deletar uma prestação de serviço
-      tags:
-        - Prestação de Serviço
-      description: Deleta uma prestação de serviço
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       parameters:
         - name: id
           in: path
           required: true
-<<<<<<< HEAD
           description: ID do servico
           schema:
             type: integer
@@ -294,37 +152,6 @@ paths:
       tags:
         - prestacao-servico
       description: Retorna uma Lista de Todas as Prestacao-servico disponiveis com detalhes
-=======
-          schema:
-            type: string
-            example: "1"
-      responses:
-        "200":
-          description: Prestação de serviço deletada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestação de serviço inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao deletar prestação de serviço
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-
-  /prestacao-servico/get-all-detalhado:
-    get:
-      summary: Buscar todas as prestações de serviço detalhadas
-      tags:
-        - Prestação de Serviço
-      description: Retorna uma lista de todas as prestações de serviço detalhadas
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       parameters:
         - name: limit
           in: query
@@ -340,7 +167,6 @@ paths:
             example: "0"
       responses:
         "200":
-<<<<<<< HEAD
           description: Prestacao de servico detalhado encontrado com sucesso
           content:
             application/json:
@@ -358,27 +184,6 @@ paths:
       summary: Buscar prestacao-servico por categoria
       tags:
         - prestacao-servico
-=======
-          description: Prestação de serviço detalhada encontrada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "500":
-          description: Erro ao buscar prestação de serviço detalhada
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        
-  
-  /prestacao-servico/get-by-categoria/{categoria}:
-    get:
-      summary: Buscar prestações de serviço por categoria
-      tags:
-        - Prestação de Serviço
-      description: Retorna uma lista de prestações de serviço por categoria
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       parameters:
         - name: categoria
           in: path
@@ -395,7 +200,6 @@ paths:
         - name: offset
           in: query
           required: false
-<<<<<<< HEAD
           schema: 
             example: "0"
       responses:
@@ -418,27 +222,3 @@ paths:
               schemas:
                 type: object
                 $ref: "#/componentes/schemas/Prestacao-servicoByCategoriaDetalhadoResponseError"
-=======
-          schema:
-            type: string
-            example: "0"
-      responses:
-        "200":
-          description: Prestação de serviço por categoria encontrada com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccess"
-        "400":
-          description: Dados de prestação de serviço por categoria inválidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
-        "500":
-          description: Erro ao buscar prestação de serviço por categoria
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseError"
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73

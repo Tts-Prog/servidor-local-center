@@ -1,5 +1,4 @@
 # schemas/servico.yaml
-<<<<<<< HEAD
 #id: string;
 #nome: string;
 #descricao: string;
@@ -7,15 +6,6 @@
 #enabled_at: boolean;
 #created_at: string;
 #updated_at: string;
-=======
-#    id: string
-#   nome: string
-#   descricao: string
-#    categoria: string
-#   enabled: boolean
-#    updated_et: string
-#   created_at: string
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
 
 components:
   schemas:
@@ -28,7 +18,6 @@ components:
           example: 1
         nome:
           type: string
-<<<<<<< HEAD
           example: "Servico de limpeza"
         descricao:
           type: string
@@ -47,33 +36,11 @@ components:
           example: "2010-12-10T00:00:00.000Z"
 
     # schemas para criar um novo servico
-=======
-          example: "Serviço de limpeza"
-        descricao:
-          type: string
-          example: "Descrição detalhada do serviço"
-        categoria:
-          type: string
-          example: "Limpeza"
-        enabled:
-          type: boolean
-          example: true
-        updated_at:
-          type: string
-          format: date-time
-          example: "2023-10-27T10:00:00Z"
-        created_at:
-          type: string
-          format: date-time
-          example: "2023-10-27T09:00:00Z"
-          
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
     CreateService:
       type: object
       properties:
         nome:
           type: string
-<<<<<<< HEAD
           example: "Servico de Limpeza"
         descricao:
           type: string
@@ -87,20 +54,6 @@ components:
 
     # schemas  buscar servico detalhado    
     ServicoDetalhado:
-=======
-          example: "Serviço de Limpeza"
-        descricao:
-          type: string
-          example: "Descrição detalhada do serviço de limpeza"
-        categoria:
-          type: string
-          example: "Limpeza"
-        enabled:
-          type: boolean
-          example: true
-    
-    ServiceDetaled:
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
       type: object
       properties:
         id:
@@ -108,17 +61,10 @@ components:
           example: 1
         nome:
           type: string
-<<<<<<< HEAD
           example: "Servico de limpeza"
         descricao:
           type: string
           example: " Servico de Limpeza Profissional para residentes e empresa"
-=======
-          example: "Serviço de limpeza"
-        descricao:
-          type: string
-          example: "Descrição detalhada do serviço"
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
         designacao_categoria:
           type: string
           example: "Designação do serviço"
@@ -130,7 +76,6 @@ components:
           example: 1
         designacao_empresa:
           type: string
-<<<<<<< HEAD
           example: "Empresa de Limpeza"
         enabled:
           type: boolean
@@ -143,28 +88,10 @@ components:
         message:
           type: string
           example: "Servico criado com sucess"
-=======
-          example: "Designação da empresa"
-        icone_empresa:
-          type: string
-          example: "Icone da empresa"
-        enabled:
-          type: boolean
-          example: true
-        
-          
-    ResponseSucessoServico:
-      type: object
-      properties:
-        message: 
-          type: string
-          example: "serviço criado com sucesso"
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
         status:
           type: boolean
           example: true
         data:
-<<<<<<< HEAD
           type: object
           $ref: "#/components/schemas/Servico"
 
@@ -176,24 +103,9 @@ components:
           type: string
           example: "Erro ao buscar servicos"
         status:
-=======
-          $ref: "#/components/schemas/Servico"
-          
-    ResponseErroServico:
-      type: object
-      properties: 
-        message: 
-          type: string
-          example: "Erro ao buscar servicos"
-        status: 
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
           type: boolean
           example: false
         data:
           type: object
-<<<<<<< HEAD
           properties:
             null
-=======
-          nullable: true
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73

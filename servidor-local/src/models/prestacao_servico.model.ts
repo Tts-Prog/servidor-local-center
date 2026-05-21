@@ -22,7 +22,7 @@ export const PrestacaoServicoModel = {
                     prestacaoServico.estado,
                     prestacaoServico.id_orcamento,
                     prestacaoServico.enabled,
-                    prestacaoServico.id_utilizadores,
+                    prestacaoServico.id_utilizador,
                     prestacaoServico.urgente,
                     new Date(),
                     new Date()

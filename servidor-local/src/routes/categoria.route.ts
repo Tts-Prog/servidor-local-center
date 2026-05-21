@@ -5,7 +5,7 @@ import { Role } from "../utils/types.js";
 
 
 
-const CategoryRoute = {
+const CategoriaRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",

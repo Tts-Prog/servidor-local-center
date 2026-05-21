@@ -1,31 +1,17 @@
 {
-  "name": "servidorlocal",
+  "name": "servidor-local",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/djeisonadventista/servidor-local#readme",
-  "bugs": {
-    "url": "https://github.com/djeisonadventista/servidor-local/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/djeisonadventista/servidor-local.git"
-  },
   "license": "ISC",
   "author": "",
   "type": "module",
   "main": "index.ts",
   "scripts": {
     "start": "tsx src/index.ts",
-<<<<<<< HEAD
     "dev": "tsx --watch src/index.ts",
     "docs": "swagger-jsdoc -o ./src/docs/swagger.json ./src/docs/swagger.ts",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
-=======
-    "test": "vitest run",
-    "dev": "tsx watch src/index.ts",
-    "docs": "swagger-jsdoc -o ./src/docs/swagger.json ./src/docs/swagger.js",
-    "test:watch": "vitest --watch"
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "build": "tsc && node src/index.js"
   },
   "dependencies": {
     "@apollo/server": "^5.5.0",
