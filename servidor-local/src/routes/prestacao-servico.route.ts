@@ -25,4 +25,6 @@ router.post(PrestacaoServicoRoute.create, authorize([Role.ADMIN, Role.CLIENTE]),
 router.put(PrestacaoServicoRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.update);
 router.delete(PrestacaoServicoRoute.delete, authorize([Role.ADMIN]), PrestacaoServicoController.delete);
 
+router.get(PrestacaoServicoRoute.getPrestacaoServicoByCategoriaDetalhado, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PrestacaoServicoController.getAllPrestacaoServicoByCategoria);
+
 export { router };

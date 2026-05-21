@@ -1,4 +1,4 @@
-import { PrestacaoServicoModel } from "../../models/prestacao_servico.model.js";
+import { PrestacaoServicoModel } from "../../../../_trash/prestacao_servico.model.js";
 import type { PrestacaoServicoDBType } from "../../utils/types.js";
 
 export const userResolver = {
@@ -7,11 +7,11 @@ export const userResolver = {
             return await PrestacaoServicoModel.getAll();
         },
 
-        getPrestacaoServicoById: async (_: any, args: { id: string}) => {
+        getPrestacaoServicoById: async (_: any, args: { id: string }) => {
             return await PrestacaoServicoModel.get(args.id);
         },
 
-        getByIdOrcamento: async (_: any, args: { idOrcamento: string}) => {
+        getByIdOrcamento: async (_: any, args: { idOrcamento: string }) => {
             return await PrestacaoServicoModel.getByIdOrcamento(args.idOrcamento);
         },
 
@@ -23,7 +23,7 @@ export const userResolver = {
             return await PrestacaoServicoModel.create(args.PrestacaoServico);
         },
 
-        updatePrestacaoServico: async (_: any, args: { id: string, PrestacaoServico: PrestacaoServicoDBType}) => {
+        updatePrestacaoServico: async (_: any, args: { id: string, PrestacaoServico: PrestacaoServicoDBType }) => {
             return await PrestacaoServicoModel.update(args.id, args.PrestacaoServico);
         },
 

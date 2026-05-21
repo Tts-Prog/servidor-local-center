@@ -2,6 +2,10 @@ import type { Request, Response } from "express"
 import type { PrestacaoServicoDBType, PrestacaoServicoByCategoriaType, ResponseType } from "../utils/types.js"
 import { PrestacaoServicoModel } from "../models/prestacao-servico.model.js"
 
+
+// merge equal functions existing in this code 
+// and fix  bug with 
+// getAllPrestacaoServicoByCategoria when limit is not defined 
 export const PrestacaoServicoController = {
     async create(req: Request, res: Response) {
         const prestacaoServico: PrestacaoServicoDBType = req.body
@@ -93,7 +97,7 @@ export const PrestacaoServicoController = {
         const updatedPrestacaoServico: PrestacaoServicoDBType = req.body
 
         if (!id) {
-const response: ResponseType<null> = {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID obrigatorio",
                 data: null
@@ -115,7 +119,7 @@ const response: ResponseType<null> = {
 
         if (!updatePrestacaoServicoResponse) {
 
-const response: ResponseType<null> = {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar prestacao de servico",
                 data: null
@@ -123,7 +127,7 @@ const response: ResponseType<null> = {
             return res.status(400).json(response)
         }
 
-const response: ResponseType<PrestacaoServicoDBType> = {
+        const response: ResponseType<PrestacaoServicoDBType> = {
             status: "success",
             message: "Prestacao de servico atualizada com sucesso",
             data: updatePrestacaoServicoResponse
@@ -172,14 +176,14 @@ const response: ResponseType<PrestacaoServicoDBType> = {
 
         if (offset && parseInt(offset) > 0) OFFSET = parseInt(offset)
 
-            if (!categoria) {
-                const response: ResponseType<null> = {
-                    status: "error",
-                    message: "Categoria obrigatoria",
-                    data: null
-                };
-                return res.status(400).json(response);
-            }
+        if (!categoria) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Categoria obrigatoria",
+                data: null
+            };
+            return res.status(400).json(response);
+        }
 
         const getAllPrestacaoServicoByCategoriaDetalhadoResponse = await PrestacaoServicoModel.getAllPrestacaoServicoByCategoriaDetalhado(categoria as string, LIMIT, OFFSET)
 
@@ -198,6 +202,33 @@ const response: ResponseType<PrestacaoServicoDBType> = {
             data: getAllPrestacaoServicoByCategoriaDetalhadoResponse
         };
         return res.status(200).json(response);
+
+    },
+
+    async getAllPrestacaoServicoByCategoria(req: Request, res: Response) {
+        const { categoria } = req.params;
+        const { limit, offset } = req.query as { limit: string, offset: string };
+        let LIMIT = 10;
+        let OFFSET = 0;
+
+        if (limit && parseInt(limit) > 0) LIMIT = parseInt(limit);
+        if (offset && parseInt(offset) > 0) OFFSET = parseInt(offset);
+
+        const getAllPSByCategoriaResponse = await PrestacaoServicoModel.getAllPrestacaoServicoByCategoria(LIMIT, OFFSET, categoria as string);
+
+        if (!getAllPSByCategoriaResponse) {
+            return res.status(500).json({
+                status: "error",
+                message: "Erro ao buscar prestacoes de servico",
+                data: null
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Prestacoes de servico buscadas com sucesso",
+            data: getAllPSByCategoriaResponse
+        });
 
     }
 }

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PrestadorController } from "../controllers/prestador.controller.js";
+import { PrestadorController } from "../../../_trash/prestador.controller.js";
 import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
 import { Role } from "../utils/types.js";
 
