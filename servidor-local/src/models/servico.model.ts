@@ -1,4 +1,3 @@
-import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { ServiceDBType, ServicoDetalhadoType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
