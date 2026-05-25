@@ -1,72 +1,49 @@
+<<<<<<< HEAD
+=======
+# schemas/prestador.yaml
+#id: string,
+#taxa_urgencia: number,
+#percentagem_desconto: number,
+#minimo_desconto: number,
+#nif: string,
+#profissao: string,
+#enable: boolean,
+#created_at: string,
+#updated_at: string
+
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 components:
   schemas:
+    # schema principal de prestador
     Prestador:
       type: object
-      description: Representa um prestador da tabela_prestadores.
       properties:
         id:
-          type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
-        nif:
           type: integer
-          example: 123456789
+          example: 1
+        taxa_urgencia:
+          type: string
+          example: "0.2"
+        percentagem_desconto:
+          type: string
+          example: "0.1"
+        minimo_desconto:
+          type: string
+          example: "1000"
+        nif:
+          type: string
+          example: "34465132"
+        id_servico:
+          type: string
+          example: "4d7777fb-5db8-4654-a60a-ed0f2b576838"
         profissao:
           type: string
-          example: "Canalizador"
-        taxa_urgencia:
-          type: number
-          format: float
-          example: 15
-        minimo_desconto:
-          type: number
-          format: float
-          example: 100
-        percentagem_desconto:
-          type: number
-          format: float
-          example: 10
-        enabled:
+          example: "Gestor"
+        enebled_at:
           type: boolean
           example: true
-        created_at:
-          type: string
-          format: date-time
-          example: "2026-03-27T10:00:00.000Z"
-        updated_at:
-          type: string
-          format: date-time
-          example: "2026-03-27T10:00:00.000Z"
-      required:
-        - id
-        - nif
-        - profissao
-        - taxa_urgencia
-        - minimo_desconto
-        - percentagem_desconto
-        - enabled
-
-    CreatePrestador:
-      type: object
-      properties:
-        nif:
-          type: integer
-          example: 123456789
-        profissao:
-          type: string
-          example: "Canalizador"
-        taxa_urgencia:
-          type: number
-          format: float
-          example: 15
-        minimo_desconto:
-          type: number
-          format: float
-          example: 100
-        percentagem_desconto:
-          type: number
-          format: float
-          example: 10
         enabled:
+<<<<<<< HEAD
           type: boolean
           example: true
       required:
@@ -147,3 +124,72 @@ components:
         - status
         - message
         - data
+=======
+>>>>>>> refs/remotes/origin/dev
+          type: boolean
+          example: true
+        enable: 
+          type: boolean
+          example: true
+        created_at: 
+          type: string
+          example: "2020-09-12T00:00:00.000Z"
+        updated_at:
+          type: string
+          example: "2020-09-12T00:00:00.000Z"
+
+    # schemas para criar uma nova prestador
+    CreatePrestador:
+      type: object
+      properties:
+        taxa_urgencia:
+          type: string
+          example: "0.2"
+        percentagem_desconto:
+          type: string
+          example: "0.1"
+        minimo_desconto:
+          type: string
+          example: "1000"
+        nif:
+          type: string
+          example: "34465132"
+        id_servico:
+          type: string
+          example: "4d7777fb-5db8-4654-a60a-ed0f2b576838"
+        profissao:
+          type: string
+          example: "Gestor"
+        enebled_at:
+          type: boolean
+          example: true
+
+    # schemas generico para sucesso
+    PrestadorResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Prestador criado com sucess"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Prestador"
+
+    # schemas generico de resposta de erro
+    PrestadorResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          exemple: "Erro ao buscar prestador"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          properties:
+            null
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

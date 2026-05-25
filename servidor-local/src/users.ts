@@ -1,96 +1,123 @@
-import { format } from "node:path"
-import db from "./lib/db.js"
-import { hashpassword } from "./utils/password.js"
-import type { UserType } from "./utils/types.js"
-import { generateUUID } from "./utils/uuid.js"
-import { formatDateDDMMYYYY } from "./utils/date.js"
+import db from "./lib/db.js";
+import { formatDateDDMMYYYY } from "./utils/data.js";
+import { hashPassword } from "./utils/password.js";
+import type { userType } from "./utils/types.js";
+import { generateUUID } from "./utils/uuid.js";
 
 export async function getUsers() {
-    const [rows] = await db.execute("SELECT * FROM Tabela_utilizadores")
-
-    console.log(rows)
-
-
-    return rows
-
+    const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+    return rows;
 }
-export async function getUserByid(id: string) {
+
+export async function getUserById(id: string) {
     const [rows] = await db.execute(
-        `SELECT * FROM tabela_utilizadores
-        WHERE tabela_utilizadores.id =? `,
-        [id]
-
-    )
+        "SELECT * FROM tbl_utilizadores WHERE id = ? ", [id]);
     if (Array.isArray(rows) && rows.length === 0) return null
-    return Array.isArray(rows) ? rows[0] : null
+    return Array.isArray(rows) ? rows[0] : null;
 }
 
-// get date now
-export async function createUser(user: UserType) {
-    console.log(user)
+export async function createUser(
+    id: string,
+    nome: string,
+    numero_identidade: string,
+    data_nascimento: string,
+    email: string,
+    password: string,
+    telefone: string,
+    pais: string,
+    localidade: string,
+    enebled: boolean,
+    created_at: string,
+    update_at: string
+
+) {
     try {
+
         const [rows] = await db.execute(
-            `INSERT INTO tabela_utilizadores
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO tbl_utilizadores
+        (id, nome, numero_identidade, data_nascimento, email, password, telefone, pais, localidade, enebled, created_at, update_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 generateUUID(),
-                user.nome,
-                user.numero_identificacao,
-            formatDateDDMMYYYY(user.data_nascimento),
-                user.email,
-                user.telefone,
-                user.pais,
-                user.localidade,
-                await hashpassword(user.password),
-                user.enabled,
+                nome,
+                numero_identidade,
+                formatDateDDMMYYYY(data_nascimento),
+                email,
+                await hashPassword (password),
+                telefone,
+                pais,
+                localidade,
+                enebled,
                 new Date(),
                 new Date()
             ]
-        )
-        console.log({ rows });
+        );
+
+        console.log({ rows })
         return rows
-    } catch (err) {
-        console.log(err);
-        return null
+    } catch (error) {
+        console.log(error);
+        return null;
     }
 }
 
-export async function updateUser(id: string, updatedUser: UserType) {
+
+export async function updateUser(id: string, updatedUser: userType) {
     try {
         const query = `
-        UPDATE tabela_utilizadores
+        UPDATE tbl_utilizadores
         SET
-            nome=?,
-            numero_identificacao=?,
-            data_nascimento=?,
-            email=?,
-            telefone=?,
-            pais=?,
-            localidade=?,
-            password=?,
-            enabled=?,
-            updated_at=?
-        WHERE id=?
-        `
+    nome: = ?,
+    numero_identidade: = ?,
+    data_nascimento: = ?,
+    email: = ?,
+    password: = ?,
+    telefone: = ?,
+    pais: = ?,
+    localidade: = ?,
+    enebled: = ?,
+    update_at: = ?
+        WHERE
+        id=?
+        `;
 
         const values = [
-            updatedUser.nome, 
-            updatedUser.numero_identificacao,
-            formatDateDDMMYYYY(updatedUser.data_nascimento),
+            updatedUser.nome,
+            updatedUser.numero_identidade,
+            updatedUser.data_nascimento,
             updatedUser.email,
+            updatedUser.password,
             updatedUser.telefone,
             updatedUser.pais,
             updatedUser.localidade,
-            await hashpassword(updatedUser.password),
-            updatedUser.enabled,
+            updatedUser.enebled,
             new Date(),
             id
         ]
-
         const rows = await db.execute(query, values)
-        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
-    }catch (err) {
-        console.log(err)
+
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+
+    } catch (error) {
+        console.log(error);
         return null
     }
 }
+
+export async function deleteUser(id: string) {
+    try {
+
+        const query = `DELETE  FROM tbl_utilizadores WHERE id = ?`
+
+        const values = [id]
+
+        const rows: any = await db.execute(query, values)
+
+        return rows[0]?.affectedRows === 0 ? null : rows
+
+    } catch (error) {
+        console.log(error);
+        return null
+    }
+}
+

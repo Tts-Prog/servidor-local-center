@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # especifica versao de sistema operacional base
 
 FROM node:20-alpine
@@ -19,3 +20,19 @@ EXPOSE 3000
 
 # Comando para executar a aplicacao em modo de desenvolvimento 
 CMD ["npm", "run", "dev"]
+=======
+FROM node:20-alpine
+
+WORKDIR /app
+
+RUN corepack enable
+dfsf
+COPY package.json ./
+RUN pnpm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["pnpm", "run", "dev"]
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

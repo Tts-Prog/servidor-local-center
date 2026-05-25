@@ -1,138 +1,102 @@
-import type { RowDataPacket } from "mysql2";
-import type { CategoriaType } from "../utils/types.js";
+import type { RowDataPacket, ResultSetHeader } from "mysql2";
 import db from "../lib/db.js";
+import type { CategoriaDBType } from "../utils/types.js";
+import { generateUUID } from "../utils/uuid.js";
 
-
-
-export const categoriaModel = {
-    async create(newCategoria: CategoriaType): Promise<CategoriaType | null> {
+export const CategoriaModel = {
+    async create(categoria: CategoriaDBType): Promise<CategoriaDBType | null> {
         try {
-            const query = `
-            INSERT INTO tabela_categoria (
-                designacao,
-                descricao,
-                nif,
-                icone,
-                id_utilizador,
-                localidade,
-                enabled,
-                created_at,
-                updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            const id = generateUUID();
+            await db.execute<ResultSetHeader>(
+                `INSERT INTO tbl_categoria (id, designacao, icone, created_at, updated_at)
+                 VALUES (?, ?, ?, ?, ?)`,
+                [
+                    id,
+                    categoria.designacao,
+                    categoria.icone,
+                    new Date(),
+                    new Date(),
+                ]
+            );
 
-            const values = [
-                newCategoria.designacao,
-                newCategoria.descricao,
-                newCategoria.icone,
-                newCategoria.id_utilizador,
-                newCategoria.localidade,
-                newCategoria.enabled,
-                new Date(),
-                new Date(),
-            ]
-
-            const [rows] = await db.execute<CategoriaType & RowDataPacket[]>(query, values);
-            return rows;
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    },
-
-    async get(id: string): Promise<CategoriaType | null> {
-        try {
-            const query = `
-            SELECT 
-                tabela_categoria.id,
-                tabela_categoria.designacao,
-                tabela_categoria.descricao,
-                tabela_categoria.nif,
-                tabela_categoria.icone,
-                tabela_categoria.id_utilizador,
-                tabela_categoria.localidade,
-                tabela_categoria.enabled,
-                tabela_categoria.created_at,
-                tabela_categoria.updated_at
-            FROM tabela_categoria
-            WHERE id = ?
-            `
-
-            const value = [id];
-
-            const [rows] = await db.execute<CategoriaType & RowDataPacket[]>(query, value);
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] as CategoriaType : null;
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    },
-
-    async getAll(): Promise<CategoriaType[] | null> {
-        try {
-            const query = `
-            SELECT 
-                tabela_categoria.id,
-                tabela_categoria.designacao,
-                tabela_categoria.descricao,
-                tabela_categoria.nif,
-                tabela_categoria.icone,
-                tabela_categoria.id_utilizador,
-                tabela_categoria.localidade,
-                tabela_categoria.enabled,
-                tabela_categoria.created_at,
-                tabela_categoria.updated_at
-            FROM tabela_categoria
-            `
-
-            const [rows] = await db.execute<CategoriaType[] & RowDataPacket[]>(query);
-            return Array.isArray(rows) && rows.length > 0 ? rows as CategoriaType[] : null;
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    },
-
-    async update(id: string, updatedCategoria: CategoriaType): Promise<CategoriaType | null> {
-        try {
-            const query = `
-            UPDATE tabela_categoria
-            SET 
-                designacao = COALESCE(?, designacao),
-                descricao = COALESCE(?, descricao),
-                icone = COALESCE(?, icone),
-                updated_at = ?
-            WHERE id = ?
-            `
-
-            const values = [
-                updatedCategoria.designacao,
-                updatedCategoria.icone,
-                new Date(),
+            return {
                 id,
-            ]
-
-            const [rows] = await db.execute<CategoriaType & RowDataPacket[]>(query, values);
-            return rows;
+                designacao: categoria.designacao,
+                icone: categoria.icone,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+            } as CategoriaDBType;
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async delete(id: string): Promise<CategoriaType | null> {
+    async getAll(): Promise<CategoriaDBType[] | null> {
         try {
-            const query = `
-            DELETE FROM tabela_categoria
-            WHERE id = ?
-            `
-
-            const value = [id];
-
-            const [rows] = await db.execute<CategoriaType & RowDataPacket[]>(query, value);
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] as CategoriaType : null;
+            const [rows] = await db.execute<CategoriaDBType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_categoria`
+            );
+            return rows as CategoriaDBType[];
         } catch (error) {
             console.log(error);
             return null;
         }
     },
-}
+
+    async get(id: string): Promise<CategoriaDBType | null> {
+        try {
+            const [rows] = await db.execute<CategoriaDBType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_categoria WHERE id = ?`,
+                [id]
+            );
+
+            if (Array.isArray(rows) && rows.length === 0) return null;
+            return Array.isArray(rows) ? rows[0] as CategoriaDBType : null;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+
+    async update(id: string, categoria: CategoriaDBType): Promise<CategoriaDBType | null> {
+        try {
+            await db.execute(
+                `UPDATE tbl_categoria
+                 SET designacao = ?, icone = ?, updated_at = ?
+                 WHERE id = ?`,
+                [
+                    categoria.designacao,
+                    categoria.icone,
+                    new Date(),
+                    id,
+                ]
+            );
+
+            return {
+                id,
+                designacao: categoria.designacao,
+                icone: categoria.icone,
+                created_at: categoria.created_at,
+                updated_at: new Date().toISOString(),
+            } as CategoriaDBType;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+
+    async delete(id: string): Promise<CategoriaDBType | null> {
+        try {
+            const [result] = await db.execute<ResultSetHeader>(
+                `DELETE FROM tbl_categoria WHERE id = ?`,
+                [id]
+            );
+
+            return result.affectedRows === 0 ? null : { id } as CategoriaDBType;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+};

@@ -1,30 +1,135 @@
+<<<<<<< HEAD
+=======
+# paths/orcamento.yaml
+
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 paths:
-  /orcamentos:
+  /orcamento:
     get:
+      summary: Listar todos os orcamentos
       tags:
-        - Orcamentos
-      summary: Listar orcamentos
-      description: Retorna todos os orcamentos cadastrados.
+        - orcamento
+      description: Retorna uma lista de todos os orcamentos disponiveis
       responses:
         "200":
-          description: Lista de orcamentos retornada com sucesso.
+          description: Lista de orcamento
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
-        "500":
-          description: Erro ao buscar orcamentos.
+                type: array
+                items:
+                  $ref: "#/components/schemas/Orcamento"
+        "404":
+          description: Nenhum orcamento encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
+                $ref: "#/components/schemas/OrcamentoResponseError"
 
-  /orcamentos/create:
+  /orcamento/create:
     post:
+      summary: Criar um novo orcamento
       tags:
-        - Orcamentos
-      summary: Criar orcamento
-      description: Cria um novo orcamento.
+        - orcamento
+      description: Criar um novo orcamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateOrcamento"
+      responses:
+        "200":
+          description: Orcamento criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrcamentoResponseSucess"
+        "400":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrcamentoResponseError"
+
+  /orcamento/get-by-id/{id}:
+    get:
+      summary: Buscar um orcamento por ID
+      tags:
+        - orcamento
+      description: Retorna um orcamento especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do orcamento
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Orcamento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrcamentoResponseSucess"
+        "404":
+          description: Orcamento nao encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrcamentoResponseError"
+
+    /orcamento/{id}/calcular:
+      get:
+        summary: Calcular o total de um orcamento
+        tags:
+          - orcamento
+        description: Calcula o total de um orcamento especifico pelo ID
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: ID do orcamento
+            schema:
+              type: integer
+              example: 1
+        responses:
+          "200":
+            description: Total calculado com sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    total_calculado:
+                      type: string
+                      example: " 500"
+          "404":
+            description: Orcamento nao encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/OrcamentoResponseError"
+
+        /orcamento/{id}/calcular:
+
+
+  /orcamento/update/{id}:
+    put:
+      summary: Atualizar um orcamento
+      tags:
+        - orcamento
+      description: Atualizar um orcamento especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do orcamento
+          schema:
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -33,110 +138,77 @@ paths:
               $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Orcamento criado com sucesso.
+          description: Orcamento atualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
+                $ref: "#/components/schemas/OrcamentoResponseSucess"
         "400":
-          description: Dados invalidos para criar orcamento.
+          description: Dados invalidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
-
-  /orcamentos/get-by-id/{id}:
-    get:
-      tags:
-        - Orcamentos
-      summary: Buscar orcamento por ID
-      description: Retorna um orcamento especifico pelo seu identificador.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: ID do orcamento.
-          schema:
-            type: integer
-            example: 1
-      responses:
-        "200":
-          description: Orcamento encontrado.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
-        "400":
-          description: ID do orcamento invalido ou ausente.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
+                $ref: "#/components/schemas/OrcamentoResponseError"
         "404":
-          description: Orcamento nao encontrado.
+          description: Orcamento nao encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
+                $ref: "#/components/schemas/OrcamentoResponseError"
 
-  /orcamentos/update/{id}:
+  /orcamento/{id}/calcular:
     put:
+      summary: Calcula o orçamento final
       tags:
-        - Orcamentos
-      summary: Atualizar orcamento
-      description: Atualiza as informacoes de um orcamento existente pelo seu ID.
+        - orcamento
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          description: ID do orcamento a ser atualizado.
           schema:
             type: integer
-            example: 1
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateOrcamento"
       responses:
-        "200":
-          description: Orcamento atualizado com sucesso.
+        '200':
+          description: Orçamento calculado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
-        "400":
-          description: Dados invalidos para atualizar orcamento.
+                $ref: '#/components/schemas/OrcamentoResponseSucess'
+        '400':
+          description: ID do orçamento inválid
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseErrorOrcamento"
+                $ref: '#/components/schemas/OrcamentoResponseError'              
 
-  /orcamentos/delete/{id}:
+  /orcamento/delete/{id}:
     delete:
+      summary: Apagar um orcamento
       tags:
-        - Orcamentos
-      summary: Apagar orcamento
-      description: Apaga um orcamento especificado pelo seu ID.
+        - orcamento
+      description: Apagar um orcamento especifico pelo ID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
-          description: ID do orcamento a ser apagado.
+          description: ID do orcamento
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Orcamento apagado com sucesso.
+          description: Orcamento apagado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccessOrcamento"
-        "400":
-          description: Erro ao apagar orcamento.
+                $ref: "#/components/schemas/OrcamentoResponseSucess"
+        "404":
+          description: Orcamento nao encontrado
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 $ref: "#/components/schemas/ResponseErrorOrcamento"
+=======
+                $ref: "#/components/schemas/OrcamentoResponseError"
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

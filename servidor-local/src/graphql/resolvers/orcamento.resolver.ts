@@ -1,34 +1,30 @@
-import { empresaModel } from "../../models/empresa.model.js";
-import { orcamentoModel } from "../../models/orcamento.model.js";
-import { PrestadorModel } from "../../models/prestador.model.js";
-import type { orcamentoDBType } from "../../utils/types.js";
+import { OrcamentoModel } from "../../models/orcamento.model.js";
+import { UsersModel } from "../../models/users.model.js";
+import type { OrcamentoDBType } from "../../utils/types.js";
 
-export const orcamentoResolver = {
+export const OrcamentoResolver = {
     Query: {
-        getAllOrcamentos: async () => {
-            return await orcamentoModel.getAll();
+        getAllOrcamento: async () => {
+            return await OrcamentoModel.getAll();
         },
         getOrcamentoById: async (_: any, args: { id: string }) => {
-            return await orcamentoModel.get(args.id);
+            return await OrcamentoModel.get(args.id);
         }
     },
     Mutation: {
-        createOrcamento: async (_: any, args: { orcamento: orcamentoDBType }) => {
-            return await orcamentoModel.create(args.orcamento);
+        createOrcamento: async (_: any, args: { orcamento: OrcamentoDBType }) => {
+            return await OrcamentoModel.create(args.orcamento);
         },
-        updateOrcamento: async (_: any, args: { id: string, orcamento: orcamentoDBType }) => {
-            return await orcamentoModel.update(args.id, args.orcamento);
+        updateOrcamento: async (_: any, args: { id: string, orcamento: OrcamentoDBType }) => {
+            return await OrcamentoModel.update(args.id, args.orcamento);
         },
         deleteOrcamento: async (_: any, args: { id: string }) => {
-            return await orcamentoModel.delete(args.id);
+            return await OrcamentoModel.delete(args.id);
         }
     },
     Orcamento: {
-        prestador: async (parent: orcamentoDBType) => {
-            return await PrestadorModel.get(parent.id as any);
-        },
-        empresa: async (parent: orcamentoDBType) => {
-            return await empresaModel.get(parent.id as any);
+        utilizador: async (parent: { id_utilizadores: string }) => {
+            return await UsersModel.get(parent.id_utilizadores);
         }
     }
 }

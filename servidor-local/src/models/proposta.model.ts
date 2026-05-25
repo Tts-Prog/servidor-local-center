@@ -1,125 +1,185 @@
-import type { RowDataPacket } from "mysql2";
-import db from "../lib/db.js";
-import type { propostaDBType } from "../utils/types.js";
+
+import type { RowDataPacket } from "mysql2"
+import db from "../lib/db.js"
+import type { PropostaDBType } from "../utils/types.js"
+import { generateUUID } from "../utils/uuid.js"
+
 
 export const PropostaModel = {
-    async create(newProposta: propostaDBType): Promise<propostaDBType | null> {
+    async create(proposta: PropostaDBType): Promise<PropostaDBType | null> {
         try {
-            const query = `INSERT INTO tabela_proposta VALUES 
-            (?, ?, ?, ?, ?, ?, ?, ?)`;
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(
+                `INSERT INTO tbl_proposta 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 
-            const values = [
-                null,
-                newProposta.id_prestacao_servico,
-                newProposta.preco_hora,
-                newProposta.horas_estimadas,
-                newProposta.estado,
-                newProposta.enabled,
-                new Date(),
-                new Date(),
-            ];
-
-            const [rows] = await db.execute<propostaDBType & RowDataPacket[]>(query, values);
-            return rows;
-        } catch (error) {
-            console.log(error);
-            return null;
+                [
+                    generateUUID(),
+                    proposta.id_prestacao_servico,
+                    proposta.preco_hora,
+                    proposta.horas_estimadas,
+                    proposta.estado,
+                    proposta.enabled,
+                    new Date(),
+                    new Date()
+                ]
+            )
+            console.log({ rows })
+            return rows as PropostaDBType
+        } catch (err) {
+            console.log(err)
+            return null
         }
     },
 
-    async getAll(): Promise<propostaDBType[] | null> {
-        try {
-            const query = `SELECT * FROM tabela_proposta`;
+    async getAll(): Promise<PropostaDBType[] | null> {
+        const [rows] = await db.execute("SELECT * FROM tbl_proposta")
 
-            const [rows] = await db.execute<propostaDBType[] & RowDataPacket[]>(query);
-
-            return Array.isArray(rows) ? rows as propostaDBType[] : null
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
+        return rows as PropostaDBType[]
     },
 
-    async get(id: string): Promise<propostaDBType | null> {
+    async get(id: string): Promise<PropostaDBType | null> {
         try {
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(
+                `SELECT DISTINCT 
+                pt.*,
+                pr.id as ownwer
+                FROM tbl_proposta pt
+                INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
+                INNER JOIN tbl_utilizadores u ON pr.id_utilizador = u.id
+                WHERE pt.id = ?`,
 
-            const [rows] = await db.execute<propostaDBType[] & RowDataPacket[]>(
-                `SELECT DISTINCT
-                    pt.*
-                    pr.id as owner
-                 FROM tabela_proposta pt
-                 INNER JOIN tabela_prestadores pr ON pt.id_prestacao = pr.id
-                 INNER JOIN tabela_utilizadores u ON pr.id_utilizador = u.id
-                 WHERE pt.id = ?
-                 `,
                 [id]
             )
 
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0]! : null
+            return Array.isArray(rows) ? rows[0] as PropostaDBType : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+
+    async update(id: string, proposta: PropostaDBType) {
+        try {
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(
+                `UPDATE tbl_proposta
+                SET id_prestacao_servico = ?, 
+                preco_hora = ?, 
+                horas_estimadas = ?, 
+                estado = ?, 
+                enabled = ?, 
+                updated_at = ?
+                WHERE id = ?`,
+
+                [
+                    proposta.id_prestacao_servico,
+                    proposta.preco_hora,
+                    proposta.horas_estimadas,
+                    proposta.estado,
+                    proposta.enabled,
+                    new Date(),
+                    id
+                ]
+            )
+            console.log({ rows })
+            return rows as PropostaDBType
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+
+    // trabalho final..................................................
+
+    async aceitarProposta(id: string): Promise<PropostaDBType | null> {
+        try {
+
+            // 1. marcar proposta como aceite
+            await db.execute<PropostaDBType & RowDataPacket[]>(
+                `UPDATE tbl_proposta SET estado = 'Aceite' WHERE id = ?`,
+                [id]
+            );
+
+            // 2. buscar proposta
+            const [rows]: any = await db.execute<PropostaDBType & RowDataPacket[]>(
+                `SELECT * FROM tbl_proposta WHERE id = ?`,
+                [id]
+            );
+
+            const proposta = rows[0];
+
+            // 3. atualizar prestacao_servico
+            await db.execute<PropostaDBType & RowDataPacket[]>(
+                `UPDATE tbl_prestacao_servico 
+             SET estado = 'Aceite'
+             WHERE id = ?`,
+                [proposta.id_prestacao_servico]
+            );
+
+            // 4. rejeitar restantes propostas
+            await db.execute<PropostaDBType & RowDataPacket[]>(
+                `UPDATE tbl_proposta 
+             SET estado = 'Rejeitada'
+             WHERE id_prestacao_servico = ? AND id != ?`,
+                [proposta.id_prestacao_servico, id]
+            );
+
+            return null;
+
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async update(id: string, updatedProposta: propostaDBType): Promise<propostaDBType | null> {
+
+    async delete(id: string): Promise<PropostaDBType | null> {
         try {
-            const query = `UPDATE tabela_proposta 
-                        SET 
-                            id_prestacao_servico=?,
-                            preco_hora=?,
-                            horas_estimadas=?,
-                            estado=?,
-                            enabled=?,
-                            updated_at=?
-                        WHERE
-                            id=?
-                        ;`;
+            const rows: any = await db.execute<PropostaDBType & RowDataPacket[]>(
+                `DELETE FROM tbl_proposta 
+                WHERE id = ?`,
 
-            const values = [
-                updatedProposta.id_prestacao_servico,
-                updatedProposta.preco_hora,
-                updatedProposta.horas_estimadas,
-                updatedProposta.estado,
-                updatedProposta.enabled,
-                new Date(),
-                id,
-            ];
+                [id]
+            )
 
-            const [rows] = await db.execute<propostaDBType & RowDataPacket[]>(query, values);
-            return rows;
-        } catch (error) {
-            console.log(error);
-            return null;
+            return rows[0].affectedRows === 0 ? null : rows[0] as PropostaDBType
+        } catch (err) {
+            console.log(err)
+            return null
         }
     },
 
-    async delete(id: string): Promise<propostaDBType | null> {
+    // trabalho final..................................................
+
+    async getByPrestacaoServico(idPrestacaoServico: string): Promise<PropostaDBType[] | null> {
         try {
-            const query = `DELETE FROM tabela_proposta WHERE id = ?`;
-
-            const value = [id];
-
-            const [rows]: any = await db.execute<propostaDBType[] & RowDataPacket[]>(query, value);
-            return rows?.affectedRows === 0 ? null : rows[0] as propostaDBType
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    },
-
-    async getByPrestacaoServico(idPrestacaoServico: string): Promise<propostaDBType[] | null> {
-        try {
-            const [rows] = await db.execute<propostaDBType[] & RowDataPacket[]>(`SELECT * FROM tabela_proposta WHERE id_prestacao_servico = ?`,
-
+            const [rows] = await db.execute<PropostaDBType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_proposta 
+                    WHERE tbl_proposta.id_prestacao_servico = ?`,
                 [idPrestacaoServico]
             )
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows : null
-        } catch (error) {
-            console.log(error);
-            return null;
+            return Array.isArray(rows) ? rows as PropostaDBType[] : null
+        } catch (err) {
+            console.log(err)
+            return null
         }
+    },
+
+    async acceptProposal(id: string): Promise<PropostaDBType | null> {
+        try {
+            const [rows] = await db.execute<PropostaDBType & RowDataPacket[]>(
+                `UPDATE tbl_proposta 
+                SET estado = 'ACEITE' 
+                WHERE id = ?`,
+                [id])
+            return rows as PropostaDBType
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+
     }
 }
+
+

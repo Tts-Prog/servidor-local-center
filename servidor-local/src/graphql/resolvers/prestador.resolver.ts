@@ -1,32 +1,24 @@
-import { PrestadorModel } from "../../models/prestador.model.js"
-import type { PrestadorType } from "../../utils/types.js";
+import { PrestadorModel } from "../../models/prestador.model.js";
+import type { PrestadorDBType } from "../../utils/types.js";
 
-export const prestadorResolver = {
+export const PrestadorResolver = {
     Query: {
-        getAllPrestador: async () => {
+        getAllPrestadores: async () => {
             return await PrestadorModel.getAll();
         },
         getPrestadorById: async (_: any, args: { id: string }) => {
-            return await PrestadorModel.get(args.id)
+            return await PrestadorModel.get(args.id);
         }
     },
     Mutation: {
-        createPrestacaoServico: async (_: any, args: { prestacaoServico: PrestadorType }) => {
-            return await PrestadorModel.create(args.prestacaoServico)
+        createPrestador: async (_: any, args: { prestador: PrestadorDBType }) => {
+            return await PrestadorModel.create(args.prestador);
         },
-        updatePrestacaoServico: async (_: any, args: { id: string, prestacaoServico: PrestadorType}) => {
-            return await PrestadorModel.update(args.id, args.prestacaoServico)
+        updatePrestador: async (_: any, args: { id: string, prestador: PrestadorDBType }) => {
+            return await PrestadorModel.update(args.id, args.prestador);
         },
-        deletePrestacaoServico: async (_: any, args: { id: string }) => {
-            return await PrestadorModel.delete(args.id)
-        }
-    },
-    Prestador: {
-        servicos: async (parent: PrestadorType) => {
-            return await PrestadorModel.get(parent.id!);
-        },
-        empresa: async (parent: PrestadorType) => {
-            return await PrestadorModel.get(parent.id!);
+        deletePrestador: async (_: any, args: { id: string }) => {
+            return await PrestadorModel.delete(args.id);
         }
     }
 }

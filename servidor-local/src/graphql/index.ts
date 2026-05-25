@@ -1,32 +1,35 @@
 import { typeDefs } from "./typedefs/typedefs.js";
-import { userResolver } from "./resolvers/user.resolver.js";
-import { orcamentoResolver } from "./resolvers/orcamento.resolver.js";
-import { prestacaoServicoResolver } from "./resolvers/prestacao.servico.resolver.js";
-import { prestadorResolver } from "./resolvers/prestador.resolver.js";
-import { propostaResolver } from "./resolvers/proposta.resolver.js";
-import { servicoResolver } from "./resolvers/servico.resoltver.js";
-import { empresaResolver } from "./resolvers/empresa.resolver.js";
+import { UsersResolver } from "./resolvers/users.resolver.js";
+import { ServicoResolver } from "./resolvers/servico.resolver.js";
+import { prestacaoServicoResolver } from "./resolvers/prestacao-servico.resolver.js";
+import { PrestadorResolver } from "./resolvers/prestador.resolver.js";
+import { OrcamentoResolver } from "./resolvers/orcamento.resolver.js";
+import { EmpresaResolver } from "./resolvers/empresa.resolver.js";
+import { CategoriaResolver } from "./resolvers/categoria.resolver.js";
+import { PropostaResolver } from "./resolvers/proposta.resolver.js";
 
+// ********** exportar todos os resolvers **********
 export const resolvers = {
     Query: {
-        ...userResolver.Query,
-        ...orcamentoResolver.Query,
+        ...UsersResolver.Query,
+        ...ServicoResolver.Query,
+        ...PropostaResolver.Query,
+        ...PrestadorResolver.Query,
         ...prestacaoServicoResolver.Query,
-        ...prestadorResolver.Query,
-        ...propostaResolver.Query,
-        ...servicoResolver.Query,
-        ...empresaResolver.Query
+        ...OrcamentoResolver.Query,
+        ...EmpresaResolver.Query,
+        ...CategoriaResolver.Query,
     },
     Mutation: {
-        ...userResolver.Mutation,
-        ...orcamentoResolver.Mutation,
+        ...UsersResolver.Mutation,
+        ...ServicoResolver.Mutation,
+        ...PropostaResolver.Mutation,
+        ...PrestadorResolver.Mutation,
         ...prestacaoServicoResolver.Mutation,
-        ...prestadorResolver.Mutation,
-        ...propostaResolver.Mutation,
-        ...servicoResolver.Mutation,
-        ...empresaResolver.Mutation
+        ...OrcamentoResolver.Mutation,
+        ...EmpresaResolver.Mutation,
+        ...CategoriaResolver.Mutation,
     }
-
 }
 
-export {typeDefs}
+export { typeDefs } 

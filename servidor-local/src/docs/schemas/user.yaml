@@ -1,7 +1,24 @@
+<<<<<<< HEAD
+=======
+# schemas/user.yaml
+
+#   id: number
+#   nome: string
+#   numero: string
+#   data_nascimento: string
+#   email: string
+#   telefone: string
+#   pais: string
+#   localidade: string
+#   password: string
+#   enabled: boolean
+
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 components:
   schemas:
     User:
       type: object
+<<<<<<< HEAD
       description: Representa um utilizador da tabela_utilizadores.
       properties:
         id:
@@ -67,32 +84,82 @@ components:
         - "password"
         - enabled
 
+=======
+      properties:
+        id:
+          type: string
+          example: 1
+        nome:
+          type: string
+          example: "Pedro Paulo"
+        numero:
+          type: string
+          example: "M14K"
+        data_nascimento:
+          type: string
+          example: "22-03-2005"
+        email:
+          type: string
+          example: "exemplo@gmail.com"
+        telefone:
+          type: string
+          example: "+5511999999999"
+        pais:
+          type: string
+          example: "Cabo Verde"
+        localidade:
+          type: string
+          example: "Praia"
+        password:
+          type: string
+          example: "senha123"
+        enabled:
+          type: boolean
+          example: true
+        updated_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T10:00:00Z"
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T09:00:00Z"
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
     CreateUser:
       type: object
       properties:
         nome:
           type: string
+<<<<<<< HEAD
           example: "Hericles Lopes"
         numero_identificacao:
+=======
+          example: "genilsom brito"
+        numero:
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
           type: string
-          example: "123456789"
+          example: "M14K"
         data_nascimento:
           type: string
+<<<<<<< HEAD
           format: date
           example: "2004-08-17"
+=======
+          example: "22-03-2005"
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
         email:
           type: string
-          format: email
-          example: "user@example.com"
+          example: "exemplo@gmail.com"
         telefone:
           type: string
-          example: "+3515959140"
+          example: "+5511999999999"
         pais:
           type: string
           example: "Cabo Verde"
         localidade:
           type: string
           example: "Praia"
+<<<<<<< HEAD
         "password":
           type: string
           format: password
@@ -111,78 +178,57 @@ components:
         - "password"
         - enabled
 
+=======
+        password:
+          type: string
+          example: "senha123"
+        enabled:
+          type: boolean
+          example: true
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
     UpdateUser:
       type: object
       properties:
         nome:
           type: string
+<<<<<<< HEAD
           example: "user@example.com"
         numero_identificacao:
+=======
+          example: "Bruno Gomes"
+        numero:
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
           type: string
-          example: "123456789"
+          example: "M14K"
         data_nascimento:
           type: string
+<<<<<<< HEAD
           format: date
           example: "2004-08-17"
+=======
+          example: "22-03-2005"
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
         email:
           type: string
-          format: email
-          example: "user@example.com"
+          example: "exemplo@gmail.com"
         telefone:
           type: string
-          example: "+3515959140"
+          example: "+5511999999999"
         pais:
           type: string
           example: "Cabo Verde"
         localidade:
           type: string
           example: "Praia"
-        "password":
-          type: string
-          format: password
-          example: "password123"
         enabled:
           type: boolean
           example: true
-      required:
-        - nome
-        - numero_identificacao
-        - data_nascimento
-        - email
-        - telefone
-        - pais
-        - localidade
-        - "password"
-        - enabled
-
-    ResponseSuccessUser:
-      type: object
-      description: Resposta de sucesso usada nos endpoints de utilizadores.
-      properties:
-        status:
-          type: string
-          example: "success"
-        message:
-          type: string
-          example: "Utilizador encontrado com sucesso"
-        data:
-          oneOf:
-            - $ref: "#/components/schemas/User"
-            - type: array
-              items:
-                $ref: "#/components/schemas/User"
-            - type: object
-              additionalProperties: true
-      required:
-        - status
-        - message
-        - data 
-
     LoginUser:
       type: object
       properties:
         email:
           type: string
+<<<<<<< HEAD
           example: "user@example.com"
         password:
           type: string
@@ -209,3 +255,44 @@ components:
         
 
 
+=======
+          example: "exemplo@gmail.com"
+        password:
+          type: string
+          example: "senha123"
+    ResponseSucesso:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Utilizador criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/User"
+    updatePassword:
+      type: object
+      properties:
+        passwordantiga: 
+          type: string
+          example: "senha123"
+        passwordnova: 
+          type: string
+          example: "senha123"
+        confirmarpassword: 
+          type: string
+          example: "senha123"
+    ResponseErro:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao buscar dados"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          nullable: true
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

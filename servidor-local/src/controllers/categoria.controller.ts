@@ -1,43 +1,62 @@
-
-import { categoriaModel } from "../models/categoria.model.js";
-import type { CategoriaType, ResponseType } from "../utils/types.js";
 import type { Request, Response } from "express";
-
-
+import type { CategoriaDBType, ResponseType } from "../utils/types.js";
+import { CategoriaModel } from "../models/categoria.model.js";
+import jwt from "jsonwebtoken";
+ 
 export const CategoriaController = {
     async create(req: Request, res: Response) {
-        const newCategoria: CategoriaType = req.body;
+        const categoria: CategoriaDBType = req.body;
 
-        if (!newCategoria) {
+        if (!categoria) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Dados de categoria invalidos",
-                data: null
+                message: "Dados de categoria inválidos",
+                data: null,
             };
             return res.status(400).json(response);
         }
 
-        const createCategoriaResponse: CategoriaType | null = await categoriaModel.create(newCategoria);
+        const createCategoriaResponse = await CategoriaModel.create(categoria);
 
-        if (createCategoriaResponse === null) {
+        if (!createCategoriaResponse) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao criar empresa",
-                data: null
+                message: "Erro ao criar categoria",
+                data: null,
             };
-            return res.status(400).json(response);
+            return res.status(500).json(response);
         }
 
-        const response: ResponseType<CategoriaType> = {
-            status: "sucess",
+        const response: ResponseType<CategoriaDBType> = {
+            status: "success",
             message: "Categoria criada com sucesso",
-            data: createCategoriaResponse
+            data: createCategoriaResponse,
+        };
+        return res.status(201).json(response);
+    },
+
+    async getAll(req: Request, res: Response) {
+        const getAllCategoriasResponse = await CategoriaModel.getAll();
+
+        if (!getAllCategoriasResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar categorias",
+                data: null,
+            };
+            return res.status(500).json(response);
+        }
+
+        const response: ResponseType<CategoriaDBType[]> = {
+            status: "success",
+            message: "Categorias buscadas com sucesso",
+            data: getAllCategoriasResponse,
         };
         return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
-        const id = req.params.id;
+        const { id } = req.params;
 
         if (!id) {
             const response: ResponseType<null> = {
@@ -48,7 +67,7 @@ export const CategoriaController = {
             return res.status(400).json(response);
         }
 
-        const getCategoriaResponse: CategoriaType | null = await categoriaModel.get(id as string);
+        const getCategoriaResponse: CategoriaDBType | null = await CategoriaModel.get(id as string);
 
         if (getCategoriaResponse === null) {
             const response: ResponseType<null> = {
@@ -59,37 +78,17 @@ export const CategoriaController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<CategoriaType> = {
-            status: "sucess",
+        const response: ResponseType<CategoriaDBType> = {
+            status: "success",
             message: "Categoria encontrada com sucesso",
             data: getCategoriaResponse
         };
         return res.status(200).json(response);
     },
 
-    async getAll(req: Request, res: Response) {
-        const getAllCategoriaResponse: CategoriaType[] | null = await categoriaModel.getAll();
-
-        if (getAllCategoriaResponse === null) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Erro ao buscar categorias",
-                data: null
-            };
-            return res.status(400).json(response);
-        }
-
-        const response: ResponseType<CategoriaType[]> = {
-            status: "sucess",
-            message: "Categorias encontradas com sucesso",
-            data: getAllCategoriaResponse
-        };
-        return res.status(200).json(response);
-    },
-
     async update(req: Request, res: Response) {
         const id = req.params.id;
-        const updatedCategoria: CategoriaType = req.body;
+        const updatedCategoria: CategoriaDBType = req.body;
 
         if (!id || !updatedCategoria) {
             const response: ResponseType<null> = {
@@ -100,7 +99,7 @@ export const CategoriaController = {
             return res.status(400).json(response);
         }
 
-        const updateCategoriaResponse: CategoriaType | null = await categoriaModel.update(id as string, updatedCategoria);
+        const updateCategoriaResponse: CategoriaDBType | null = await CategoriaModel.update(id as string, updatedCategoria);
 
         if (updateCategoriaResponse === null) {
             const response: ResponseType<null> = {
@@ -111,27 +110,27 @@ export const CategoriaController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<CategoriaType> = {
-            status: "sucess",
+        const response: ResponseType<CategoriaDBType> = {
+            status: "success",
             message: "Categoria atualizada com sucesso",
-            data: updateCategoriaResponse
+            data: updateCategoriaResponse,
         };
         return res.status(200).json(response);
     },
 
     async delete(req: Request, res: Response) {
-        const id = req.params.id;
+        const { id } = req.params;
 
         if (!id) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Dados de empresa invalidos",
-                data: null
+                message: "ID da categoria é obrigatório",
+                data: null,
             };
             return res.status(400).json(response);
         }
 
-        const deleteCategoriaResponse: CategoriaType | null = await categoriaModel.delete(id as string);
+        const deleteCategoriaResponse: CategoriaDBType | null = await CategoriaModel.delete(id as string);
 
         if (deleteCategoriaResponse === null) {
             const response: ResponseType<null> = {
@@ -142,11 +141,11 @@ export const CategoriaController = {
             return res.status(400).json(response);
         }
 
-        const response: ResponseType<CategoriaType> = {
-            status: "sucess",
-            message: "Categoria deletada com sucesso",
-            data: deleteCategoriaResponse
+        const response: ResponseType<CategoriaDBType> = {
+            status: "success",
+            message: "Categoria apagada com sucesso",
+            data: deleteCategoriaResponse,
         };
         return res.status(200).json(response);
     },
-}
+};

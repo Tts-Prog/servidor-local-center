@@ -3,17 +3,16 @@
   "compilerOptions": {
     // File Layout
     "rootDir": "./src",
-    // "outDir": "./dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
+    "types": [
+      "node"
+    ],
     // For nodejs:
     "lib": [
       "esnext"
-    ],
-    "types": [
-      "node"
     ],
     // and npm install -D @types/node
     // Other Outputs
@@ -37,13 +36,31 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "include": [
-    "**/*.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
+    "old_code",
+    "tests",
+    "vitest.config.ts",
+    "src/controllers/servico.controllers.ts",
+    "src/graphql/resolvers/orcamento.resolvers.ts",
+    "src/graphql/resolvers/prestacao.resolver.ts",
+    "src/graphql/resolvers/prestacao.servico.resolver.ts",
+    "src/graphql/resolvers/prestacao_servico.resolvers.ts",
+    "src/graphql/resolvers/proposal.resolver.ts",
+    "src/graphql/resolvers/provider.resolver.ts",
+    "src/graphql/resolvers/service-prov.resolver.ts",
+    "src/graphql/resolvers/service.resolver.ts",
+    "src/graphql/resolvers/servico.resoltver.ts",
+    "src/graphql/resolvers/user.resolver.ts",
+    "src/graphql/resolvers/user.resolvers.ts",
+    "src/models/orcamentos.model.ts",
+    "src/sevico.ts",
+    "src/tempCodeRunnerFile.ts",
     "src/exenplos.ts",
     "src/index copy.ts"
   ]

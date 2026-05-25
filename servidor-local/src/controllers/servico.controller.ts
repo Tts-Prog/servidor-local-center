@@ -1,153 +1,168 @@
-import { ServicoModel } from "../models/servico.models.js"
-import type { ResponseType, ServicoDBType, ServicoDetalhadoType } from "../utils/types.js"
-import type { Request, Response } from "express"
+import { ServiceModel } from "../models/servico.model.js";
+import type { ResponseType, ServiceDBType } from "../utils/types.js";
+import type { Request, Response } from "express";
 
 
 export const ServicoController = {
 
     async createServico(req: Request, res: Response) {
-        const newService: ServicoDBType = req.body
+        const newService: ServiceDBType = req.body
 
         if (!newService) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "Dados de servico invalidos",
-                data: null
-            })
+                message: "Dados de sevico invalidos",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        const createServiceResponse = await ServicoModel.create(newService)
+        const createServiceResponse: ServiceDBType | null = await ServiceModel.create(newService);
 
-        if (createServiceResponse === null) {
-            return res.status(400).json({
+        if (!createServiceResponse === null) {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao criar servico",
-                data: null
-            })
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
+        const responde: ResponseType<ServiceDBType> = {
             status: "success",
-            message: "Servico criado com sucesso",
-            data: createServiceResponse
-        })
+            message: "servico criado com sucesso",
+            data: createServiceResponse,
+        };
+        return res.status(200).json(responde);
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllServicesResponse = await ServicoModel.getAll()
+        const getAllServiceResponse: ServiceDBType[] | null = await ServiceModel.getAll()
 
-        if (!getAllServicesResponse) {
-            return res.status(500).json({
+
+        if (!getAllServiceResponse) {
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao buscar servicos",
-                data: null
-            })
+                message: "Erro ao buscar servico",
+                data: null,
+            };
+            return res.status(500).json(response);
         }
 
-        return res.status(200).json({
+        const response: ResponseType<ServiceDBType[]> = {
             status: "success",
-            message: "Servicos buscados com sucesso",
-            data: getAllServicesResponse
-        })
+            message: "Servico buscado com sucesso",
+            data: getAllServiceResponse,
+        };
+        return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
         const id = req.params.id
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "ID do servico nao fornecido",
-                data: null
-            })
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        const getServiceResponse = await ServicoModel.get(id as string)
+        const getServiceResponse = await ServiceModel.get(id as string);
 
         if (!getServiceResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Servico nao encontrado",
-                data: null
-            })
+                data: null,
+            };
+            return res.status(404).json(response);
         }
 
-        return res.status(200).json({
+        const response: ResponseType<ServiceDBType> = {
             status: "success",
             message: "Servico encontrado com sucesso",
-            data: getServiceResponse
-        })
+            data: getServiceResponse,
+        };
+        return res.status(200).json(response);
     },
 
     async update(req: Request, res: Response) {
-        const { id } = req.params
+        const { id } = req.params;
 
-        const updatedService: ServicoDBType = req.body
+        const updatedService: ServiceDBType = req.body
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "ID obrigatorio",
-                data: null
-            })
+                message: "ID é obrigatório",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
         if (!updatedService) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "Dados de servico invalidos",
-                data: null
-            })
+                message: "Dados de servico invalido",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        const updateServiceResponse = await ServicoModel.update(id as string, updatedService)
+        const updateServiceResponse = await ServiceModel.update(id as string, updatedService)
 
         if (!updateServiceResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar servico",
-                data: null
-            })
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
+        const response: ResponseType<ServiceDBType> = {
             status: "success",
             message: "Servico atualizado com sucesso",
             data: updateServiceResponse
-        })
+        };
+        return res.status(200).json(response);
     },
 
     async delete(req: Request, res: Response) {
-        const { id } = req.params
+        const { id } = req.params;
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "ID obrigatorio",
-                data: null
-            })
+                message: "ID  obrigatório",
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        const deleteServiceResponse = await ServicoModel.delete(id as string)
+        const deleteServiceResponse = await ServiceModel.delete(id as string)
 
         if (!deleteServiceResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao apagar servico",
-                data: null
-            })
+                data: null,
+            };
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
+        const response: ResponseType<ServiceDBType> = {
             status: "success",
             message: "Servico apagado com sucesso",
             data: deleteServiceResponse
-        })
+        };
+        return res.status(200).json(response);
     },
 
     async getAllServicoDetalhado(req: Request, res: Response) {
         const { limit, offset } = req.query
-
         let LIMIT = 10
         let OFFSET = 0
 
@@ -159,22 +174,15 @@ export const ServicoController = {
             OFFSET = parseInt(offset as string)
         }
 
-        const getAllServicoDetalhadoResponse = await ServicoModel.getAllServiceDetalhado(LIMIT, OFFSET)
+        const getAllServicoDetalhadoResponse = await ServiceModel.getAllServicoDetalhado(LIMIT, OFFSET)
 
         if (!getAllServicoDetalhadoResponse) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao buscar servicos",
-                data: null
-            }
-            return res.status(404).json(response)
+                message: "Erro ao buscar servicos detalhados",
+                data: null,
+            };
+            return res.status(404).json(response);
         }
-
-        const response: ResponseType<ServicoDetalhadoType[]> = {
-            status: "sucess",
-            message: "Servico encontrado com sucesso",
-            data: getAllServicoDetalhadoResponse
-        }
-        return res.status(200).json(response)
     }
 }

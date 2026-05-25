@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PrestacaoServicoController } from "../controllers/prestacao.servico.controller.js";
+import { PrestacaoServicoController } from "../controllers/prestacao-servico.controller.js";
 import AuthMiddleware, { authorize } from "../security/auth.middlerware.js";
 import { Role } from "../utils/types.js";
 
@@ -18,7 +18,7 @@ router.get(PrestacaoServicoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Ro
 
 router.get(PrestacaoServicoRoute.getById, authorize([Role.ADMIN, Role.PRESTADOR]), PrestacaoServicoController.get)
 
-router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.getAllPrestacaoServicoDetalhada)
+router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhada, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.getAllPrestacaoServicoDetalhado)
 
 
 router.use(AuthMiddleware)

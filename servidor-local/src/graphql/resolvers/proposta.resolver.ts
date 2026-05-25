@@ -1,34 +1,34 @@
-
+import { PrestacaoServicoModel } from "../../models/prestacao-servico.model.js";
 import { PrestadorModel } from "../../models/prestador.model.js";
 import { PropostaModel } from "../../models/proposta.model.js";
-import type { PropostaType, UserType } from "../../utils/types.js";
+import type { PropostaDBType } from "../../utils/types.js";
 
-export const propostaResolver = {
+export const PropostaResolver = {
     Query: {
-        getAllUsers: async () => {
+        getAllProposta: async () => {
             return await PropostaModel.getAll();
         },
-        getUsersById: async (_: any, args: { id: string }) => {
+        getPropostaById: async (_: any, args: { id: string }) => {
             return await PropostaModel.get(args.id);
         }
     },
     Mutation: {
-        createUser: async (_: any, args: { proposta: PropostaType }) => {
-            return await PropostaModel.create(args.proposta as any);
+        createProposta: async (_: any, args: { proposta: PropostaDBType }) => {
+            return await PropostaModel.create(args.proposta);
         },
-        updateUser: async (_: any, args: { id: string, proposta: PropostaType }) => {
-            return await PropostaModel.update(args.id, args.proposta as any);
+        updateProposta: async (_: any, args: { id: string, proposta: PropostaDBType }) => {
+            return await PropostaModel.update(args.id, args.proposta);
         },
-        deleteUser: async (_: any, args: { id: string }) => {
+        deleteProposta: async (_: any, args: { id: string }) => {
             return await PropostaModel.delete(args.id);
         }
     },
-    User: {
-        prestador: async (parent: UserType) => {
-            return await PrestadorModel.get(parent.id!);
+    Proposta: {
+        prestador: async (parent: { id_prestador: string }) => {
+            return await PrestadorModel.get(parent.id_prestador);
         },
-        empresa: async (parent: UserType) => {
-            return await PropostaModel.get(parent.id!);
+        prestacaoServico: async (parent: { id_prestacao_servico: string }) => {
+            return await PrestacaoServicoModel.get(parent.id_prestacao_servico);
         }
     }
 }

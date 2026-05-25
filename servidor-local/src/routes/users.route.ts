@@ -1,38 +1,31 @@
 import { Router } from "express";
-import { userController } from "../controllers/user.controller.js";
-import AuthMiddleware, { authorize } from "../security/auth.middlerware.js";
+import { UsersController } from "../controllers/users.controller.js";
+import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
 import { Role } from "../utils/types.js";
 
-
-const UsersRouter = {
+const UsersRoute = {
     create: "/create",
-    getById: "/get-by-id/:id",
+    getById: "/:id",
     getAll: "/",
-    update: "/update/:id",
-    delete: "/delete/:id",
-    resetPassword: "/reset-password/:id",
+    update: "/:id",
+    delete: "/:id",
     login: "/login",
-}
+    updatePassword: "/update-password/:id",
+    resetPassword: "/reset-password",
+};
 
-const router = Router()
+const router = Router();
 
+router.post(UsersRoute.login, UsersController.login);
+router.post(UsersRoute.create, UsersController.createUsers);
 
-router.post(UsersRouter.login, userController.login)
+router.use(AuthMiddleware);
 
-router.post(UsersRouter.create, userController.create)
-
-router.use(AuthMiddleware)
-
-router.get(UsersRouter.getAll, authorize([Role.ADMIN]), userController.getAll)
-
-router.get(UsersRouter.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.getById)
-
-router.put(UsersRouter.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.update)
-
-router.delete(UsersRouter.delete, userController.delete)
-
-// router.put(UsersRouter.resetPassword,authorize([Role.ADMIN,Role.CLIENTE,Role.PRESTADOR,Role.EMPRESA]), userController.resetPassword)
-
-
+router.get(UsersRoute.getAll, authorize([Role.ADMIN]), UsersController.getAll);
+router.get(UsersRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.getById);
+router.put(UsersRoute.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.update);
+router.delete(UsersRoute.delete, authorize([Role.ADMIN]), UsersController.delete);
+router.put(UsersRoute.updatePassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.updatePassword);
+router.put(UsersRoute.resetPassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.resetPassword);
 
 export { router };

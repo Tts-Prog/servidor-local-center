@@ -1,30 +1,24 @@
-import { categoriaModel } from "../../models/categoria.model.js"
-import { PrestacaoServicoModel } from "../../models/prestacao.servico.model.js";
-import type { CategoriaType } from "../../utils/types.js";
+import { CategoriaModel } from "../../models/categoria.model.js";
+import type { CategoriaDBType } from "../../utils/types.js";
 
-export const categoriaResolver = {
+export const CategoriaResolver = {
     Query: {
-        getAllEmpresa: async (_: any, args: any) => {
-            return await categoriaModel.getAll();
+        getAllCategoria: async () => {
+            return await CategoriaModel.getAll();
         },
-        getEmpresaById: async (_: any, args: { id: string }) => {
-            return await categoriaModel.get(args.id)
+        getCategoriaById: async (_: any, args: { id: string }) => {
+            return await CategoriaModel.get(args.id);
         }
     },
     Mutation: {
-        createEmpresa: async (_: any, args: { empresa: CategoriaType }) => {
-            return await categoriaModel.create(args.empresa)
+        createCategoria: async (_: any, args: { categoria: CategoriaDBType }) => {
+            return await CategoriaModel.create(args.categoria);
         },
-        updateEmpresa: async (_: any, args: { id: string, empresa: CategoriaType}) => {
-            return await categoriaModel.update(args.id, args.empresa)
+        updateCategoria: async (_: any, args: { id: string, categoria: CategoriaDBType }) => {
+            return await CategoriaModel.update(args.id, args.categoria);
         },
-        deleteEmpresa: async (_: any, args: { id: string }) => {
-            return await categoriaModel.delete(args.id)
-        }
-    },
-    Categoria: {
-        servicos: async (parent: CategoriaType) => {
-            return await PrestacaoServicoModel.get(parent.id as string);
+        deleteCategoria: async (_: any, args: { id: string }) => {
+            return await CategoriaModel.delete(args.id);
         }
     }
 }

@@ -1,119 +1,134 @@
+<<<<<<< HEAD
+=======
+# schemas/orcamento.yaml
+#id: string,
+#total: number,
+#id_utilizadores: string,
+#enabled: boolean,
+#created_at: string,
+#updated_at: string 
+
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 components:
   schemas:
+    # schema principal de orcamento
     Orcamento:
       type: object
-      description: Representa um orcamento da tabela_orcamento.
+      required:
+        - id
+        - total
+        - id_utilizadores
+        - enabled
+        - created_at
+        - updated_at
       properties:
         id:
           type: integer
           example: 1
         total:
           type: number
-          format: float
-          example: 2500
-        id_utilizador:
+          example: 500
+        id_utilizadores:
           type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
-        id_prestador:
-          type: string
-          example: "660e8400-e29b-41d4-a716-446655440000"
+          example: "a2e25ed1-e1e7-45d6-92cb-d2d8fb342ec0"
         enabled:
           type: boolean
           example: true
         created_at:
           type: string
-          format: date-time
-          example: "2026-03-27T10:00:00.000Z"
+          example: "2000-12-10T00:00:00.000Z"
         updated_at:
           type: string
-          format: date-time
-          example: "2026-03-27T10:00:00.000Z"
-      required:
-        - id
-        - total
-        - id_utilizador
-        - id_prestador
-        - enabled
+          example: "2000-12-10T00:00:00.000Z"
 
+    # schemas para criar um novo orcamento
     CreateOrcamento:
       type: object
+      required:
+        - total
+        - id_utilizadores
       properties:
+        total:
+          type: string
+          example: "500"
+        id_utilizadores:
+          type: string
+          example: "a2e25ed1-e1e7-45d6-92cb-d2d8fb342ec0"
+        enabled:
+          type: boolean
+          default: true
+          example: true
+
+    CalcularOrcamentoResponse:
+      type: object
+      description: Resultado do cálculo do orcamento
+      required:
+        - id
+        - id_prestador
+        - taxa_urgencia
+        - subtotal
+        - total
+        - servicos
+      properties:
+        id:
+          type: integer
+          example: 1
+        id_prestador:
+          type: integer
+          example: 1
+        taxa_urgencia:
+          type: number
+          format: float
+          example: 10
+        subtotal:
+          type: number
+          format: float
+          example: 200
         total:
           type: number
           format: float
-          example: 2500
-        id_utilizador:
-          type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
-        id_prestador:
-          type: string
-          example: "660e8400-e29b-41d4-a716-446655440000"
-        enabled:
-          type: boolean
-          example: true
-      required:
-        - total
-        - id_utilizador
-        - id_prestador
-        - enabled
+          example: 220
+        servicos:
+          type: array
+          description: Lista de serviços do orçamento com total individual
+          items:
+            $ref: '#/components/schemas/CalcularResponse'
 
-    UpdateOrcamento:
+    # schemas generico para sucesso
+    OrcamentoResponseSucess:
       type: object
       properties:
-        total:
-          type: number
-          format: float
-          example: 3000
-        id_utilizador:
-          type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
-        id_prestador:
-          type: string
-          example: "660e8400-e29b-41d4-a716-446655440000"
-        enabled:
-          type: boolean
-          example: true
-      required:
-        - total
-        - id_utilizador
-        - id_prestador
-        - enabled
-
-    ResponseSuccessOrcamento:
-      type: object
-      properties:
-        status:
-          type: string
-          example: "success"
         message:
           type: string
-          example: "Orcamento encontrado com sucesso"
+          example: "Orcamento criado com sucess"
+        status:
+          type: boolean
+          example: true
         data:
-          oneOf:
-            - $ref: "#/components/schemas/Orcamento"
-            - type: array
-              items:
-                $ref: "#/components/schemas/Orcamento"
-            - type: object
-              additionalProperties: true
-      required:
-        - status
-        - message
-        - data
+          type: object
+          $ref: "#/components/schemas/Orcamento"
 
-    ResponseErrorOrcamento:
+    # schemas generico de resposta de erro
+    OrcamentoResponseError:
       type: object
       properties:
-        status:
-          type: string
-          example: "error"
         message:
           type: string
-          example: "Erro ao processar a requisicao"
+          example: "Erro ao buscar orcamento"
+        status:
+          type: boolean
+          example: false
         data:
+<<<<<<< HEAD
           nullable: true
           example: null
       required:
         - status
         - message
         - data
+=======
+          type: object
+          properties:
+            null
+
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
