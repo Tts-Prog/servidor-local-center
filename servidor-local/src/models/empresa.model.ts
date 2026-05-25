@@ -1,3 +1,4 @@
+
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { EmpresaDBType } from "../utils/types.js";
@@ -6,10 +7,10 @@ import { generateUUID } from "../utils/uuid.js";
 export const EmpresaModel = {
     async create(empresa: EmpresaDBType): Promise<EmpresaDBType | null> {
         try {
-            const [rows] = await db.execute<EmpresaDBType & RowDataPacket[]>(
+            const result = await db.query<EmpresaDBType & RowDataPacket[]>(
                 `INSERT INTO tbl_empresa
                 (id, designacao, descricao, localizacao, nif, icone, id_utilizador, enabled, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) Returning *`,
                 [
                     generateUUID(),
                     empresa.designacao,
@@ -23,7 +24,7 @@ export const EmpresaModel = {
                     new Date(),
                 ]
             );
-            return rows as EmpresaDBType;
+            return result[0] as EmpresaDBType;
         } catch (error) {
             console.log(error);
             return null;
@@ -32,10 +33,10 @@ export const EmpresaModel = {
 
     async getAll(): Promise<EmpresaDBType[] | null> {
         try {
-            const [rows] = await db.execute<EmpresaDBType[] & RowDataPacket[]>(
+            const result = await db.query<EmpresaDBType[] & RowDataPacket[]>(
                 `SELECT * FROM tbl_empresa`
             );
-            return rows as EmpresaDBType[];
+            return result[0] as EmpresaDBType[];
         } catch (error) {
             console.log(error);
             return null;
@@ -44,13 +45,13 @@ export const EmpresaModel = {
 
     async get(id: string): Promise<EmpresaDBType | null> {
         try {
-            const [rows] = await db.execute<EmpresaDBType[] & RowDataPacket[]>(
-                `SELECT * FROM tbl_empresa WHERE id = ?`,
+            const result = await db.query<EmpresaDBType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_empresa WHERE id = $1`,
                 [id]
             );
 
-            if (Array.isArray(rows) && rows.length === 0) return null;
-            return Array.isArray(rows) ? rows[0] as EmpresaDBType : null;
+            if (Array.isArray(result[0]) && result[0].length === 0) return null;
+            return Array.isArray(result[0]) ? result[0][0] as EmpresaDBType : null;
         } catch (error) {
             console.log(error);
             return null;
@@ -59,10 +60,10 @@ export const EmpresaModel = {
 
     async update(id: string, empresa: EmpresaDBType): Promise<EmpresaDBType | null> {
         try {
-            const [rows] = await db.execute<EmpresaDBType & RowDataPacket[]>(
+            const result = await db.query<EmpresaDBType & RowDataPacket[]>(
                 `UPDATE tbl_empresa
-                SET designacao = ?, descricao = ?, localizacao = ?, nif = ?, icone = ?, id_utilizador = ?, enabled = ?, updated_at = ?
-                WHERE id = ?`,
+                SET designacao = $1, descricao = $2, localizacao = $3, nif = $4, icone = $5, id_utilizador = $6, enabled = $7, updated_at = $8
+                WHERE id = $9 Returning *`,
                 [
                     empresa.designacao,
                     empresa.descricao,
@@ -75,7 +76,7 @@ export const EmpresaModel = {
                     id,
                 ]
             );
-            return rows as EmpresaDBType;
+            return result[0] || null;
         } catch (error) {
             console.log(error);
             return null;
@@ -84,12 +85,12 @@ export const EmpresaModel = {
 
     async delete(id: string): Promise<EmpresaDBType | null> {
         try {
-            const rows: any = await db.execute(
-                `DELETE FROM tbl_empresa WHERE id = ?`,
+            const [result] = await db.query(
+                `DELETE FROM tbl_empresa WHERE id = $1 Returning *`,
                 [id]
             );
 
-            return rows[0]?.affectedRows === 0 ? null : rows[0] as EmpresaDBType;
+            return result.rowCount === 0 ? null : result.rows[0];
         } catch (error) {
             console.log(error);
             return null;
