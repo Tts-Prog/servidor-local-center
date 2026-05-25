@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Aside } from "@/components/dashboard/aside";
 import UpcomingSchedule from "@/components/dashboard/aside-calendar";
 import ProposalPage from "@/components/dashboard/proposal_page";
@@ -47,3 +48,10 @@ export default function Home() {
     </div>
   );
 }
+=======
+import { redirect } from "next/navigation";
+
+export default function Home() {
+  redirect("/login");
+}
+>>>>>>> dev

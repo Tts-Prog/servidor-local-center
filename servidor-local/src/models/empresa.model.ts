@@ -1,23 +1,41 @@
+<<<<<<< HEAD
 import type { RowDataPacket } from "mysql2"
 import db from "../lib/db.js"
 import type { EmpresaDBType } from "../utils/types.js"
 import { generateUUID } from "../utils/uuid.js"
 
+=======
+
+import type { RowDataPacket } from "mysql2";
+import db from "../lib/db.js";
+import type { EmpresaDBType } from "../utils/types.js";
+import { generateUUID } from "../utils/uuid.js";
+>>>>>>> dev
 
 export const EmpresaModel = {
     async create(empresa: EmpresaDBType): Promise<EmpresaDBType | null> {
         try {
+<<<<<<< HEAD
             const [rows] = await db.execute<EmpresaDBType & RowDataPacket[]>(
                 `INSERT INTO tbl_empresa 
                 VALUES (?, ?, ?, ?, ?)`,
 
                 [
                     null,
+=======
+            const result = await db.query<EmpresaDBType & RowDataPacket[]>(
+                `INSERT INTO tbl_empresa
+                (id, designacao, descricao, localizacao, nif, icone, id_utilizador, enabled, created_at, updated_at)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) Returning *`,
+                [
+                    generateUUID(),
+>>>>>>> dev
                     empresa.designacao,
                     empresa.descricao,
                     empresa.localizacao,
                     empresa.nif,
                     empresa.icone,
+<<<<<<< HEAD
                     empresa.id_User,
                     empresa.enabled,
                     new Date(),
@@ -28,17 +46,42 @@ export const EmpresaModel = {
         } catch (err) {
             console.log(err)
             return null
+=======
+                    empresa.id_utilizador,
+                    empresa.enabled ?? true,
+                    new Date(),
+                    new Date(),
+                ]
+            );
+            return result[0] as EmpresaDBType;
+        } catch (error) {
+            console.log(error);
+            return null;
+>>>>>>> dev
         }
     },
 
     async getAll(): Promise<EmpresaDBType[] | null> {
+<<<<<<< HEAD
         const [rows] = await db.execute<EmpresaDBType[] & RowDataPacket[]>("SELECT * FROM tbl_empresa")
 
         return rows as EmpresaDBType[]
+=======
+        try {
+            const result = await db.query<EmpresaDBType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_empresa`
+            );
+            return result[0] as EmpresaDBType[];
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+>>>>>>> dev
     },
 
     async get(id: string): Promise<EmpresaDBType | null> {
         try {
+<<<<<<< HEAD
             const [rows] = await db.execute<EmpresaDBType & RowDataPacket[]>(
                 `SELECT * FROM tbl_empresa 
                 WHERE id = ?`,
@@ -51,11 +94,24 @@ export const EmpresaModel = {
         } catch (err) {
             console.log(err)
             return null
+=======
+            const result = await db.query<EmpresaDBType[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_empresa WHERE id = $1`,
+                [id]
+            );
+
+            if (Array.isArray(result[0]) && result[0].length === 0) return null;
+            return Array.isArray(result[0]) ? result[0][0] as EmpresaDBType : null;
+        } catch (error) {
+            console.log(error);
+            return null;
+>>>>>>> dev
         }
     },
 
     async update(id: string, empresa: EmpresaDBType): Promise<EmpresaDBType | null> {
         try {
+<<<<<<< HEAD
             const [rows] = await db.execute<EmpresaDBType & RowDataPacket[]>(
                 `UPDATE tbl_empresa 
                 SET designacao = ?, 
@@ -68,12 +124,19 @@ export const EmpresaModel = {
                 updated_at = ?
                 WHERE id = ?`,
 
+=======
+            const result = await db.query<EmpresaDBType & RowDataPacket[]>(
+                `UPDATE tbl_empresa
+                SET designacao = $1, descricao = $2, localizacao = $3, nif = $4, icone = $5, id_utilizador = $6, enabled = $7, updated_at = $8
+                WHERE id = $9 Returning *`,
+>>>>>>> dev
                 [
                     empresa.designacao,
                     empresa.descricao,
                     empresa.localizacao,
                     empresa.nif,
                     empresa.icone,
+<<<<<<< HEAD
                     empresa.id_User,
                     empresa.enabled,
                     new Date(),
@@ -84,11 +147,24 @@ export const EmpresaModel = {
         } catch (err) {
             console.log(err)
             return null
+=======
+                    empresa.id_utilizador,
+                    empresa.enabled,
+                    new Date(),
+                    id,
+                ]
+            );
+            return result[0] || null;
+        } catch (error) {
+            console.log(error);
+            return null;
+>>>>>>> dev
         }
     },
 
     async delete(id: string): Promise<EmpresaDBType | null> {
         try {
+<<<<<<< HEAD
             const rows: any = await db.execute<EmpresaDBType & RowDataPacket[]>(
                 `DELETE FROM tbl_empresa 
                 WHERE id = ?`,
@@ -105,3 +181,17 @@ export const EmpresaModel = {
 
 }
 
+=======
+            const [result] = await db.query(
+                `DELETE FROM tbl_empresa WHERE id = $1 Returning *`,
+                [id]
+            );
+
+            return result.rowCount === 0 ? null : result.rows[0];
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+};
+>>>>>>> dev

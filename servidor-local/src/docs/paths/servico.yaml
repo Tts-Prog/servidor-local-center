@@ -2,13 +2,13 @@
 paths:
   /service:
     get:
-      summary: Listar todos os serviços
+      summary: Listar todos os servicos
       tags:
-        - Servico
-      description: Retorna uma lista de todos os serviços disponíveis
+        - service
+      description: Retorna uma lista de todos os servicos disponiveis
       responses:
         "200":
-          description: Lista de serviços
+          description: Lista de servicos
           content:
             application/json:
               schema:
@@ -16,7 +16,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Service"
         "404":
-          description: "Nenhum serviço encontrado"
+          description: Nenhum servico encontrado
           content:
             application/json:
               schema:
@@ -24,10 +24,10 @@ paths:
 
   /service/create:
     post:
-      summary: Criar um novo serviço
+      summary: Criar um novo servico
       tags:
-        - Servico
-      description: Cria um novo serviço
+        - service
+      description: Criar um novo servico
       requestBody:
         required: true
         content:
@@ -36,7 +36,7 @@ paths:
               $ref: "#/components/schemas/CreateService"
       responses:
         "200":
-          description: Serviço criado com sucesso
+          description: Servico criado com sucesso
           content:
             application/json:
               schema:
@@ -52,8 +52,13 @@ paths:
     get:
       summary: Buscar um servico por ID
       tags:
+<<<<<<< HEAD
         - Servico
       description: Retorna um serviço especificado pelo ID
+=======
+        - service
+      description: Retorna um servico especifico pelo ID
+>>>>>>> dev
       parameters:
         - name: id
           in: path
@@ -68,21 +73,30 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 type: object
+=======
+>>>>>>> dev
                 $ref: "#/components/schemas/ResponseSucess"
         "404":
           description: Servico nao encontrado
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
   /service/update/{id}:
     put:
+<<<<<<< HEAD
       summary: Actualizar um servico por ID
       tags:
         - Servico
       description: Actualiza um serviço especificado pelo ID
+=======
+      summary: Atualizar um servico
+      tags:
+        - service
+      description: Atualizar um servico especifico pelo ID
+>>>>>>> dev
       parameters:
         - name: id
           in: path
@@ -96,6 +110,7 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               type: object
               $href: "#/components/schemas/CreateService" #tem mesma informacao de CreateService
       responses:
@@ -105,27 +120,44 @@ paths:
             application/json:
               schema:
                 type: object
+=======
+              $ref: "#/components/schemas/CreateService"
+      responses:
+        "200":
+          description: Servico atualizado com sucesso
+          content:
+            application/json:
+              schema:
+>>>>>>> dev
                 $ref: "#/components/schemas/ResponseSucess"
         "400":
           description: Dados invalidos
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
           description: Servico nao encontrado
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
+<<<<<<< HEAD
   /service/delete/{id}:
     delete:
       summary: Apaga um servico
       tags:
         - Servico
       description: Apaga um serviço especificado pelo ID
+=======
+
+  /service/delete/{id}:
+    delete:
+      summary: Apagar um servico
+      tags:
+        - service
+      description: Apagar um servico especifico pelo ID
+>>>>>>> dev
       parameters:
         - name: id
           in: path
@@ -136,17 +168,25 @@ paths:
             example: 1
       responses:
         "200":
+<<<<<<< HEAD
           description: Servico apagado
           content:
             application/json:
               schema:
                 type: object
+=======
+          description: Servico apagado com sucesso
+          content:
+            application/json:
+              schema:
+>>>>>>> dev
                 $ref: "#/components/schemas/ResponseSucess"
         "404":
           description: Servico nao encontrado
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 type: object
                 $ref: "#/components/schemas/ResponseError"
   /service/all-detailed:
@@ -155,18 +195,32 @@ paths:
       tags:
         - Servico
       description: Retorna uma lista de todos os servicos em detatlhe
+=======
+                $ref: "#/components/schemas/ResponseError"
+
+  \service/all-detailed:
+    get:
+      summary: Listar todos os servicos detalhados
+      tags:
+        - service
+      description: Retorna uma lista de todos os servicos disponiveis com detalhes
+>>>>>>> dev
       parameters:
         - name: limit
           in: query
           required: false
-          description: Limite de servicos a serem retornados
+          description: Limite de servicos a serem retomados
           schema:
             type: integer
             example: 10
         - name: offset
           in: query
           required: false
+<<<<<<< HEAD
           description: Offset de servicos a serem retornados
+=======
+          description: offset de servicos a serem retomados
+>>>>>>> dev
           schema:
             type: integer
             example: 0
@@ -176,12 +230,15 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 type: object
                 $ref: "#/components/schemas/ResponseSucess"
+=======
+                $ref: "#/components/schemas/ServicoDetalhado"
+>>>>>>> dev
         "404":
           description: Nenhum servico encontrado
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/ResponseError"            
