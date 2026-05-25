@@ -9,7 +9,7 @@ export const CategoriaModel = {
             const id = generateUUID();
             await db.query(
                 `INSERT INTO tbl_categoria (id, designacao, icone, created_at, updated_at)
-                 VALUES ($1, $2, $3, $4, $5)`,
+                VALUES ($1, $2, $3, $4, $5)`,
                 [
                     id,
                     categoria.designacao,
@@ -63,8 +63,8 @@ export const CategoriaModel = {
         try {
             await db.query(
                 `UPDATE tbl_categoria
-                 SET designacao = $1, icone = $2, updated_at = $3
-                 WHERE id = $4
+                SET designacao = $1, icone = $2, updated_at = $3
+                WHERE id = $4
                  RETURNING *`,
                 [
                     categoria.designacao,
