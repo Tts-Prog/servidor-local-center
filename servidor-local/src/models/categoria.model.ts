@@ -12,7 +12,7 @@ export const CategoriaModel = {
                  VALUES ($1, $2, $3, $4, $5)`,
                 [
                     id,
-                    categoria.designacao,
+                    categoria.designacao, 
                     categoria.icone,
                     new Date(),
                     new Date(),

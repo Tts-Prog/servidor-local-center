@@ -15,7 +15,7 @@ export const PrestacaoServicoModel = {
 
                 [
                     null,
-                    prestacaoServico.designacao,
+                    prestacaoServico.designacao, 
                     prestacaoServico.subtotal,
                     prestacaoServico.horas_estimadas,
                     prestacaoServico.id_prestador,
