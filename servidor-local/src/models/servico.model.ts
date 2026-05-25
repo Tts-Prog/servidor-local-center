@@ -117,8 +117,6 @@ export const ServiceModel = {
     } catch (error) {
       console.log(error);
       return null;
-
-      
     }
   },
 };
