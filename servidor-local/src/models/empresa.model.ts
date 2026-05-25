@@ -24,7 +24,7 @@ export const EmpresaModel = {
                     new Date(),
                 ]
             );
-            return result[0] as EmpresaDBType || null;
+            return result[0] as EmpresaDBType;
         } catch (error) {
             console.log(error);
             return null;
@@ -76,7 +76,7 @@ export const EmpresaModel = {
                     id,
                 ]
             );
-            return result.[0] || null;
+            return result[0] || null;
         } catch (error) {
             console.log(error);
             return null;
@@ -85,12 +85,12 @@ export const EmpresaModel = {
 
     async delete(id: string): Promise<EmpresaDBType | null> {
         try {
-            const result = await db.query(
-                `DELETE FROM tbl_empresa WHERE id`,
+            const [result] = await db.query(
+                `DELETE FROM tbl_empresa WHERE id = $1 Returning *`,
                 [id]
             );
 
-            return result[0]?.affectedRows === 0 ? null : result.rows[0];
+            return result.rowCount === 0 ? null : result.rows[0];
         } catch (error) {
             console.log(error);
             return null;
