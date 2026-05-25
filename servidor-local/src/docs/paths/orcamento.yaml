@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 # paths/orcamento.yaml
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 paths:
   /orcamento:
     get:
@@ -204,4 +207,8 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
+                $ref: "#/components/schemas/ResponseErrorOrcamento"
+=======
                 $ref: "#/components/schemas/OrcamentoResponseError"
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

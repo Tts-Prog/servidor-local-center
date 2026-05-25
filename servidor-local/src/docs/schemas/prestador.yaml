@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # schemas/prestador.yaml
 #id: string,
 #taxa_urgencia: number,
@@ -9,6 +11,7 @@
 #created_at: string,
 #updated_at: string
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 components:
   schemas:
     # schema principal de prestador
@@ -40,6 +43,88 @@ components:
           type: boolean
           example: true
         enabled:
+<<<<<<< HEAD
+          type: boolean
+          example: true
+      required:
+        - nif
+        - profissao
+        - taxa_urgencia
+        - minimo_desconto
+        - percentagem_desconto
+        - enabled
+
+    UpdatePrestador:
+      type: object
+      properties:
+        nif:
+          type: integer
+          example: 123456789
+        profissao:
+          type: string
+          example: "Canalizador"
+        taxa_urgencia:
+          type: number
+          format: float
+          example: 20
+        minimo_desconto:
+          type: number
+          format: float
+          example: 150
+        percentagem_desconto:
+          type: number
+          format: float
+          example: 12
+        enabled:
+          type: boolean
+          example: true
+      required:
+        - nif
+        - profissao
+        - taxa_urgencia
+        - minimo_desconto
+        - percentagem_desconto
+        - enabled
+
+    ResponseSuccessPrestador:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          example: "Prestador encontrado com sucesso"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/Prestador"
+            - type: array
+              items:
+                $ref: "#/components/schemas/Prestador"
+            - type: object
+              additionalProperties: true
+      required:
+        - status
+        - message
+        - data
+
+    ResponseErrorPrestador:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          example: "Erro ao processar a requisicao"
+        data:
+          nullable: true
+          example: null
+      required:
+        - status
+        - message
+        - data
+=======
 >>>>>>> refs/remotes/origin/dev
           type: boolean
           example: true
@@ -107,3 +192,4 @@ components:
           type: object
           properties:
             null
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

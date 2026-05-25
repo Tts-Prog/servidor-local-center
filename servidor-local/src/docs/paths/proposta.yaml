@@ -1,5 +1,8 @@
+<<<<<<< HEAD
+=======
 # paths/proposta.yaml
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 paths:
   /proposta:
     get:
@@ -198,4 +201,8 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
+                $ref: "#/components/schemas/ResponseErrorProposta"
+=======
                 $ref: "#/components/schemas/PropostaResponseError"
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

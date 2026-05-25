@@ -1,3 +1,6 @@
+<<<<<<< HEAD:servidor-local/src/prestador.ts
+class Prestador {
+=======
 <<<<<<< HEAD
 class Prestador {
     nome: string;
@@ -55,6 +58,7 @@ import type { NovoprestadorType } from "./util/types.js"
 import { generateUUID } from "./util/uuid.js"
 
 export class prestador {
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/prestador.ts
     nome: string
     precoHora: number
     profissao: string
@@ -63,6 +67,23 @@ export class prestador {
     taxaUrgencia: number
 
 
+<<<<<<< HEAD:servidor-local/src/prestador.ts
+
+
+    constructor(nomeDoPrestador: string,
+        precoHoraPrestador: number,
+        profissaoPrestador: string,
+        minimoParaDescontoPrestador: number,
+        percentagemDescontoPrestador: number,
+        taxaUrgenciaPrestador: number
+    ) {
+        this.nome = nomeDoPrestador
+        this.precoHora = precoHoraPrestador
+        this.profissao = profissaoPrestador
+        this.minimoParaDesconto = minimoParaDescontoPrestador
+        this.percentagemDesconto = percentagemDescontoPrestador
+        this.taxaUrgencia = taxaUrgenciaPrestador
+=======
     constructor(nomeDoPrestador: string,
         precoHoraDoPrestador: number,
         profissaoDoPrestador: string,
@@ -76,10 +97,30 @@ export class prestador {
         this.minimoParaDesconto = minimoParaDescontoDoPrestador
         this.percentagemDesconto = percentagemDescontoDoPrestador
         this.taxaUrgencia = taxaUrgenciaDoPrestador
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/prestador.ts
     }
     alterarPrecoHora(novoPrecoHora: number) {
         this.precoHora = novoPrecoHora
     }
+<<<<<<< HEAD:servidor-local/src/prestador.ts
+    alterarNome(novoNome: string){
+        this.nome = novoNome
+    }
+}
+const prestador1 = new Prestador("Tiago",
+    100,
+    "Desenvolvidor de software",
+    1000,
+    0.1,
+    0.3,)
+
+
+console.log(prestador1.precoHora)//preco hora do prestador, 100
+
+prestador1.alterarPrecoHora(150)
+
+console.log(prestador1.precoHora)//preco hora do prestador, 150
+=======
     alterarNome(novoNome: string) {
         this.nome = novoNome
     }
@@ -187,3 +228,4 @@ export async function deletePrestador(id: string) {
 }
 
 >>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/prestador.ts

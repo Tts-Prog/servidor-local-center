@@ -3,7 +3,7 @@ import path from "path";
 
 const options: swaggerJsdoc.Options = {
     definition: {
-        openapi: `3.0.0`,
+        openapi: "3.0.0",
         info: {
             title: "API Servidor Local",
             description: "Plataforma de Gestao de Prestadores e Servicos",
@@ -11,8 +11,8 @@ const options: swaggerJsdoc.Options = {
         },
         servers: [
             {
-                url: `http://localhost:8080`,
-                description: `dev`,
+                url: "http://localhost:8080",
+                description: "dev",
             }
         ],
         components: {

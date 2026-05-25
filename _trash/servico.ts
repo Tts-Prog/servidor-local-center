@@ -1,4 +1,7 @@
+<<<<<<< HEAD:servidor-local/src/servico.ts
+=======
 <<<<<<< HEAD
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.ts
 import db from "./lib/db.js";
 import { type ResponseType, type ServiceDBType, type ServicoType, } from "./utils/types.js";
 export let catalogoServicos: ServicoType[] = []
@@ -56,6 +59,17 @@ export function apagarServico(nome: string): boolean {
     return true
 }
 
+<<<<<<< HEAD:servidor-local/src/servico.ts
+export function obterServico(nome: string): ServicoCatalogoType | null {
+    return catalogoDeServicos.find((servico) => servico.nome === nome) ?? null;
+}
+
+export async function addServicesToDB(newService: ServicoDBType) {
+    try {
+        const query = `
+            INSERT INTO tabela_servicos (
+                id,
+=======
 // obter um servico pelo nome
 export function obterServico(nome: string): ServicoType | null {
     for (let i = 0; i < catalogoServicos.length; i++) {
@@ -178,10 +192,91 @@ export async function createServicos(
             VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
                 null,
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.ts
                 nome,
                 descricao,
                 categoria,
                 enabled,
+<<<<<<< HEAD:servidor-local/src/servico.ts
+                created_at,
+                updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const values = [
+            newService.id ?? crypto.randomUUID(),
+            newService.nome,
+            newService.descricao,
+            newService.categoria,
+            newService.enabled,
+            new Date(),
+            new Date(),
+        ];
+
+        const [rows] = await db.execute(query, values);
+        return rows;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function getServiceByID(id: string) {
+    try {
+        const [rows] = await db.execute(
+            "SELECT * FROM tabela_servicos WHERE id = ?",
+            [id]
+        );
+
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function getAllServices() {
+    try {
+        const [rows] = await db.execute("SELECT * FROM tabela_servicos");
+        return Array.isArray(rows) ? rows : [];
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function updateService(id: string, updatedService: ServicoDBType) {
+    try {
+        const [rows] = await db.execute(
+            `UPDATE tabela_servicos
+             SET nome = ?, descricao = ?, categoria = ?, enabled = ?, updated_at = ?
+             WHERE id = ?`,
+            [
+                updatedService.nome,
+                updatedService.descricao,
+                updatedService.categoria,
+                updatedService.enabled,
+                new Date(),
+                id,
+            ]
+        );
+
+        return rows;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function deleteService(id: string) {
+    try {
+        const [rows]: any = await db.execute(
+            "DELETE FROM tabela_servicos WHERE id = ?",
+            [id]
+        );
+
+        return rows?.affectedRows === 0 ? null : rows;
+=======
                 new Date(),
                 new Date()
             ]
@@ -226,11 +321,14 @@ export async function listaServicos() {
 
         return rows;
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.ts
     } catch (error) {
         console.log(error);
         return null;
     }
 }
+<<<<<<< HEAD:servidor-local/src/servico.ts
+=======
 
 export async function addServiceToDB(newService: ServiceDBType) {
     console.log({ newService })
@@ -392,3 +490,4 @@ export async function deleteService(id: string) {
 }
 
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.ts

@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # schemas/proposta.yaml
 #id: string,
 #id_prestacao_servico: string,
@@ -9,6 +11,7 @@
 #created_at: string,
 #updated_at: string,
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 components:
   schemas:
     # schema principal de proposta
@@ -121,6 +124,15 @@ components:
           type: boolean
           example: false
         data:
+<<<<<<< HEAD
+          nullable: true
+          example: null
+      required:
+        - status
+        - message
+        - data
+=======
           type: object
           properties:
             null
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

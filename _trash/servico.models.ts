@@ -1,4 +1,7 @@
+<<<<<<< HEAD:servidor-local/src/models/servico.models.ts
+=======
 <<<<<<< HEAD
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.models.ts
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import { getAllService, updateService } from "../servico.js";
@@ -79,6 +82,82 @@ export const servicoModel = {
 
         } catch (error) {
             console.log(error);
+<<<<<<< HEAD:servidor-local/src/models/servico.models.ts
+            return null
+
+        }
+    },
+
+    async update(id: string, updatedService: ServicoDBType): Promise<ServicoDBType | null> {
+        try {
+            const query = `UPDATE tabela_servicos 
+                        SET 
+                            nome=?,
+                            descricao=?,
+                            categoria=?,
+                            enabled=?,
+                            updated_at=?
+                        WHERE
+                            id=?
+                        ;`;
+
+            const values = [
+                updatedService.nome,
+                updatedService.descricao,
+                updatedService.categoria,
+                updatedService.enabled,
+                new Date(),
+                id,
+            ];
+
+            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, values);
+            return rows;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+
+    async delete(id: string): Promise<ServicoDBType | null> {
+        try {
+            const query = `DELETE FROM tabela_servicos WHERE id = ?`;
+
+            const value = [id];
+
+            const [rows]: any = await db.execute<ServicoDBType & RowDataPacket[]>(query, value);
+            return rows?.affectedRows === 0 ? null : rows;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+    async getAllServiceDetalhado(limit: number, offset: number): Promise<ServicoDetalhadoType[] | null> {
+        try {
+            const query = `
+        SELECT DISTINCT
+            s.id as id_servico
+            s.nome as nome_servico
+            s.descricao as descricao_servico
+            c.designacao as designacao_categoria
+            c.icone as icone_categoria
+            e.id as id_empresa
+            e.designacao as designacao_empresa
+            e.icone as icone_empresa
+            s.enabled
+        FROM tabela_servicos s
+        INNER JOIN tabela_categoria c ON c.id = s.id_categoria
+        INNER JOIN tabela_prestacao_servico ps ON s.id = ps.id_servico
+        INNER JOIN tabela_empresa e ON ps.id_empresa = e.id
+        WHERE s.enabled = true
+        LIMIT ? OFFSET ?
+        `
+
+            const values = [limit, offset]
+
+            const [rows] = await db.execute<ServicoDetalhadoType[] & RowDataPacket[]>(query, values)
+
+            return Array.isArray(rows) && rows.length > 0 ? rows as ServicoDetalhadoType[] : null
+=======
 =======
             console.log({ "error": error })
 >>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
@@ -142,6 +221,7 @@ export const servicoModel = {
             const [rows] = await db.execute<NovoservicoType & RowDataPacket[]>(query, value)
             return rows as NovoservicoType
 
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.models.ts
         } catch (error) {
             console.log(error)
             return null
@@ -149,6 +229,9 @@ export const servicoModel = {
 
     },
 
+<<<<<<< HEAD:servidor-local/src/models/servico.models.ts
+
+=======
     //funcao para obter todos os servicos detalhados
     async getAllServicoDetalhada(limit: number, offset: number): Promise<ServicoDetalhadoType[] | null> {
         try {
@@ -183,4 +266,5 @@ export const servicoModel = {
             return []
         }
     }
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b:_trash/servico.models.ts
 }

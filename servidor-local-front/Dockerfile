@@ -1,3 +1,26 @@
+<<<<<<< HEAD
+# especifica versao de sistema operacional base
+
+FROM node:20-alpine
+
+# Define a pasta onde o codigo vai ser executado
+WORKDIR /app 
+
+# copia os arquivos package.json e package-lock.json para a pasta /app
+COPY package*.json ./
+
+# Instala as dependencias 
+RUN npm install
+
+#copia o resto do codigo para a pasta /app
+COPY . .
+
+# Informar a porta que vai ser utilizada
+EXPOSE 3000
+
+# Comando para executar a aplicacao em modo de desenvolvimento 
+CMD ["npm", "run", "dev"]
+=======
 FROM node:20-alpine
 
 WORKDIR /app
@@ -12,3 +35,4 @@ COPY . .
 EXPOSE 3000
 
 CMD ["pnpm", "run", "dev"]
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b

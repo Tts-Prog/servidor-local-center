@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+﻿"use client";
+=======
 "use client";
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
@@ -311,4 +315,8 @@ export default function HomePage() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 85edafc958c02735ca774ea5fdb1e18871f1010b
