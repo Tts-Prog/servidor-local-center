@@ -6,10 +6,9 @@ import { generateUUID } from "../utils/uuid.js";
 export const ServiceModel = {
   async create(newService: ServiceDBType): Promise<ServiceDBType | null> {
     try {
-      const id = generateUUID();
-      const query = `INSERT INTO tbl_servicos (id, nome, descricao, categoria, enabled_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+      const query = `INSERT INTO tbl_servicos (id, nome, descricao, categoria, enabled_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
       const values = [
-        id,
+        generateUUID(),
         newService.nome,
         newService.descricao,
         newService.categoria,
@@ -17,12 +16,9 @@ export const ServiceModel = {
         new Date(),
         new Date(),
       ];
-      await db.execute(query, values);
-      const [rows] = await db.execute<ServiceDBType[] & RowDataPacket[]>(
-        `SELECT * FROM tbl_servicos WHERE id = ?`,
-        [id]
-      );
-      return Array.isArray(rows) && rows.length > 0 ? rows[0] as ServiceDBType : null;
+      const result = await db.query<ServiceDBType>(query, values);
+      if (result.rows.length === 0) return null;
+      return result.rows[0];
     } catch (error) {
       console.log(error);
       return null;
@@ -42,10 +38,11 @@ export const ServiceModel = {
 
   async get(id: string): Promise<ServiceDBType | null> {
     try {
-      const query = `SELECT * FROM tbl_servicos WHERE id = ?`;
-      const [rows] = await db.execute<ServiceDBType[] & RowDataPacket[]>(query, [id]);
-      if (Array.isArray(rows) && rows.length === 0) return null;
-      return Array.isArray(rows) ? rows[0] as ServiceDBType : null;
+      const query = `SELECT * FROM tbl_servicos WHERE id = $1`;
+      const values = [id];
+      const result = await db.query<ServiceDBType>(query, values);
+      if (result.rows.length === 0) return null;
+      return result.rows[0];
     } catch (error) {
       console.log(error);
       return null;
@@ -58,8 +55,9 @@ export const ServiceModel = {
   ): Promise<ServiceDBType | null> {
     try {
       const query = `UPDATE tbl_servicos
-        SET nome=?, descricao=?, categoria=?, enabled_at=?, updated_at=?
-        WHERE id=?`;
+        SET nome=$1, descricao=$2, categoria=$3, enabled_at=$4, updated_at=$5
+        WHERE id=$6
+        RETURNING *`;
       const values = [
         servicoAtualizado.nome,
         servicoAtualizado.descricao,
@@ -68,8 +66,9 @@ export const ServiceModel = {
         new Date(),
         id,
       ];
-      await db.execute(query, values);
-      return this.get(id);
+      const result = await db.query<ServiceDBType>(query, values);
+      if (result.rows.length === 0) return null;
+      return result.rows[0];
     } catch (error) {
       console.log(error);
       return null;
@@ -78,11 +77,11 @@ export const ServiceModel = {
 
   async delete(id: string): Promise<ServiceDBType | null> {
     try {
-      const service = await this.get(id);
-      if (!service) return null;
-      const query = `DELETE FROM tbl_servicos WHERE id = ?`;
-      await db.execute(query, [id]);
-      return service;
+      const query = `DELETE FROM tbl_servicos WHERE id = $1 RETURNING *`;
+      const values = [id];
+      const result = await db.query<ServiceDBType>(query, values);
+      if (result.rows.length === 0) return null;
+      return result.rows[0];
     } catch (error) {
       console.log(error);
       return null;
@@ -110,16 +109,14 @@ export const ServiceModel = {
         INNER JOIN tbl_prestacao_servico ps ON s.id = ps.id_servico
         INNER JOIN tbl_empresa e ON e.id = ps.id_empresa
         WHERE s.enabled_at = true
-        LIMIT ? OFFSET ?
+        LIMIT $1 OFFSET $2
         `;
       const values = [limit, offset];
-      const [rows] = await db.execute<ServicoDetalhadoType[] & RowDataPacket[]>(query, values);
-      return Array.isArray(rows) && rows.length > 0 ? rows : null;
+      const result = await db.query<ServicoDetalhadoType>(query, values);
+      return result.rows.length > 0 ? result.rows : null;
     } catch (error) {
       console.log(error);
       return null;
-
-      
     }
   },
 };
