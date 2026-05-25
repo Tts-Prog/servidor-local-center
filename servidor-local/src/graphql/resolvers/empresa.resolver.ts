@@ -1,34 +1,30 @@
-import { empresaModel } from "../../models/empresa.models.js"
-import { prestacaoServicoModel } from "../../models/prestacao_servico.models.js"
-import type { NovaEmpresaType } from "../../util/types.js"
+import { EmpresaModel } from "../../models/empresa.model.js";
+import { UsersModel } from "../../models/users.model.js";
+import type { EmpresaDBType } from "../../utils/types.js";
 
-
-export const empresaResolver = {
+export const EmpresaResolver = {
     Query: {
-        getAllEmpresas: async () => {
-            return await empresaModel.getAllEmpresas()
+        getAllEmpresa: async () => {
+            return await EmpresaModel.getAll();
         },
         getEmpresaById: async (_: any, args: { id: string }) => {
-            return await empresaModel.getEmpresaById(args.id)
+            return await EmpresaModel.get(args.id);
         }
     },
     Mutation: {
-        createEmpresa: async (_: any, args: { empresa: NovaEmpresaType }) => {
-            return await empresaModel.createEmpresa(args.empresa)
+        createEmpresa: async (_: any, args: { empresa: EmpresaDBType }) => {
+            return await EmpresaModel.create(args.empresa);
         },
-        updateEmpresa: async (_: any, args: { id: string, empresa: NovaEmpresaType }) => {
-            return await empresaModel.updateEmpresa(args.id, args.empresa)
+        updateEmpresa: async (_: any, args: { id: string, empresa: EmpresaDBType }) => {
+            return await EmpresaModel.update(args.id, args.empresa);
         },
         deleteEmpresa: async (_: any, args: { id: string }) => {
-            return await empresaModel.deleteEmpresa(args.id)
+            return await EmpresaModel.delete(args.id);
         }
     },
-    empresa: {
-        utilizador: async (parent: NovaEmpresaType) => {
-            return await empresaModel.getEmpresaById(parent.id as any);
-        },
-        prestador: async (parent: NovaEmpresaType) => {
-            return await empresaModel.getEmpresaById(parent.id as any);
+    Empresa: {
+        utilizadores: async (parent: { id_utilizador: string }) => {
+            return await UsersModel.get(parent.id_utilizador);
         }
     }
-}  
+}

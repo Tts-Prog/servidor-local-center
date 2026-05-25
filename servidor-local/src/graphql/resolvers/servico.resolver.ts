@@ -1,35 +1,30 @@
-import { categoriaModel } from "../../models/categoria.models.js"
-import { servicoModel } from "../../models/servico.models.js"
-import type { NovoservicoType } from "../../util/types.js"
+import { ServiceModel } from "../../models/servico.model.js";
+import { CategoriaModel } from "../../models/categoria.model.js";
+import type { ServiceDBType } from "../../utils/types.js";
 
-
-export const servicoResolver = {
+export const ServicoResolver = {
     Query: {
-        getAllServicos: async () => {
-            return await servicoModel.getAll()
+        getAllService: async () => {
+            return await ServiceModel.getAll();
         },
-        getServicoById: async (_: any, args: { id: string }) => {
-            return await servicoModel.get(args.id)
+        getServiceById: async (_: any, args: { id: string }) => {
+            return await ServiceModel.get(args.id);
         }
     },
     Mutation: {
-        createServico: async (_: any, args: any) => {
-            return await servicoModel.create(args)
+        createService: async (_: any, args: { service: ServiceDBType }) => {
+            return await ServiceModel.create(args.service);
         },
-        updateServico: async (_: any, args: any) => {
-            const { id, ...data } = args
-            return await servicoModel.update(id, data)
+        updateService: async (_: any, args: { id: string, service: ServiceDBType }) => {
+            return await ServiceModel.update(args.id, args.service);
         },
-        deleteServico: async (_: any, args: any) => {
-            return await servicoModel.deleteService(args.id)
+        deleteService: async (_: any, args: { id: string }) => {
+            return await ServiceModel.delete(args.id);
         }
     },
-    servico: {
-        categoria: async (parent: NovoservicoType) => {
-            return await categoriaModel.getCategoriaById(parent.id as any)
-        },
-        prestacoes: async (parent: NovoservicoType) => {
-            return await servicoModel.get(parent.id as any)
+    Servico: {
+        categoria: async (parent: { categoria: string }) => {
+            return await CategoriaModel.get(parent.categoria);
         }
     }
 }

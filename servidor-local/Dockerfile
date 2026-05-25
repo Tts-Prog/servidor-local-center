@@ -1,21 +1,20 @@
-# verifica versao do sistema operacional base 
+# 1. Especifica  versao de sistema operacional base
 FROM node:20-alpine
 
-# define a pasta onde o projeto vai ser executado 
+# 2. Define a pasta onde o codigo vai ser executado
 WORKDIR /app
 
-# copia os arquivos de configuracao package.json e package-lock.json para a pasta /app
-COPY package.json . 
+# 3. Copia os arquivos package.json e package-lock.json para a pasta /app
+COPY package*.json ./
 
-# instala as dependências
+# 4. Instala as dependencias
 RUN npm install
 
-# copia o resto dos arquivos do projeto para a pasta /app
+# 5. Copia o código-fonte para a pasta /app
 COPY . .
 
-# expoe a porta 8080
+# 6. Informar a porta que a aplicacao vai usar
 EXPOSE 8080
 
-
-# comando que vai ser executado quando o container for iniciado
+# 7. Comando para executar a aplicação em modo de desenvolvimento
 CMD ["npm", "run", "dev"]

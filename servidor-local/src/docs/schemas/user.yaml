@@ -1,25 +1,18 @@
+# schemas/user.yaml
 
-
-#--schema/user.yaml--#
-
-# id: string
-# nome: string
-# numero_identificacao: string
-# data_nascimento: string
-# email: string
-# telefone: string
-# pais: string
-# localidade: string
-# password: string
-# enabled: boolean
-# created_at: string
-# updated_at: string
-
+#   id: number
+#   nome: string
+#   numero: string
+#   data_nascimento: string
+#   email: string
+#   telefone: string
+#   pais: string
+#   localidade: string
+#   password: string
+#   enabled: boolean
 
 components:
-  #schema principal para buscar utilizador
   schemas:
-    #schema principal para buscar utilizador
     User:
       type: object
       properties:
@@ -28,161 +21,137 @@ components:
           example: 1
         nome:
           type: string
-          example: "Bruno Monteiro"
-        numero_identificacao:
+          example: "Pedro Paulo"
+        numero:
           type: string
-          example: "123456789"
+          example: "M14K"
         data_nascimento:
           type: string
-          example: "2000-01-01"
+          example: "22-03-2005"
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          example: "exemplo@gmail.com"
         telefone:
           type: string
-          example: "123456789"
+          example: "+5511999999999"
         pais:
           type: string
-          example: "Portugal"
+          example: "Cabo Verde"
         localidade:
           type: string
-          example: "Lisboa"
+          example: "Praia"
         password:
           type: string
-          example: "123456789"
+          example: "senha123"
         enabled:
           type: boolean
           example: true
-        created_at:
-          type: string
-          example: "2000-01-01"
         updated_at:
           type: string
-          example: "2000-01-01"
-
-
-    #schema para criar utilizador
+          format: date-time
+          example: "2023-10-27T10:00:00Z"
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-10-27T09:00:00Z"
     CreateUser:
       type: object
       properties:
         nome:
           type: string
-          example: "Bruno Monteiro"
-        numero_identificacao:
+          example: "genilsom brito"
+        numero:
           type: string
-          example: "123456789"
+          example: "M14K"
         data_nascimento:
           type: string
-          example: "2000-01-01"
+          example: "22-03-2005"
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          example: "exemplo@gmail.com"
         telefone:
           type: string
-          example: "123456789"
+          example: "+5511999999999"
         pais:
           type: string
-          example: "Portugal"
+          example: "Cabo Verde"
         localidade:
           type: string
-          example: "Lisboa"
+          example: "Praia"
         password:
           type: string
-          example: "123456789"
+          example: "senha123"
         enabled:
           type: boolean
           example: true
-
-
-    #schema para atualizar utilizador
     UpdateUser:
       type: object
       properties:
         nome:
           type: string
-          example: "Bruno Monteiro"
-        numero_identificacao:
+          example: "Bruno Gomes"
+        numero:
           type: string
-          example: "123456789"
+          example: "M14K"
         data_nascimento:
           type: string
-          example: "2000-01-01"
+          example: "22-03-2005"
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          example: "exemplo@gmail.com"
         telefone:
           type: string
-          example: "123456789"
+          example: "+5511999999999"
         pais:
           type: string
-          example: "Portugal"
+          example: "Cabo Verde"
         localidade:
           type: string
-          example: "Lisboa"
-        password:
-          type: string
-          example: "123456789"
+          example: "Praia"
         enabled:
           type: boolean
           example: true
-
-
-          #schema para delete user
-          DeleteUser:
-            type: object
-            properties:
-              id:
-                type: string
-                example: "1"
-
-
-    #schema para login
-    Login:
+    LoginUser:
       type: object
       properties:
         email:
           type: string
-          example: "bruno20@gmail.com"  
+          example: "exemplo@gmail.com"
         password:
           type: string
-          example: "123456789"
-
-    #schema para atualizar password
-    UpdatePassword:
-      type: object
-      properties:
-        oldPassword:
-          type: string
-          example: "123456789"
-        newPassword:
-          type: string
-          example: "123456788"
-
-    #schema para resetar password
-    ResetPassword:
-      type: object
-      properties:
-        newPassword:
-          type: string
-          example: "123456788"
-
-
-    #schema para resposta de sucesso
-    UserResponseSuccess:
+          example: "senha123"
+    ResponseSucesso:
       type: object
       properties:
         message:
           type: string
           example: "Utilizador criado com sucesso"
+        status:
+          type: boolean
+          example: true
         data:
           $ref: "#/components/schemas/User"
-
-    #schema para resposta de erro
-    UserResponseError:
+    updatePassword:
+      type: object
+      properties:
+        passwordantiga: 
+          type: string
+          example: "senha123"
+        passwordnova: 
+          type: string
+          example: "senha123"
+        confirmarpassword: 
+          type: string
+          example: "senha123"
+    ResponseErro:
       type: object
       properties:
         message:
           type: string
-          example: "Utilizador nao encontrado"
+          example: "Erro ao buscar dados"
+        status:
+          type: boolean
+          example: false
         data:
-          $ref: "#/components/schemas/UserResponseError"
+          type: object
+          nullable: true

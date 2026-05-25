@@ -1,20 +1,18 @@
-import swaggerJsdoc from "swagger-jsdoc"
-import path from "path"
-//configuracao do swagger
+import swaggerJsdoc from "swagger-jsdoc";
+import path from "path";
+
 const options: swaggerJsdoc.Options = {
-    //informacoes da api
     definition: {
-        openapi: "3.0.0",
+        openapi: `3.0.0`,
         info: {
-            title: "API servidor-local",
-            description: "Plataforma de gestao de prestadores e servicos",
+            title: "API Servidor Local",
+            description: "Plataforma de Gestao de Prestadores e Servicos",
             version: "1.0.0",
         },
-        //servidores
         servers: [
             {
-                url: "http://localhost:8080",
-                description: "dev",
+                url: `http://localhost:8080`,
+                description: `dev`,
             }
         ],
         components: {
@@ -23,23 +21,19 @@ const options: swaggerJsdoc.Options = {
                     type: "http",
                     scheme: "bearer",
                     bearerFormat: "JWT",
-                },
-            },
+                }
+            }
         },
         security: [
             {
-                bearerAuth: [],
-            },
-        ],
-
-
+                bearerAuth: []
+            }
+        ]
     },
-    //rotas 
     apis: [
         path.join(process.cwd(), "./src/docs/schemas/*.yaml"),
-        path.join(process.cwd(), "./src/docs/paths/*.yaml")
+        path.join(process.cwd(), "./src/docs/paths/*.yaml"),
     ]
-}
-
+};
 
 export const swaggerSpec = swaggerJsdoc(options);
