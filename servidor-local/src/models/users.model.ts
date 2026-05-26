@@ -1,5 +1,5 @@
 import type { RowDataPacket } from "mysql2";
-import db from "../lib/db.js";
+import db from "../lib/db-pg.js";
 import { formatDateDDMMYYYY } from "../utils/date.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
 import { generateUUID } from "../utils/uuid.js";
@@ -35,7 +35,7 @@ export const UsersModel = {
       ];
 
       const result = await db.query<UserDBType>(query, values);
-      if (result.rows.length === 0) return null;
+      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
       console.log(error);
@@ -45,15 +45,13 @@ export const UsersModel = {
 
   async getAll(): Promise<UserDBType[] | null> {
     try {
-      const [rows] = await db.execute<UserDBType[] & RowDataPacket[]>(
-        `SELECT * FROM tbl_utilizadores`,
-      );
-      return rows as UserDBType[];
+        const result = await db.query<UserDBType>(`SELECT * FROM tbl_utilizadores`);
+        return result.rows.length > 0 ? result.rows : null;
     } catch (error) {
-      console.log(error);
-      return null;
+        console.log(error);
+        return null;
     }
-  },
+},
 
   async get(id: string): Promise<UserDBType | null> {
     try {
@@ -61,7 +59,7 @@ export const UsersModel = {
         `SELECT * FROM tbl_utilizadores WHERE id = $1`,
         [id],
       );
-      if (result.rows.length === 0) return null;
+      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
       console.log(error);
@@ -75,7 +73,7 @@ export const UsersModel = {
         `SELECT * FROM tbl_utilizadores WHERE email = $1`,
         [email],
       );
-      if (result.rows.length === 0) return null;
+      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
       console.log(error);
@@ -118,7 +116,7 @@ export const UsersModel = {
       ];
 
       const result = await db.query<UserDBType>(query, values);
-      if (result.rows.length === 0) return null;
+      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
       console.log(error);
@@ -140,7 +138,7 @@ export const UsersModel = {
       const values = [hashedPassword, new Date(), id];
 
       const result = await db.query<UserDBType>(query, values);
-      if (result.rows.length === 0) return null;
+      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
       console.log(error);
@@ -178,7 +176,7 @@ export const UsersModel = {
       const query = `DELETE FROM tbl_utilizadores WHERE id = $1 RETURNING *`;
       const values = [id];
       const result = await db.query<UserDBType>(query, values);
-      if (result.rows.length === 0) return null;
+      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
       console.log(error);
