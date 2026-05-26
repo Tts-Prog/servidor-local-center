@@ -1,4 +1,3 @@
-import type { RowDataPacket } from "mysql2";
 import db from "../lib/db-pg.js";
 import { formatDateDDMMYYYY } from "../utils/date.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
