@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "kookies": "^0.1.1",
     "@apollo/client": "^4.1.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

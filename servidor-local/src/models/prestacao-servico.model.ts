@@ -1,5 +1,5 @@
-import type { RowDataPacket } from "mysql2"
-import db from "../lib/db.js"
+
+import db from "../lib/db-pg.js"
 import { type PrestacaoServicoDetalhadoType, type PrestacaoServicoDBType, type PrestacaoServicoByCategoriaType } from "../utils/types.js"
 import { generateUUID } from "../utils/uuid.js"
 
@@ -8,9 +8,10 @@ export const PrestacaoServicoModel = {
     async create(prestacaoServico: PrestacaoServicoDBType): Promise<PrestacaoServicoDBType | null> {
         try {
             console.log({ prestacaoServico })
-            const [rows] = await db.execute<PrestacaoServicoDBType & RowDataPacket[]>(
+            const result = await db.query<PrestacaoServicoDBType >(
                 `INSERT INTO tbl_prestacao_servico 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+                RETURNING *`,
 
                 [
                     null,
@@ -31,8 +32,8 @@ export const PrestacaoServicoModel = {
                     prestacaoServico.tipo_prestador,
                 ]
             )
-            console.log({ rows })
-            return rows as PrestacaoServicoDBType
+            console.log( result.rows )
+            return result.rows as PrestacaoServicoDBType
         } catch (err) {
             console.log(err)
             return null
@@ -40,22 +41,22 @@ export const PrestacaoServicoModel = {
     },
 
     async getAll(): Promise<PrestacaoServicoDBType[] | null> {
-        const [rows] = await db.execute<PrestacaoServicoDBType[] & RowDataPacket[]>("SELECT * FROM tbl_prestacao_servico")
+        const result = await db.query<PrestacaoServicoDBType[] >("SELECT * FROM tbl_prestacao_servico")
 
-        return rows as PrestacaoServicoDBType[]
+        return result.rows as PrestacaoServicoDBType[]
     },
 
     async get(id: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const [rows] = await db.execute<PrestacaoServicoDBType & RowDataPacket[]>(
+            const result = await db.query<PrestacaoServicoDBType>(
                 `SELECT * FROM tbl_prestacao_servico 
-                WHERE tbl_prestacao_servico.id = ?`,
+                WHERE tbl_prestacao_servico.id = $1`,
 
                 [id]
             )
 
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as PrestacaoServicoDBType : null
+            if (Array.isArray(result.rows) && result.rows.length === 0) return null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDBType : null
         } catch (err) {
             console.log(err)
             return null
@@ -64,19 +65,20 @@ export const PrestacaoServicoModel = {
 
     async update(id: string, prestacaoServico: PrestacaoServicoDBType) {
         try {
-            const [rows] = await db.execute<PrestacaoServicoDBType & RowDataPacket[]>(
+            const result = await db.query<PrestacaoServicoDBType>(
                 `UPDATE tbl_prestacao_servico 
-                SET designacao = ?, 
-                subtotal = ?, 
-                horas_estimadas = ?, 
-                id_prestador = ?, 
-                id_servico = ?, 
-                preco_hora = ?, 
-                estado = ?, 
-                id_orcamento = ?, 
-                enabled = ?, 
-                updated_at = ?
-                WHERE id = ?`,
+                SET designacao = $1, 
+                subtotal = $2, 
+                horas_estimadas = $3, 
+                id_prestador = $4, 
+                id_servico = $5, 
+                preco_hora = $6, 
+                estado = $7, 
+                id_orcamento = $8, 
+                enabled = $9, 
+                updated_at = $10
+                WHERE id = $11
+                RETURNING *`,
 
                 [
                     prestacaoServico.designacao,
@@ -92,8 +94,8 @@ export const PrestacaoServicoModel = {
                     id
                 ]
             )
-            console.log({ rows })
-            return rows as PrestacaoServicoDBType
+            console.log( result.rows )
+            return result.rows[0] as PrestacaoServicoDBType
         } catch (err) {
             console.log(err)
             return null
@@ -102,14 +104,14 @@ export const PrestacaoServicoModel = {
 
     async delete(id: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const rows: any = await db.execute<PrestacaoServicoDBType & RowDataPacket[]>(
+            const result= await db.query<PrestacaoServicoDBType >(
                 `DELETE FROM tbl_prestacao_servico 
-                WHERE id = ?`,
+                WHERE id = $1`,
 
                 [id]
             )
 
-            return rows[0].affectedRows === 0 ? null : rows[0] as PrestacaoServicoDBType
+            return result.rows.affectedRows === 0 ? null : result.rows[0] as PrestacaoServicoDBType
         } catch (err) {
             console.log(err)
             return null
@@ -119,13 +121,14 @@ export const PrestacaoServicoModel = {
     // trabalho final..................................................
     async getByIdOrcamento(idOrcamento: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const [rows] = await db.execute<PrestacaoServicoDBType[] & RowDataPacket[]>(
+            const result = await db.query<PrestacaoServicoDBType[] >(
                 `SELECT * FROM tbl_prestacao_servico 
-            WHERE tbl_prestacao_servico.id_orcamento = ?`,
+                WHERE tbl_prestacao_servico.id_orcamento = $1
+                RETURNING *`,
                 [idOrcamento]
             )
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] as PrestacaoServicoDBType : null
+            if (Array.isArray(result.rows) && result.rows.length === 0) return null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDBType : null
         }
         catch (error) {
             console.log(error)
@@ -148,18 +151,18 @@ export const PrestacaoServicoModel = {
             INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
             INNER JOIN tbl_servicos s ON ps.id_servico = s.id
             ORDER BY ps.created_at DESC
-            LIMIT ? OFFSET ?;
-            `
-            const [rows] = await db.execute<PrestacaoServicoDetalhadoType[] & RowDataPacket[]>(
+            LIMIT $1 OFFSET $2;
+            RETURNING *`
+            const result = await db.query<PrestacaoServicoDetalhadoType[] >(
                 query,
                 [
                     limit.toString(),
                     offset.toString()
                 ]
             )
-
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows as PrestacaoServicoDetalhadoType[] : null
+            
+            if (Array.isArray(result.rows) && result.rows.length === 0) return null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDetalhadoType[] : null
         } catch (error) {
             console.log(error)
             return null
@@ -181,9 +184,9 @@ export const PrestacaoServicoModel = {
             INNER JOIN tbl_categoria c ON c.id = s.id_categoria AND c.id = ?
             INNER JOIN tbl_servicos s ON ps.id_servico = s.id
             ORDER BY ps.created_at DESC
-            LIMIT ? OFFSET ?;
-            `
-            const [rows] = await db.execute<PrestacaoServicoByCategoriaType[] & RowDataPacket[]>(
+            LIMIT $1 OFFSET $2;
+            RETURNING *`
+            const result = await db.query<PrestacaoServicoByCategoriaType[] >(
                 query,
                 [
                     idCategoria,
@@ -192,8 +195,8 @@ export const PrestacaoServicoModel = {
                 ]
             )
 
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows as PrestacaoServicoByCategoriaType[] : null
+            if (Array.isArray(result.rows) && result.rows.length === 0) return null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoByCategoriaType[] : null
         } catch (error) {
             console.log(error)
             return null
@@ -215,11 +218,11 @@ export const PrestacaoServicoModel = {
                 INNER JOIN table_servicos s ON ps.id_servico = s.id
                 INNER JOIN table_categoria c ON s.id_categoria = c.id
                 ORDER BY ps.created_at DESC
-                LIMIT ? OFFSET ?
-                WHERE cd.id = ?
-            `
+                LIMIT $1 OFFSET $2
+                WHERE cd.id = $3
+                RETURNING *`
 
-            const [rows] = await db.execute<PrestacaoServicoDetalhadoType[] & RowDataPacket[]>(
+            const result = await db.query<PrestacaoServicoDetalhadoType[]>(
                 query,
                 [
 
@@ -229,8 +232,8 @@ export const PrestacaoServicoModel = {
                 ]
             )
 
-            if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows as PrestacaoServicoDetalhadoType[] : null
+            if (Array.isArray(result.rows) && result.rows.length === 0) return null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDetalhadoType[] : null
         } catch (err) {
             console.log(err)
             return null
