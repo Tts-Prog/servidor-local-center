@@ -1,5 +1,5 @@
 
-import db from "../lib/db.js";
+import db from "../lib/db-pg.js";
 import type { CategoriaDBType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
