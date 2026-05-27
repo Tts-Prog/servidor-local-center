@@ -27,7 +27,7 @@ export const CategoriaModel = {
                 updated_at: new Date().toISOString(),
             } as CategoriaDBType;
         } catch (error) {
-            console.log(error);
+            (globalThis as any).console.log(error);
             return null;
         }
     },
@@ -39,7 +39,7 @@ export const CategoriaModel = {
             );
             return result.rows[0] as CategoriaDBType[];
         } catch (error) {
-            console.log(error);
+            (globalThis as any).console.log(error);
             return null;
         }
     },
@@ -54,7 +54,7 @@ export const CategoriaModel = {
             if (Array.isArray(result.rows) && result.rows.length === 0) return null;
             return Array.isArray(result.rows) ? result.rows[0] as CategoriaDBType : null;
         } catch (error) {
-            console.log(error);
+            (globalThis as any).console.log(error);
             return null;
         }
     },
@@ -82,7 +82,7 @@ export const CategoriaModel = {
                 updated_at: new Date().toISOString(),
             } as CategoriaDBType;
         } catch (error) {
-            console.log(error);
+            (globalThis as any).console.log(error);
             return null;
         }
     },
