@@ -137,7 +137,7 @@ export const typeDefs = gql`
         getAllProposta: [Proposta]
         getPropostaById(id: ID!): Proposta
 
-        getAllPrestador: [Prestador]
+        getAllPrestadores: [Prestador]
         getPrestadorById(id: ID!): Prestador
 
         getAllPrestacaoServico: [PrestacaoServico]
