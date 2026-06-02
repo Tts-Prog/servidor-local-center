@@ -1,5 +1,5 @@
 
-import db from "../lib/db.js";
+import db from "../lib/db-pg.js";
 import type { CategoriaDBType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
@@ -46,7 +46,7 @@ export const CategoriaModel = {
 
     async get(id: string): Promise<CategoriaDBType | null> {
         try {
-            const result = await db.query<CategoriaDBType[]>(
+            const result = await db.query<CategoriaDBType>(
                 `SELECT * FROM tbl_categoria WHERE id = $1`,
                 [id]
             );
@@ -89,12 +89,12 @@ export const CategoriaModel = {
 
     async delete(id: string): Promise<CategoriaDBType | null> {
         try {
-            const [result] = await db.query(
+            const result = await db.query(
                 `DELETE FROM tbl_categoria WHERE id = $1`,
                 [id]
             );
 
-            return result.affectedRows === 0 ? null : { id } as CategoriaDBType;
+            return result.rows[0] as CategoriaDBType;
         } catch (error) {
             console.log(error);
             return null;
