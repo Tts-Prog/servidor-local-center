@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2017",
+    "reactNamespace": "React",
+    "rootDir": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -23,6 +25,7 @@
     }
   },
   "include": [
+    "./**/*",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
