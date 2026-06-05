@@ -1,7 +1,6 @@
 import { catalogoServicos } from "./servico.js"
 import type { PedidoServico, ServicoType, PrestadorType,  } from "../utils/types.js";
 
-
 const pedido: PedidoServico = 
     {
     cliente:                "string",
