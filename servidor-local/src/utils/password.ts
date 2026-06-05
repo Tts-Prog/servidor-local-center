@@ -8,6 +8,6 @@ export async function comparePassword(passwordEmTexto: string, passwordHash: str
     return await compare (passwordEmTexto, passwordHash)
 }
 
-export async function updatePassword( passwordEmTexto: string, passwordHash: string) {
-    return await updatePassword (passwordEmTexto, passwordHash)
+export async function updatePassword(passwordEmTexto: string, passwordHash: string) {
+    return await hash(passwordEmTexto, 12)
 }

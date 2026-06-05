@@ -60,7 +60,7 @@ export interface userType {
     pais: string;
     localidade: string;
     role: Role;
-    enebled: boolean;
+    enabled: boolean;
     created_at: Date;
     update_at: Date;
 }
@@ -171,7 +171,7 @@ export interface UserDBType {
     pais: string;
     localidade: string;
     role: Role;
-    enebled: boolean;
+    enabled: boolean;
     created_at: Date;
     update_at: Date;
 }

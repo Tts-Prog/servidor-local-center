@@ -34,10 +34,10 @@ export const CategoriaModel = {
 
     async getAll(): Promise<CategoriaDBType[] | null> {
         try {
-            const result = await db.query<CategoriaDBType[]>(
+            const result = await db.query<CategoriaDBType>(
                 `SELECT * FROM tbl_categoria`
             );
-            return result.rows[0] as CategoriaDBType[];
+            return result.rows as CategoriaDBType[];
         } catch (error) {
             console.log(error);
             return null;

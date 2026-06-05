@@ -13,7 +13,7 @@ export const UsersModel = {
     try {
       const query = `
         INSERT INTO tbl_utilizadores
-        (id, nome, numero_identidade, data_nascimento, email, password, telefone, pais, localidade, role, enebled, created_at, update_at)
+        (id, nome, numero_identidade, data_nascimento, email, password, telefone, pais, localidade, role, enabled, created_at, update_at)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         RETURNING *`;
 
@@ -28,7 +28,7 @@ export const UsersModel = {
         user.pais,
         user.localidade,
         user.role || "CLIENTE",
-        user.enebled ?? true,
+        user.enabled ?? true,
         new Date(),
         new Date(),
       ];
@@ -94,7 +94,7 @@ export const UsersModel = {
             pais = $7,
             localidade = $8,
             role = $9,
-            enebled = $10,
+            enabled = $10,
             update_at = $11
         WHERE id = $12
         RETURNING *
@@ -109,7 +109,7 @@ export const UsersModel = {
         updatedUser.pais,
         updatedUser.localidade,
         updatedUser.role || "CLIENTE",
-        updatedUser.enebled ?? true,
+        updatedUser.enabled ?? true,
         new Date(),
         id,
       ];
