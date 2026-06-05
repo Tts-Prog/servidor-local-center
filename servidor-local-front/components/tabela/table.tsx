@@ -17,7 +17,7 @@ export const RequestTable = () => {
     const fetchData = async () => {
         try {
             const response = await fetch(
-                "http://localhost:8080/prestacao_servico/",
+                "/prestacao_servico/",
                 {
                     method: "GET",
                     headers: {

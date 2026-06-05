@@ -852,9 +852,5 @@ app.post("/novo-prestador", async (req: Request, res: Response) => {
 
 // inicia o servidor na porta 3000
 app.listen(8080, () => {
-<<<<<<< HEAD
     console.log("Servidor rodando na porta 8080");
-=======
-    console.log("Servidor rodando em http://localhost:8080");
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
 });
