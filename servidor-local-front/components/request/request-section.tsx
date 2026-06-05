@@ -85,10 +85,10 @@ export const RequestSection = () => {
                 enabled: true
             }
 
-        
+
 
             const orcamentoResponse = await fetch(
-                "http://localhost:8080/orcamento/create",
+                `${process.env.NEXT_PUBLIC_API_URL}/orcamento/create`,
                 {
                     method: "POST",
                     headers: {
@@ -106,8 +106,8 @@ export const RequestSection = () => {
 
             const orcamentoData = await orcamentoResponse.json()
 
-            console.log({"dados do orçamento criado": orcamentoData})
-            
+            console.log({ "dados do orçamento criado": orcamentoData })
+
             const payload = {
                 designacao: description || serviceSelected.name,
                 subtotal: "0",
@@ -124,7 +124,7 @@ export const RequestSection = () => {
             }
 
             const response = await fetch(
-                "http://localhost:8080/prestacao-servico/create",
+                `${process.env.NEXT_PUBLIC_API_URL}/prestacao-servico/create`,
                 {
                     method: "POST",
                     headers: {
@@ -174,8 +174,8 @@ export const RequestSection = () => {
                     </div>
 
                     {/* CORREÇÃO AQUI: onValueChange e fallback para string vazia */}
-                    <RadioGroup 
-                        value={selectedService?.toString() ?? ""} 
+                    <RadioGroup
+                        value={selectedService?.toString() ?? ""}
                         onValueChange={(val) => setSelectedService(Number(val))}
                     >
                         {services.map((item) => (
