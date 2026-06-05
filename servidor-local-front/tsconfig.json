@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "baseUrl": ".",
-    "rootDir": "./src",
+    "rootDir": "./",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -25,7 +24,7 @@
     }
   },
   "include": [
-    "./src/**/*",
+    "./**/*",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
