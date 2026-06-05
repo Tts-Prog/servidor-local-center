@@ -140,7 +140,7 @@ export interface PropostaDBType {
     updated_at: string
 }
 
-
+// trabalho final................................................................
 export interface PrestacaoServicoDBType {
     id: string,
     designacao: string,
