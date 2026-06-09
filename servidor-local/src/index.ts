@@ -61,10 +61,10 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     context: async ({ req }) => ({
         //verificar se o header de autorizacao existe
         token: req.headers.authorization,
-        DB_HOST: process.env.DB_HOST,
-        DB_USER: process.env.DB_USER,
-        DB_PASSWORD: process.env.DB_PASSWORD,
-        DB_NAME: process.env.DB_NAME,
+        DB_HOST: process.env.HOSTNAME,
+        DB_USER: process.env.USERNAME,
+        DB_PASSWORD: process.env.PASSWORD,
+        DB_NAME: process.env.DATABASE,
     }),
 }))
 
@@ -74,6 +74,9 @@ const sslOptions = {
     cert: fs.readFileSync('./cert/server.cert')
 };
 
-https.createServer(sslOptions, app).listen(8080, () => {
-    console.log("Servidor rodando em https://localhost:8080");
+const DB_PORT = process.env.PORT ?? 8080;
+
+https.createServer(sslOptions, app).listen(DB_PORT, () => {
+    console.log("Servidor rodando");
 });
+
