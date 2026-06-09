@@ -1,41 +1,16 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+'use client';
 
-import { Toaster } from "@/components/ui/sonner";
-import "./globals.css";
-import { ApolloClientProvider } from "./providers";
+import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import {ApolloProvider} from "@apollo/client/react"
+import { ReactNode } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+export const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+  }),
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Servidor Local",
-  description: "Marketplace for local services",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <ApolloClientProvider>
-          <Toaster position="top-right" richColors expand />
-          {children}
-        </ApolloClientProvider>
-      </body>
-    </html>
-  );
+export function ApolloWrapper({ children }: { children: ReactNode }) {
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
