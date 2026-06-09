@@ -74,7 +74,7 @@ const sslOptions = {
     cert: fs.readFileSync('./cert/server.cert')
 };
 
-const DB_PORT = process.env.PORT ?? 8080
+const DB_PORT = process.env.PORT ?? 8080;
 
 https.createServer(sslOptions, app).listen(DB_PORT, () => {
     console.log("Servidor rodando");
