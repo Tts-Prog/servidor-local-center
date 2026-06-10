@@ -26,6 +26,7 @@ app.use(cors({
     origin: ["http://localhost:3000", "https://servidor-local-center-backend2.onrender.com", "https://servidor-local-front-ts.vercel.app"],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 }));
 
 
@@ -68,14 +69,21 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     }),
 }))
 
-// inicia o servidor na porta 8080 com SSL
-const sslOptions = {
-    key: fs.readFileSync('./cert/server.key'),
-    cert: fs.readFileSync('./cert/server.cert')
-};
+if (process.env.NODE_ENV === "development") {
+    // inicia o servidor na porta 8080 com SSL
+    const sslOptions = {
+        key: fs.readFileSync('./cert/server.key'),
+        cert: fs.readFileSync('./cert/server.cert')
+    };
 
-const PORT = process.env.PORT ?? 8080;
+    const PORT = process.env.PORT ?? 8080;
 
-https.createServer(sslOptions, app).listen(PORT, () => {
-    console.log(`Servidor rodando em https://localhost:${PORT}`);
-});
+    https.createServer(sslOptions, app).listen(PORT, () => {
+        console.log(`Servidor rodando em https://localhost:${PORT}`);
+    });
+} else {
+    const PORT = process.env.PORT ?? 8080;
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+}
