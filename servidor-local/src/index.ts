@@ -83,7 +83,7 @@ if (process.env.NODE_ENV === "development") {
     });
 } else {
     const PORT = process.env.PORT ?? 8080;
-    app.listen(PORT, () => {
+    app.listen(parseInt(PORT as string, 10), "0.0.0.0", () => {
         console.log(`Servidor rodando em http://localhost:${PORT}`);
     });
 }
