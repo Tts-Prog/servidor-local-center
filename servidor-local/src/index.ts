@@ -116,7 +116,6 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
 }))
 
 // inicia o servidor na porta 8080 com SSL
-
 if (process.env.NODE_ENV === "development") {
     // inicia o servidor na porta 8080 com SSL
     const sslOptions = {
@@ -135,4 +134,3 @@ if (process.env.NODE_ENV === "development") {
         console.log(`Servidor rodando em http://localhost:${PORT}`);
     });
 };
-
