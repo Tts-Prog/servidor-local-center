@@ -115,12 +115,24 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     }),
 }))
 
-// Criar tabelas na base de dados se não existirem
-await initDatabase();
+// inicia o servidor na porta 8080 com SSL
 
-const DB_PORT = process.env.PORT ?? 8080;
+if (process.env.NODE_ENV === "development") {
+    // inicia o servidor na porta 8080 com SSL
+    const sslOptions = {
+        key: fs.readFileSync('./cert/server.key'),
+        cert: fs.readFileSync('./cert/server.cert')
+    };
 
-https.createServer(sslOptions, app).listen(DB_PORT, () => {
-    console.log("Servidor rodando");
-});
+    const PORT = process.env.PORT ?? 8080;
+
+    https.createServer(sslOptions, app).listen(PORT, () => {
+        console.log(`Servidor rodando em https://localhost:${PORT}`);
+    });
+} else {
+    const PORT = process.env.PORT ?? 8080;
+    app.listen(parseInt(PORT as string, 10), "0.0.0.0", () => {
+        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+};
 
