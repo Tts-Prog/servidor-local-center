@@ -72,7 +72,7 @@ export async function initDatabase(): Promise<void> {
                 nome VARCHAR(255) NOT NULL,
                 descricao TEXT,
                 categoria VARCHAR(255) REFERENCES tbl_categoria(id) ON DELETE SET NULL,
-                enabled_at BOOLEAN DEFAULT true,
+                enabled BOOLEAN DEFAULT true,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
@@ -102,16 +102,17 @@ export async function initDatabase(): Promise<void> {
                 subtotal NUMERIC(10,2) DEFAULT 0,
                 horas_estimadas NUMERIC(10,2) DEFAULT 0,
                 id_prestador VARCHAR(255) REFERENCES tbl_prestadores(id) ON DELETE SET NULL,
+                id_utilizador VARCHAR(255) REFERENCES tbl_utilizadores(id) ON DELETE SET NULL,
                 id_servico VARCHAR(255) REFERENCES tbl_servicos(id) ON DELETE SET NULL,
                 preco_hora NUMERIC(10,2) DEFAULT 0,
                 estado VARCHAR(50) DEFAULT 'PENDENTE',
                 id_orcamento VARCHAR(255) REFERENCES tbl_orcamento(id) ON DELETE SET NULL,
+                id_empresa VARCHAR(255) REFERENCES tbl_empresa(id) ON DELETE SET NULL,
+                tipo_prestador VARCHAR(50) DEFAULT 'particular',
                 urgente BOOLEAN DEFAULT false,
                 enabled BOOLEAN DEFAULT true,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                id_empresa VARCHAR(255) REFERENCES tbl_empresa(id) ON DELETE SET NULL,
-                tipo_prestador VARCHAR(50) DEFAULT 'particular'
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
 

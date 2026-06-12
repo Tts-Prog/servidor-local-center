@@ -10,11 +10,13 @@ export const PropostaModel = {
         try {
             const result = await db.query<PropostaDBType>(
                 `INSERT INTO tbl_proposta 
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                (id, id_prestacao_servico, id_prestador, preco_hora, horas_estimadas, estado, enabled, created_at, updated_at)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
 
                 [
                     generateUUID(),
                     proposta.id_prestacao_servico,
+                    proposta.id_prestador,
                     proposta.preco_hora,
                     proposta.horas_estimadas,
                     proposta.estado,
@@ -63,15 +65,17 @@ export const PropostaModel = {
             const result = await db.query<PropostaDBType>(
                 `UPDATE tbl_proposta
                 SET id_prestacao_servico = $1, 
-                preco_hora = $2, 
-                horas_estimadas = $3, 
-                estado = $4, 
-                enabled = $5, 
-                updated_at = $6
-                WHERE id = $7 RETURNING *`,
+                id_prestador = $2,
+                preco_hora = $3, 
+                horas_estimadas = $4, 
+                estado = $5, 
+                enabled = $6, 
+                updated_at = $7
+                WHERE id = $8 RETURNING *`,
 
                 [
                     proposta.id_prestacao_servico,
+                    proposta.id_prestador,
                     proposta.preco_hora,
                     proposta.horas_estimadas,
                     proposta.estado,
