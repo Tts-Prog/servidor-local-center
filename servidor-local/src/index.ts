@@ -76,8 +76,6 @@ if (process.env.NODE_ENV === "development") {
         cert: fs.readFileSync('./cert/server.cert')
     };
 
-
-
     https.createServer(sslOptions, app).listen(PORT, () => {
         console.log(`Servidor rodando em https://localhost:${PORT}`);
     });

@@ -45,35 +45,51 @@ const DashboardDataContext = createContext<DashboardDataContextType>({
   loading: true,
 });
 
-async function getRatesByUserId(id: string, token: string): Promise<RatesApiData | null> {
-  const response = await fetch(`http://localhost:8080/prestador/get-preco-hora/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+async function getRatesByUserId(
+  id: string,
+  token: string,
+): Promise<RatesApiData | null> {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/prestador/get-preco-hora/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
   if (!response.ok) return null;
   const payload: RatesApiResponse = await response.json();
   return payload.data ?? null;
 }
 
-async function getProposal(idUser: string, token: string): Promise<ProposalType[]> {
-  const response = await fetch(`http://localhost:8080/proposal/get-by-user-id/${idUser}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+async function getProposal(
+  idUser: string,
+  token: string,
+): Promise<ProposalType[]> {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/proposal/get-by-user-id/${idUser}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-  });
+  );
 
   if (!response.ok) return [];
   const payload: ProposalApiResponse = await response.json();
   return payload.data ?? [];
 }
 
-export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
+export function DashboardDataProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [rates, setRates] = useState<RatesApiData | null>(null);
   const [proposals, setProposals] = useState<ProposalType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -118,10 +134,14 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       proposals,
       loading,
     }),
-    [rates, proposals, loading]
+    [rates, proposals, loading],
   );
 
-  return <DashboardDataContext.Provider value={value}>{children}</DashboardDataContext.Provider>;
+  return (
+    <DashboardDataContext.Provider value={value}>
+      {children}
+    </DashboardDataContext.Provider>
+  );
 }
 
 export function useDashboardData() {
