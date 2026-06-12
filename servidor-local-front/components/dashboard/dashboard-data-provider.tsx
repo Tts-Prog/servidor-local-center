@@ -45,18 +45,12 @@ const DashboardDataContext = createContext<DashboardDataContextType>({
   loading: true,
 });
 
-async function getRatesByUserId(
-  id: string,
-  token: string,
-): Promise<RatesApiData | null> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/prestador/get-preco-hora/${id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+async function getRatesByUserId(id: string, token: string): Promise<RatesApiData | null> {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prestador/get-preco-hora/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   );
 
@@ -65,18 +59,12 @@ async function getRatesByUserId(
   return payload.data ?? null;
 }
 
-async function getProposal(
-  idUser: string,
-  token: string,
-): Promise<ProposalType[]> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/proposal/get-by-user-id/${idUser}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+async function getProposal(idUser: string, token: string): Promise<ProposalType[]> {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/proposal/get-by-user-id/${idUser}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   );
 

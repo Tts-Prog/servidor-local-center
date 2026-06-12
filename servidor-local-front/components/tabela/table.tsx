@@ -12,17 +12,17 @@ export const RequestTable = () => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/prestacao_servico/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
+    const fetchData = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/prestacao_servico/`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
       if (response.status === 200) {
         toast.success("Prestação de serviços buscada com sucesso!");

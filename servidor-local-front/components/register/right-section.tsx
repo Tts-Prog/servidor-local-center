@@ -46,29 +46,10 @@ export const RightSection = () => {
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (verifyFields()) {
-      toast.error("Please fill in all the fields.");
-      return;
-    }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nome: name,
-          numero_identificacao: number,
-          data_nascimento: birthDate,
-          email,
-          telefone: phone,
-          pais: country,
-          localidade: location,
-          password,
-          role: "cliente",
-          enabled: true,
-        }),
+    const response = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/users/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
     );
 

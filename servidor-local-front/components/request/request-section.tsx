@@ -179,17 +179,164 @@ export const RequestSection = () => {
             </span>
           </div>
 
-          {/* CORREÇÃO AQUI: onValueChange e fallback para string vazia */}
-          <RadioGroup
-            value={selectedService?.toString() ?? ""}
-            onValueChange={(val) => setSelectedService(Number(val))}
-          >
-            {services.map((item) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-3 items-center border-b border-gray-200 px-6 py-5"
-              >
-                {/* SELECT */}
+            const user = JSON.parse(cookies.user)
+
+            if (!selectedService) {
+                toast.error("Selecione um serviço")
+                return
+            }
+
+            const serviceSelected = services.find(
+                service => service.id === selectedService
+            )
+
+            if (!serviceSelected) {
+                toast.error("Serviço inválido")
+                return
+            }
+
+            const orcamentoPayload = {
+                total: "500",
+                id_utilizadores: user.id,
+                enabled: true
+            }
+
+        
+
+            const orcamentoResponse = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/orcamento/create`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authorization": `Bearer ${cookies.token}`
+                    },
+                    body: JSON.stringify(orcamentoPayload)
+                }
+            )
+
+            if (orcamentoResponse.status !== 200) {
+                toast.error("Erro ao criar orçamento")
+                return
+            }
+
+            const orcamentoData = await orcamentoResponse.json()
+
+            console.log({"dados do orçamento criado": orcamentoData})
+            
+            const payload = {
+                designacao: description || serviceSelected.name,
+                subtotal: "0",
+                horas_estimadas: "0",
+                id_servico: selectedService,
+                preco_hora: "0",
+                estado: "Pendente",
+                id_orcamento: orcamentoData.data.id,
+                id_prestador: null,
+                enabled: true,
+                urgente: serviceSelected.urgent,
+                id_empresa: null,
+                tipo_prestador: "particular"
+            }
+
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/prestacao-servico/create`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authorization": `Bearer ${cookies.token}`
+                    },
+                    body: JSON.stringify(payload)
+                }
+            )
+
+            if (response.status === 200) {
+                toast.success("Pedido enviado com sucesso")
+                setDescription("")
+                setSelectedService(null)
+                setServices(prev =>
+                    prev.map(service => ({ ...service, urgent: false }))
+                )
+            } else {
+                toast.error("Erro ao enviar pedido")
+            }
+
+        } catch (error) {
+            console.error(error)
+            toast.error("Erro no servidor")
+        }
+    }
+
+    return (
+        <main className="max-w-5xl mx-auto py-16 px-5">
+            {/* TITLE */}
+            <div className="flex flex-col gap-3 mb-10">
+                <h1 className="text-5xl font-bold text-[#0E1525]">
+                    Public Service Request
+                </h1>
+                <p className="text-xl text-[#6B7A99]">
+                    Select the service you need and submit your request.
+                </p>
+            </div>
+
+            {/* TABLE */}
+            <Card className="rounded-2xl border border-gray-200 shadow-none overflow-hidden">
+                <CardContent className="p-0">
+                    <div className="grid grid-cols-3 bg-[#F8FAFC] border-b border-gray-200 px-6 py-5">
+                        <span className="font-bold text-[#23304A] text-lg">SELECT</span>
+                        <span className="font-bold text-[#23304A] text-lg">SERVICE NAME</span>
+                        <span className="font-bold text-[#23304A] text-lg text-center">URGENT?</span>
+                    </div>
+
+                    {/* CORREÇÃO AQUI: onValueChange e fallback para string vazia */}
+                    <RadioGroup 
+                        value={selectedService?.toString() ?? ""} 
+                        onValueChange={(val) => setSelectedService(Number(val))}
+                    >
+                        {services.map((item) => (
+                            <div
+                                key={item.id}
+                                className="grid grid-cols-3 items-center border-b border-gray-200 px-6 py-5"
+                            >
+                                {/* SELECT */}
+                                <div className="flex items-center gap-3">
+                                    <RadioGroupItem
+                                        value={item.id.toString()}
+                                        id={`service-${item.id}`}
+                                    />
+                                    <Label htmlFor={`service-${item.id}`} className="cursor-pointer">
+                                        Select
+                                    </Label>
+                                </div>
+
+                                {/* SERVICE */}
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${item.bg}`}>
+                                        {item.icon}
+                                    </div>
+                                    <span className="text-2xl text-[#0E1525]">
+                                        {item.name}
+                                    </span>
+                                </div>
+
+                                {/* URGENT */}
+                                <div className="flex justify-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={item.urgent}
+                                        onChange={() => toggleUrgent(item.id)}
+                                        className="w-5 h-5 cursor-pointer"
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                    </RadioGroup>
+                </CardContent>
+            </Card>
+
+            {/* DESCRIPTION */}
+            <div className="mt-14 flex flex-col gap-5">
                 <div className="flex items-center gap-3">
                   <RadioGroupItem
                     value={item.id.toString()}
