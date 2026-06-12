@@ -28,7 +28,6 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "authorization"],
 }));
 
-
 // rota inicial do express
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
@@ -68,14 +67,22 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     }),
 }))
 
-// inicia o servidor na porta 8080 com SSL
-const sslOptions = {
-    key: fs.readFileSync('./cert/server.key'),
-    cert: fs.readFileSync('./cert/server.cert')
-};
-
 const PORT = process.env.PORT ?? 8080;
 
-https.createServer(sslOptions, app).listen(PORT, () => {
-    console.log(`Servidor rodando em https://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV === "development") {
+    // inicia o servidor na porta 8080 com SSL
+    const sslOptions = {
+        key: fs.readFileSync('./cert/server.key'),
+        cert: fs.readFileSync('./cert/server.cert')
+    };
+
+
+
+    https.createServer(sslOptions, app).listen(PORT, () => {
+        console.log(`Servidor rodando em https://localhost:${PORT}`);
+    });
+} else {
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+}
