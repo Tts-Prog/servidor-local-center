@@ -1,0 +1,1 @@
+{"version":3,"file":"prestador.controller.d.ts","sourceRoot":"","sources":["../../src/controllers/prestador.controller.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAGjD,eAAO,MAAM,mBAAmB;kBACR,OAAO,OAAO,QAAQ;eAMzB,OAAO,OAAO,QAAQ;kBAMnB,OAAO,OAAO,QAAQ;kBAMtB,OAAO,OAAO,QAAQ;kBAMtB,OAAO,OAAO,QAAQ;CAM7C,CAAA"}

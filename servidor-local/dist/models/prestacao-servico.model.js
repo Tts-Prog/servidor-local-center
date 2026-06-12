@@ -1,0 +1,206 @@
+import db from "../lib/db-pg.js";
+import {} from "../utils/types.js";
+export const PrestacaoServicoModel = {
+    async create(prestacaoServico) {
+        try {
+            console.log({ prestacaoServico });
+            const result = await db.query(`INSERT INTO tbl_prestacao_servico 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+                RETURNING *`, [
+                null,
+                prestacaoServico.designacao,
+                prestacaoServico.subtotal,
+                prestacaoServico.horas_estimadas,
+                prestacaoServico.id_prestador,
+                prestacaoServico.id_servico,
+                prestacaoServico.preco_hora,
+                prestacaoServico.estado,
+                prestacaoServico.id_orcamento,
+                prestacaoServico.urgente,
+                prestacaoServico.enabled,
+                new Date(),
+                new Date(),
+                prestacaoServico.id_empresa,
+                prestacaoServico.tipo_prestador,
+            ]);
+            console.log(result.rows);
+            return result.rows[0];
+        }
+        catch (err) {
+            console.log(err);
+            return null;
+        }
+    },
+    async getAll() {
+        const result = await db.query("SELECT * FROM tbl_prestacao_servico");
+        return result.rows[0];
+    },
+    async get(id) {
+        try {
+            const result = await db.query(`SELECT * FROM tbl_prestacao_servico 
+                WHERE tbl_prestacao_servico.id = $1`, [id]);
+            if (Array.isArray(result.rows) && result.rows.length === 0)
+                return null;
+            return Array.isArray(result.rows) ? result.rows[0] : null;
+        }
+        catch (err) {
+            console.log(err);
+            return null;
+        }
+    },
+    async update(id, prestacaoServico) {
+        try {
+            const result = await db.query(`UPDATE tbl_prestacao_servico 
+                SET designacao = $1, 
+                subtotal = $2, 
+                horas_estimadas = $3, 
+                id_prestador = $4, 
+                id_servico = $5, 
+                preco_hora = $6, 
+                estado = $7, 
+                id_orcamento = $8, 
+                enabled = $9, 
+                updated_at = $10
+                WHERE id = $11
+                RETURNING *`, [
+                prestacaoServico.designacao,
+                prestacaoServico.subtotal,
+                prestacaoServico.horas_estimadas,
+                prestacaoServico.id_prestador,
+                prestacaoServico.id_servico,
+                prestacaoServico.preco_hora,
+                prestacaoServico.estado,
+                prestacaoServico.id_orcamento,
+                prestacaoServico.enabled,
+                new Date(),
+                id
+            ]);
+            console.log(result.rows);
+            return result.rows[0];
+        }
+        catch (err) {
+            console.log(err);
+            return null;
+        }
+    },
+    async delete(id) {
+        try {
+            const result = await db.query(`DELETE FROM tbl_prestacao_servico 
+                WHERE id = $1`, [id]);
+            return result.rowCount === 0 ? null : result.rows[0];
+        }
+        catch (err) {
+            console.log(err);
+            return null;
+        }
+    },
+    // trabalho final..................................................
+    async getByIdOrcamento(idOrcamento) {
+        try {
+            const result = await db.query(`SELECT * FROM tbl_prestacao_servico 
+                WHERE tbl_prestacao_servico.id_orcamento = $1
+                RETURNING *`, [idOrcamento]);
+            if (Array.isArray(result.rows) && result.rows.length === 0)
+                return null;
+            return Array.isArray(result.rows) ? result.rows[0] : null;
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+    async getAllPrestacaoServicoDetalhado(limit, offset) {
+        try {
+            const query = `
+            SELECT 
+            ps.id  as id.prestacao_servico, 
+            ps.designacao as descricao,
+            u.nome as nome_utilizador,
+            u.email as email_utilizador,
+            s.nome as nome_servico,
+            ps.created_at as data_pedido,
+            ps.urgente 
+            FROM tbl_prestacao_servico ps
+            INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
+            INNER JOIN tbl_servicos s ON ps.id_servico = s.id
+            ORDER BY ps.created_at DESC
+            LIMIT $1 OFFSET $2;
+            RETURNING *`;
+            const result = await db.query(query, [
+                limit.toString(),
+                offset.toString()
+            ]);
+            if (Array.isArray(result.rows) && result.rows.length === 0)
+                return null;
+            return Array.isArray(result.rows) ? result.rows[0] : null;
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+    async getAllPrestacaoServicoByCategoriaDetalhado(idCategoria, limit, offset) {
+        try {
+            const query = `
+            SELECT 
+            ps.id  as id.prestacao_servico, 
+            ps.designacao as descricao,
+            u.nome as nome_servico,
+            c.designacao as nome_categoria,
+            c.icone as icone_categoria,
+            ps.created_at as data_pedido,
+            ps.urgente 
+            FROM tbl_prestacao_servico ps
+            INNER JOIN tbl_categoria c ON c.id = s.id_categoria AND c.id = ?
+            INNER JOIN tbl_servicos s ON ps.id_servico = s.id
+            ORDER BY ps.created_at DESC
+            LIMIT $1 OFFSET $2;
+            RETURNING *`;
+            const result = await db.query(query, [
+                idCategoria,
+                limit.toString(),
+                offset.toString()
+            ]);
+            if (Array.isArray(result.rows) && result.rows.length === 0)
+                return null;
+            return Array.isArray(result.rows) ? result.rows[0] : null;
+        }
+        catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+    async getAllPrestacaoServicoByCategoria(limit, offset, categoria) {
+        try {
+            const query = `
+                SELECT 
+                    ps.id as id_prestacao_servico,
+                    ps.designacao as descricao,
+                    u.nome as nome_utilizador, 
+                    u.email as email_utilizador,
+                    s.nome as nome_servico,
+                    ps.created_at as data_pedido,
+                    ps.urgente
+                FROM table_prestacao_servico ps
+                INNER JOIN table_servicos s ON ps.id_servico = s.id
+                INNER JOIN table_categoria c ON s.id_categoria = c.id
+                ORDER BY ps.created_at DESC
+                LIMIT $1 OFFSET $2
+                WHERE cd.id = $3
+                RETURNING *`;
+            const result = await db.query(query, [
+                limit.toString(),
+                offset.toString(),
+                categoria
+            ]);
+            if (Array.isArray(result.rows) && result.rows.length === 0)
+                return null;
+            return Array.isArray(result.rows) ? result.rows[0] : null;
+        }
+        catch (err) {
+            console.log(err);
+            return null;
+        }
+    }
+};
+//# sourceMappingURL=prestacao-servico.model.js.map
