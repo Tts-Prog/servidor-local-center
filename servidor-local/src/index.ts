@@ -12,6 +12,7 @@ import { router as prestacaoServicoRouter } from "./routes/prestacao-servico.rou
 import { router as empresaRouter } from "./routes/empresa.route.js";
 import { router as categoriaRouter } from "./routes/categoria.route.js";
 import { swaggerSpec } from "./docs/swagger.js"
+import { initDatabase } from "./lib/init-db.js"
 import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
@@ -67,6 +68,9 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
         DB_NAME: process.env.DB_NAME,
     }),
 }))
+
+// Criar tabelas na base de dados se não existirem
+await initDatabase();
 
 const PORT = process.env.PORT ?? 8080;
 
