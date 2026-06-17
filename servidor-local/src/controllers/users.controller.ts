@@ -16,6 +16,7 @@ export const UsersController = {
                 message: "Campos obrigatórios em falta",
                 data: null,
             };
+            console.log("erro ao criar user")
             return res.status(400).json(response);
         }
 
@@ -143,16 +144,16 @@ export const UsersController = {
             { expiresIn: "7d" }
         );
 
-        const response: ResponseType<{token: string, user: typeof payload}>= {
+        const response: ResponseType<{ token: string, user: typeof payload }> = {
             status: "success",
             message: "Login bem-sucedido",
             data: {
                 token,
                 user: payload,
             },
-        } 
+        }
         return res.status(200).json(response)
-    }, 
+    },
 
     async updatePassword(req: any, res: Response) {
 
