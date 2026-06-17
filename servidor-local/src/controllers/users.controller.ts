@@ -16,9 +16,11 @@ export const UsersController = {
                 message: "Campos obrigatórios em falta",
                 data: null,
             };
-            console.log("erro ao criar user")
+
             return res.status(400).json(response);
         }
+
+        if (!user.password) console.log("error user sem nada")
 
         const createUserResponse = await UsersModel.create(user)
 
