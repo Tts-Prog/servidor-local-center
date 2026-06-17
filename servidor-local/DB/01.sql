@@ -1,1 +1,0 @@
-DELETE tabela_servicos 
