@@ -14,4 +14,4 @@ db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
     .catch((error) => console.error("Erro ao conectar ao banco de dados PostgreSQL:", error.stack));
 
-export default db
+export default db 
