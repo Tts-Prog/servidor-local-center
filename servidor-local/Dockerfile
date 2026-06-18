@@ -33,6 +33,10 @@ RUN npm ci --omit=dev || npm install --omit=dev
 # Copy compiled output from build stage
 COPY --from=build /app/dist ./dist
 
+# Copy Swagger YAML docs (read at runtime by swagger-jsdoc from ./src/docs;
+# tsc does not emit non-TS files, so they must be copied explicitly)
+COPY --from=build /app/src/docs ./src/docs
+
 # Set ownership and switch to non-root user
 RUN chown -R appuser:appgroup /app
 USER appuser
