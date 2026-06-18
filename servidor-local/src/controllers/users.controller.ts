@@ -25,6 +25,15 @@ export const UsersController = {
 
         const createUserResponse = await UsersModel.create(user)
 
+        if (!createUserResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar utilizador",
+                data: null,
+            };
+            return res.status(500).json(response);
+        }
+
         const response: ResponseType<UserDBType> = {
             status: "success",
             message: "Utilizador criado com sucesso!",
