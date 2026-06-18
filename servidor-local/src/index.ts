@@ -94,7 +94,7 @@ if (process.env.NODE_ENV === "development") {
         console.log(`Servidor rodando em https://localhost:${PORT}`);
     });
 } else {
-    app.listen(PORT, "[IP_ADDRESS]", () => {
+    app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);
     });
 }
