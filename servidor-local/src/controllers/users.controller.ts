@@ -9,6 +9,7 @@ export const UsersController = {
     //  Criar utilizador
     async createUsers(req: Request, res: Response) {
         const user: userType = req.body;
+        console.log("User " + user)
 
         if (!user) {
             const response: ResponseType<null> = {
