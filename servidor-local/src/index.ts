@@ -61,14 +61,14 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     context: async ({ req }) => ({
         //verificar se o header de autorizacao existe
         token: req.headers.authorization,
-        DB_HOST: process.env.DB_HOST,
-        DB_USER: process.env.DB_USER,
-        DB_PASSWORD: process.env.DB_PASSWORD,
-        DB_NAME: process.env.DB_NAME,
+        DB_PG_HOST: process.env.DB_PG_HOST,
+        DB_PG_USER: process.env.DB_PG_USER,
+        DB_PG_PASSWORD: process.env.DB_PG_PASSWORD,
+        DB_PG_NAME: process.env.DB_PG_NAME,
     }),
 }))
 
-const PORT = process.env.PORT ?? 8080;
+const DB_PG_PORT = process.env.DB_PG_PORT ?? 8080;
 
 if (process.env.NODE_ENV === "development") {
     // inicia o servidor na porta 8080 com SSL
@@ -77,11 +77,11 @@ if (process.env.NODE_ENV === "development") {
         cert: fs.readFileSync('./cert/server.cert')
     };
 
-    https.createServer(sslOptions, app).listen(PORT, () => {
-        console.log(`Servidor rodando em https://localhost:${PORT}`);
+    https.createServer(sslOptions, app).listen(DB_PG_PORT, () => {
+        console.log(`Servidor rodando em https://localhost:${DB_PG_PORT}`);
     });
 } else {
-    app.listen(PORT, () => {
-        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    app.listen(DB_PG_PORT, () => {
+        console.log(`Servidor rodando em http://localhost:${DB_PG_PORT}`);
     });
 }
