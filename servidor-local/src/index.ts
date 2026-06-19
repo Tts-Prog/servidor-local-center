@@ -12,12 +12,12 @@ import { router as prestacaoServicoRouter } from "./routes/prestacao-servico.rou
 import { router as empresaRouter } from "./routes/empresa.route.js";
 import { router as categoriaRouter } from "./routes/categoria.route.js";
 import { swaggerSpec } from "./docs/swagger.js"
+import { initDatabase } from "./lib/init-db.js"
 import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
-import expressmonitor from "express-status-monitor";
-import morgan from "morgan";
+import statusMonitor from 'express-status-monitor';
 
 const app = express();
 app.use(expressmonitor());
@@ -32,6 +32,14 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 }));
+
+
+app.use(statusMonitor());
+
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
 
 // rota inicial do express
 app.get("/", (req: Request, res: Response) => {
@@ -72,7 +80,10 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     }),
 }))
 
-const PORT = process.env.PORT ?? 8080;
+// Criar tabelas na base de dados se não existirem
+await initDatabase();
+
+const PORT = Number(process.env.PORT) || 8080;
 
 if (process.env.NODE_ENV === "development") {
     // inicia o servidor na porta 8080 com SSL
@@ -86,6 +97,6 @@ if (process.env.NODE_ENV === "development") {
     });
 } else {
     app.listen(PORT, () => {
-        console.log(`Servidor rodando em http://localhost:${PORT}`);
+        console.log(`Servidor rodando na porta ${PORT}`);
     });
 }

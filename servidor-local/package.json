@@ -9,7 +9,7 @@
   "scripts": {
     "start": "NODE_ENV=production node dist/index.js",
     "dev": "tsx --watch src/index.ts",
-    "docs": "swagger-jsdoc -o ./src/docs/swagger.json ./src/docs/swagger.ts",
+    "docs": "swagger-jsdoc -o ./src/docs/swagger.json -d ./src/docs/swagger.ts",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "build": "tsc"
   },
