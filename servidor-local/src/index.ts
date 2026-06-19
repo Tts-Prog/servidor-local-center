@@ -18,12 +18,13 @@ import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
 import statusMonitor from 'express-status-monitor';
+import morgan from "morgan";
 
 const app = express();
-app.use(expressmonitor());
-app.use(morgan("combined"));
+
 
 app.use(express.json()); // para interpretar o corpo das requisições como JSON
+app.use(morgan("combined"));
 
 // liberta o front-end de aceder ao back-end
 app.use(cors({

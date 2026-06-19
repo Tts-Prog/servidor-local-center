@@ -25,4 +25,5 @@ import { check ,sleep } from "k6";
             "Login Rápido (Tempo de resposta < 500ms)": (r) => r.timings.duration < 500,
             "CPU: Esgotado (Erro 502/504)": (r) => r.status >= 500
         });
+        sleep(1);
     }
