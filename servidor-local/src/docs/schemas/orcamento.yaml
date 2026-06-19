@@ -1,122 +1,90 @@
-# schemas/orcamento.yaml
-#id: string,
-#total: number,
-#id_utilizadores: string,
-#enabled: boolean,
-#created_at: string,
-#updated_at: string 
+# schema/orcamento.yaml
 
 components:
   schemas:
-    # schema principal de orcamento
-    Orcamento:
+
+    orcamento:
       type: object
-      required:
-        - id
-        - total
-        - id_utilizadores
-        - enabled
-        - created_at
-        - updated_at
       properties:
         id:
           type: integer
           example: 1
         total:
           type: number
-          example: 500
-        id_utilizadores:
+          example: 200.0
+        id_utilizador:
           type: string
-          example: "a2e25ed1-e1e7-45d6-92cb-d2d8fb342ec0"
+          example: "e54f3cee-4997-49fc-ace8-833d0884b8cc"
         enabled:
           type: boolean
           example: true
         created_at:
           type: string
-          example: "2000-12-10T00:00:00.000Z"
+          format: date-time
+          example: "2026-03-11T10:01:12.000Z"
         updated_at:
           type: string
-          example: "2000-12-10T00:00:00.000Z"
+          format: date-time
+          example: "2026-03-11T10:01:12.000Z"
 
-    # schemas para criar um novo orcamento
+    # schema para criar um novo orçamento
     CreateOrcamento:
       type: object
-      required:
-        - total
-        - id_utilizadores
       properties:
         total:
+          type: number
+          example: 200.0
+        id_utilizador:
           type: string
-          example: "500"
-        id_utilizadores:
-          type: string
-          example: "a2e25ed1-e1e7-45d6-92cb-d2d8fb342ec0"
+          example: "e54f3cee-4997-49fc-ace8-833d0884b8cc"
         enabled:
           type: boolean
-          default: true
           example: true
+      required:
+        - total
+        - id_utilizador
+        - enabled
 
+    # schema para calcular um orçamento
     CalcularOrcamentoResponse:
       type: object
-      description: Resultado do cálculo do orcamento
-      required:
-        - id
-        - id_prestador
-        - taxa_urgencia
-        - subtotal
-        - total
-        - servicos
       properties:
-        id:
-          type: integer
-          example: 1
-        id_prestador:
-          type: integer
-          example: 1
-        taxa_urgencia:
-          type: number
-          format: float
-          example: 10
-        subtotal:
-          type: number
-          format: float
-          example: 200
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Orçamento calculado com sucesso
+        data:
+          type: object
+        properties:
         total:
           type: number
-          format: float
-          example: 220
-        servicos:
-          type: array
-          description: Lista de serviços do orçamento com total individual
-          items:
-            $ref: '#/components/schemas/CalcularResponse'
+          example: 15000
 
-    # schemas generico para sucesso
-    OrcamentoResponseSucess:
+    # schema genérico para sucesso
+    orcamentoResponseSucesso:
       type: object
       properties:
         message:
           type: string
-          example: "Orcamento criado com sucess"
+          example: Orçamento criado com sucesso
         status:
           type: boolean
           example: true
         data:
-          type: object
-          $ref: "#/components/schemas/Orcamento"
+          $ref: "#/components/schemas/orcamento"
 
-    # schemas generico de resposta de erro
-    OrcamentoResponseError:
+    # schema genérico de erro
+    orcamentoResponseErro:
       type: object
       properties:
         message:
           type: string
-          example: "Erro ao buscar orcamento"
+          example: Erro ao processar a requisição
         status:
           type: boolean
           example: false
         data:
           type: object
-          properties:
-            null
-
+          null: true

@@ -1,68 +1,54 @@
 import db from "./lib/db.js";
-import { formatDateDDMMYYYY } from "./utils/data.js";
+import { formatDateDDMMYYYY } from "./utils/date.js";
 import { hashPassword } from "./utils/password.js";
-import type { userType } from "./utils/types.js";
+import type { UserType } from "./utils/types.js";
 import { generateUUID } from "./utils/uuid.js";
 
 export async function getUsers() {
-    const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+    const rows = await db.execute("SELECT * FROM tbl_utilizadores");
     return rows;
 }
 
 export async function getUserById(id: string) {
     const [rows] = await db.execute(
-        "SELECT * FROM tbl_utilizadores WHERE id = ? ", [id]);
-    if (Array.isArray(rows) && rows.length === 0) return null
-    return Array.isArray(rows) ? rows[0] : null;
+        `SELECT * FROM tbl_utilizadores
+        WHERE tbl_utilizadores.id = ? `,
+        [id],
+    );
+
+    if (Array.isArray(rows) && rows.length === 0) return null;
+    return Array.isArray(rows) ? rows[0] : rows;
 }
 
-export async function createUser(
-    id: string,
-    nome: string,
-    numero_identidade: string,
-    data_nascimento: string,
-    email: string,
-    password: string,
-    telefone: string,
-    pais: string,
-    localidade: string,
-    enebled: boolean,
-    created_at: string,
-    update_at: string
-
-) {
+//criar uma função para inserir um utilizador na base de dados
+export async function insertUser(user: UserType) {
     try {
-
+        console.log(user);
         const [rows] = await db.execute(
-            `INSERT INTO tbl_utilizadores
-        (id, nome, numero_identidade, data_nascimento, email, password, telefone, pais, localidade, enebled, created_at, update_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO tbl_utilizadores (id,nome, numero_identificado, data_nascimento, email, telefone,
+        pais, localidade, password , enabled, created_at, update_at) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?)`,
             [
                 generateUUID(),
-                nome,
-                numero_identidade,
-                formatDateDDMMYYYY(data_nascimento),
-                email,
-                await hashPassword (password),
-                telefone,
-                pais,
-                localidade,
-                enebled,
+                user.nome,
+                user.numero_identificado,
+                formatDateDDMMYYYY(user.data_nascimento),
+                user.email,
+                user.telefone,
+                user.pais,
+                user.localidade,
+                await hashPassword(user.password),
+                user.enabled,
                 new Date(),
-                new Date()
-            ]
+                new Date(),
+            ],
         );
-
-        console.log({ rows })
-        return rows
+        return rows;
     } catch (error) {
         console.log(error);
         return null;
     }
 }
-
-
-export async function updateUser(id: string, updatedUser: userType) {
+export async function updateUser(id: string, updatedUser: UserType) {
     try {
         const query = `
         UPDATE tbl_utilizadores
@@ -83,41 +69,37 @@ export async function updateUser(id: string, updatedUser: userType) {
 
         const values = [
             updatedUser.nome,
-            updatedUser.numero_identidade,
-            updatedUser.data_nascimento,
+            updatedUser.numero_identificado,
+            formatDateDDMMYYYY(updatedUser.data_nascimento),
             updatedUser.email,
-            updatedUser.password,
             updatedUser.telefone,
             updatedUser.pais,
             updatedUser.localidade,
-            updatedUser.enebled,
+            await hashPassword(updatedUser.password),
+            updatedUser.enabled,
             new Date(),
-            id
-        ]
-        const rows = await db.execute(query, values)
+            id,
+        ];
+        const rows = await db.execute(query, values);
 
         return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
-
     } catch (error) {
         console.log(error);
-        return null
+        return null;
     }
 }
 
 export async function deleteUser(id: string) {
     try {
+        const query = "DELETE  FROM tbl_utilizadores WHERE id = ?";
 
-        const query = `DELETE  FROM tbl_utilizadores WHERE id = ?`
+        const values = [id];
 
-        const values = [id]
+        const rows: any = await db.execute(query, values);
 
-        const rows: any = await db.execute(query, values)
-
-        return rows[0]?.affectedRows === 0 ? null : rows
-
+        return rows[0]?.affetedRows === 0 ? null : rows;
     } catch (error) {
         console.log(error);
-        return null
+        return null;
     }
 }
-

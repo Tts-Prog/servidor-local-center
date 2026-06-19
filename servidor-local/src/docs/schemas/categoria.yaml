@@ -1,63 +1,112 @@
-# schemas/categoria.yaml
-#id: string;
-#designacao: string;
-#icone: string;
-#created_at: string;
-#updated_at: string;
+# Schema/Categoria.yaml
 
 components:
   schemas:
-    Categoria:
+
+    categoria:
       type: object
       properties:
         id:
           type: integer
           example: 1
-        designacao:
+        nome:
           type: string
-          example: "Limpeza"
-        icone:
+          example: Construção
+        descricao:
           type: string
-          example: "https://example.com/icon-categoria.png"
+          example: Serviços de construção
+        enabled:
+          type: boolean
+          example: true
         created_at:
           type: string
-          example: "2026-04-17T12:00:00.000Z"
+          format: date-time
+          example: "2026-03-11T10:01:12.000Z"
         updated_at:
           type: string
-          example: "2026-04-17T12:00:00.000Z"
+          format: date-time
+          example: "2026-03-11T10:01:12.000Z"
 
+    # schema para criar uma nova categoria
     CreateCategoria:
       type: object
       properties:
-        designacao:
+        nome:
           type: string
-          example: "Limpeza"
-        icone:
+          example: Construção
+        descricao:
           type: string
-          example: "https://example.com/icon-categoria.png"
-
-    CategoriaResponseSucess:
-      type: object
-      properties:
-        status:
+          example: Serviços de construção
+        enabled:
           type: boolean
           example: true
-        message:
-          type: string
-          example: "Categoria processada com sucesso"
-        data:
-          $ref: "#/components/schemas/Categoria"
+      required:
+        - nome
+        - descricao
+        - enabled
 
-    CategoriaResponseError:
+    # schema para atualizar uma categoria
+    UpdateCategoria:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Construção
+        descricao:
+          type: string
+          example: Serviços de construção
+        enabled:
+          type: boolean
+          example: true
+      required:
+        - nome
+        - descricao
+        - enabled
+
+    # schema para resposta de sucesso
+    SuccessResponseSuccess:
       type: object
       properties:
         status:
-          type: boolean
-          example: false
+          type: string
+          example: success
         message:
           type: string
-          example: "Erro ao processar a categoria"
+          example: Categoria criada com sucesso
         data:
           type: object
           properties:
-            null: {}
+            id:
+              type: integer
+              example: 1
+            nome:
+              type: string
+              example: Construção
+            descricao:
+              type: string
+              example: Serviços de construção
+            enabled:
+              type: boolean
+              example: true
+            created_at:
+              type: string
+              format: date-time
+              example: "2026-03-11T10:01:12.000Z"
+            updated_at:
+              type: string
+              format: date-time
+              example: "2026-03-11T10:01:12.000Z"
+
+    # schema para resposta de erro
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Erro ao criar categoria
+        data:
+          type: object
+          null: true

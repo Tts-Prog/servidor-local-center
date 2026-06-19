@@ -1,66 +1,68 @@
 # paths/prestador.yaml
 
 paths:
-  /prestador:
+  /prestadores:
     get:
-      summary: Listar todas as prestador
+      summary: Listar todos os prestadores
       tags:
-        - prestador
-      description: Retorna uma Lista de Todas os prestadores disponiveis
+        - Prestadores
+      description: Retorna a lista de todos os prestadores disponíveis
       responses:
         "200":
-          description: Lista de Prestador
+          description: Lista de prestadores
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/componentes/schemas/Prestador"
+                  $ref: "#/components/schemas/prestador"
+
         "404":
-          description: "Nenhuma Prestador Encontrado"
+          description: Prestador não encontrado
           content:
             application/json:
-              schemas:
-                type: object
-                $ref: "#/componentes/schemas/PrestadorResponseError"
+              schema:
+                $ref: "#/components/schemas/responseErro"
 
   /prestador/create:
     post:
-      summary: criar um novo Prestador
+      summary: Criar um novo prestador
       tags:
-      - prestador
-      description: Criar um novo Prestador
+        - Prestadores
+      description: Criar um novo prestador
       requestBody:
         required: true
         content:
           application/json:
             schema:
-            $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
           description: Prestador criado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseSucess"
+                $ref: "#/components/schemas/responseSucesso"
+
         "400":
-          description: Dados invalidos
+          description: Dados inválidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+              $ref: "#/components/schemas/responseErro"
+
 
   /prestador/get-by-id/{id}:
     get:
-      summary: Buscar um Prestador por ID
+      summary: Buscar um prestador por ID
       tags:
-        - prestador
-      description: Retorna um Prestador especifico pelo ID
+        - Prestadores 
+      description: Retorna um prestador específico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do Prestador
+          description: ID do prestador
           schema:
             type: integer
             example: 1
@@ -70,25 +72,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseSucess"
+                $ref: "#/components/schemas/prestador"
+
         "404":
-          description: Prestador nao encontrado
+          description: Prestador não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+                $ref: "#/components/schemas/responseErro"
 
   /prestador/update/{id}:
     put:
-      summary: Atualizar um Prestador
+      summary: Atualizar um prestador
       tags:
-        - prestador
-      description: Atualizar um Prestador especifico pelo ID
+        - Prestadores
+      description: Atualiza um prestador existente pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do Prestador
+          description: ID do prestador
           schema:
             type: integer
             example: 1
@@ -97,52 +100,54 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
-          description: Prestador atualizado com sucesso
+          description: Atualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseSucess"
+              $ref: "#/components/schemas/prestador"
+
         "400":
-          description: Dados invalidos
+          description: Dados inválidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+                $ref: "#/components/schemas/responseErro"
+
         "404":
-          description: Prestador nao encontrado
+          description: Prestador não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+              $ref: "#/components/schemas/responseErro"
 
   /prestador/delete/{id}:
     delete:
-      summary: Apagar um Prestador
+      summary: Deletar um prestador
       tags:
-        - prestador
-      description: Apagar um Prestador especifico pelo ID
+        - Prestadores
+      description: Deleta um prestador específico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico
+          description: ID do prestador
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Prestador apagado com sucesso
+          description: Prestador deletado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseSucess"
+              $ref: "#/components/schemas/responseSucesso"
+
         "404":
-          description: Prestador nao encontrado
+          description: Prestador não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+              $ref: "#/components/schemas/responseErro"

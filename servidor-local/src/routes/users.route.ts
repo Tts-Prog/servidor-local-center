@@ -1,31 +1,33 @@
 import { Router } from "express";
-import { UsersController } from "../controllers/users.controller.js";
-import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
+import { UserController } from "../controllers/users.controller.js";
+import  authMiddleware, {authorize, isOwner}  from "../security/auth.middleware.js";
 import { Role } from "../utils/types.js";
+import { UserModel } from "../models/users.model.js";
 
-const UsersRoute = {
+
+const userRouter = {
     create: "/create",
-    getById: "/:id",
+    getById: "/get-by-id/:id",
     getAll: "/",
-    update: "/:id",
-    delete: "/:id",
-    login: "/login",
-    updatePassword: "/update-password/:id",
-    resetPassword: "/reset-password",
-};
+    update: "/update/:id",
+    delete: "/delete/:id",
+    resetPassword: "/reset-password/:id",
+    login: "/login"
+}
 
-const router = Router();
 
-router.post(UsersRoute.login, UsersController.login);
-router.post(UsersRoute.create, UsersController.createUsers);
 
-router.use(AuthMiddleware);
+const router = Router()
+router.post(userRouter.login,UserController.login)
+router.post(userRouter.create, UserController.create)
 
-router.get(UsersRoute.getAll, authorize([Role.ADMIN]), UsersController.getAll);
-router.get(UsersRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.getById);
-router.put(UsersRoute.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.update);
-router.delete(UsersRoute.delete, authorize([Role.ADMIN]), UsersController.delete);
-router.put(UsersRoute.updatePassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.updatePassword);
-router.put(UsersRoute.resetPassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.resetPassword);
+router.use(authMiddleware)
 
-export { router };
+router.put(userRouter.resetPassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UserController.resetPassword)
+router.get(userRouter.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UserController.getById)
+router.put(userRouter.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), isOwner(UserModel, "id"), UserController.update)
+router.get(userRouter.getAll, authorize([Role.ADMIN]), UserController.getAll)
+router.delete(userRouter.delete, authorize([Role.ADMIN]), isOwner(UserModel, "id"), UserController.delete)
+
+export { router }
+
