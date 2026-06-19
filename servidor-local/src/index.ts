@@ -17,6 +17,8 @@ import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
+import statusMonitor from "express-status-monitor";
+import morgan from "morgan";
 
 const app = express();
 
@@ -30,6 +32,8 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 }));
 
+app.use(morgan("dev"));
+app.use(statusMonitor());
 // rota inicial do express
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
