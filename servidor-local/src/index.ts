@@ -1,62 +1,91 @@
-import express, {type Request, type Response } from "express";
+import "dotenv/config";
+import express, { type Request, type Response } from "express";
+import cors from "cors";
+import https from "https";
+import fs from "fs";
 import { router as serviceRouter } from "./routes/servico.route.js";
-import { router as prestadorRouter } from "./routes/prestador.route.js";
-import { router as propostaRouter } from "./routes/proposta.route.js";  
+import { router as usersRouter } from "./routes/users.route.js";
 import { router as orcamentoRouter } from "./routes/orcamento.route.js";
-import { router as userRouter } from "./routes/users.route.js";
-import { router as prestacaoServicoRouter } from "./routes/prestacaoservico.routes.js";
-import {swaggerSpec} from "./docs/swagger.js"
+import { router as propostaRouter } from "./routes/proposta.route.js";
+import { router as prestadorRouter } from "./routes/prestador.route.js";
+import { router as prestacaoServicoRouter } from "./routes/prestacao-servico.route.js";
+import { router as empresaRouter } from "./routes/empresa.route.js";
+import { router as categoriaRouter } from "./routes/categoria.route.js";
+import { swaggerSpec } from "./docs/swagger.js"
 import swaggerUi from "swagger-ui-express"
-import dotenv from "dotenv"
-import { resolvers, typeDefs } from "./graphql/index.js";
 import { ApolloServer } from "@apollo/server";
+import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
-import cors from "cors"
+import expressmonitor from "express-status-monitor";
+import morgan from "morgan";
 
 const app = express();
+app.use(expressmonitor());
+app.use(morgan("combined"));
 
-app.use(express.json());
+app.use(express.json()); // para interpretar o corpo das requisições como JSON
+
+// liberta o front-end de aceder ao back-end
 app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-  
+    origin: ["http://localhost:3000", "https://servidor-local-center-backend2.onrender.com", "https://servidor-local-front-ts.vercel.app", "https://servidor-local-center-three.vercel.app"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+}));
+
+// rota inicial do express
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello World!");
+});
+
+// rotas do express
+app.use("/service", serviceRouter)
+app.use("/users", usersRouter)
+app.use("/orcamento", orcamentoRouter)
+app.use("/proposta", propostaRouter)
+app.use("/prestador", prestadorRouter)
+app.use("/prestacao-servico", prestacaoServicoRouter)
+app.use("/empresa", empresaRouter)
+app.use("/categoria", categoriaRouter)
+
+// rota da documentação swagger
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// ***************** graphql ***************** //
+//cria o servidor graphql
+const graphqlServer = new ApolloServer({
+    typeDefs,
+    resolvers,
+})
+
+//cria a rota graphql
+await graphqlServer.start();
+
+app.use("/graphql", expressMiddleware(graphqlServer, {
+    context: async ({ req }) => ({
+        //verificar se o header de autorizacao existe
+        token: req.headers.authorization,
+        DB_HOST: process.env.DB_HOST,
+        DB_USER: process.env.DB_USER,
+        DB_PASSWORD: process.env.DB_PASSWORD,
+        DB_NAME: process.env.DB_NAME,
+    }),
 }))
 
-dotenv.config();
+const PORT = process.env.PORT ?? 8080;
 
-app.use("/service", serviceRouter)
-app.use("/prestador", prestadorRouter)
-app.use("/proposta", propostaRouter)
-app.use("/orcamento", orcamentoRouter)
-app.use("/user", userRouter)
-app.use("/prestacao-servico",  prestacaoServicoRouter)
+if (process.env.NODE_ENV === "development") {
+    // inicia o servidor na porta 8080 com SSL
+    const sslOptions = {
+        key: fs.readFileSync('./cert/server.key'),
+        cert: fs.readFileSync('./cert/server.cert')
+    };
 
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-
-const graphqlServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
-
-await graphqlServer.start()
-
-app.use("/graphql", 
-  expressMiddleware(graphqlServer, { context: async ({ req }) => ({  
-  Token: req.headers.authorization,
-  DB_HOST: process.env.DB_HOST,
-  DB_USER: process.env.DB_USER,
-  DB_PASSWORD: process.env.DB_PASSWORD,
-  DB_NAME: process.env.DB_DATABASE,
-}) })
-);
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World");
-});
-
-
-
-app.listen(8080, () => {
-  console.log("Server running on port 8080");
-});
+    https.createServer(sslOptions, app).listen(PORT, () => {
+        console.log(`Servidor rodando em https://localhost:${PORT}`);
+    });
+} else {
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    });
+}

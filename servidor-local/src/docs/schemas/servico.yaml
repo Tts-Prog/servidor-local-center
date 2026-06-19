@@ -1,9 +1,16 @@
-# schema/servico.yaml
+# schemas/servico.yaml
+#id: string;
+#nome: string;
+#descricao: string;
+#categoria: string;
+#enabled_at: boolean;
+#created_at: string;
+#updated_at: string;
 
 components:
   schemas:
-
-    servico:
+    # schema principal de servico
+    Servico:
       type: object
       properties:
         id:
@@ -11,76 +18,42 @@ components:
           example: 1
         nome:
           type: string
-          example: Serviço de limpeza
+          example: "Servico de limpeza"
         descricao:
           type: string
-          example: Serviço de limpeza profissional para residências
+          example: " Servico de Limpeza Profissional para residentes e empresa"
         categoria:
           type: string
-          example: limpeza
-        enabled:
+          example: "Limpeza"
+        enabled_at:
           type: boolean
           example: true
         created_at:
           type: string
-          format: date-time
-          example: "2022-02-02T00:00:00.000Z"
+          example: "2010-12-10T00:00:00.000Z"
         updated_at:
           type: string
-          format: date-time
-          example: "2022-02-02T00:00:00.000Z"
+          example: "2010-12-10T00:00:00.000Z"
 
-    # schema para criar um novo serviço
+    # schemas para criar um novo servico
     CreateService:
       type: object
       properties:
         nome:
           type: string
-          example: Serviço de limpeza
+          example: "Servico de Limpeza"
         descricao:
           type: string
-          example: Serviço de limpeza profissional para residências e empresas
+          example: "Servico de Limpeza Profissional para residentes e empresa"
         categoria:
           type: string
-          example: limpeza
-        enabled:
+          example: Limpeza
+        enabled_at:
           type: boolean
           example: true
-      required:
-        - nome
-        - descricao
-        - categoria
-        - enabled
 
-    # schema genérico para sucesso
-    servicoResponseSucesso:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Serviço criado com sucesso
-        status:
-          type: boolean
-          example: true
-        data:
-          $ref: "#/components/schemas/servico"
-
-    # schema genérico de erro
-    servicoResponseErro:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Erro ao processar a requisição
-        status:
-          type: boolean
-          example: false
-        data:
-          type: object
-          null: true
-
-# schema para buscar servico detalhado
-    servicoDetalhada:
+    # schemas  buscar servico detalhado    
+    ServicoDetalhado:
       type: object
       properties:
         id:
@@ -88,26 +61,51 @@ components:
           example: 1
         nome:
           type: string
-          example: Serviço de limpeza
+          example: "Servico de limpeza"
         descricao:
           type: string
-          example: Serviço de limpeza profissional para residências e empresas
+          example: " Servico de Limpeza Profissional para residentes e empresa"
         designacao_categoria:
           type: string
-          example: limpeza
+          example: "Designação do serviço"
         icone_categoria:
           type: string
-          example: ""
+          example: "Icone do serviço"
         id_empresa:
           type: integer
           example: 1
         designacao_empresa:
           type: string
           example: "Empresa de Limpeza"
-        icone_empresa:
-          type: string
-          example: ""
         enabled:
           type: boolean
           example: true
-            
+
+    # schemas generico para sucesso
+    ServiceResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Servico criado com sucess"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Servico"
+
+    # schemas generico de resposta de erro
+    ServiceResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao buscar servicos"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          properties:
+            null

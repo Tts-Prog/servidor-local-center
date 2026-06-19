@@ -1,28 +1,25 @@
+import { Router } from "express";
+import AuthMiddleware, { authorize } from "../security/auth.middleware.js";
+import { Role } from "../utils/types.js";
+import { PrestadorController } from "../controllers/prestador.controller.js";
 
-
-import { Router } from "express"
-import { prestadorController } from "../controllers/prestador.control.js"
-import authMiddleware, { authorize } from "../security/auth.middleware.js"
-import { Role } from "../utils/types.js"
-
-
-const prestadorRoute = {
+const PrestadorRoute = {
     create: "/create",
     getById: "/get-by-id/:id",
     getAll: "/",
     update: "/update/:id",
     delete: "/delete/:id"
-}
+};
 
-const router = Router()
+const router = Router();
 
-router.get(prestadorRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), prestadorController.getAll)
-router.get(prestadorRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), prestadorController.getById)
-router.post(prestadorRoute.create,authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA]), prestadorController.create)
+router.get(PrestadorRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.getAll);
+router.get(PrestadorRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.get);
 
-router.use(authMiddleware)
-router.put(prestadorRoute.update, authorize([Role.ADMIN]), prestadorController.update)
-router.delete(prestadorRoute.delete, authorize([Role.ADMIN]), prestadorController.delete)
+router.use(AuthMiddleware);
 
+router.post(PrestadorRoute.create, authorize([Role.ADMIN]), PrestadorController.create);
+router.put(PrestadorRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.update);
+router.delete(PrestadorRoute.delete, authorize([Role.ADMIN]), PrestadorController.delete);
 
-export { router }
+export { router };

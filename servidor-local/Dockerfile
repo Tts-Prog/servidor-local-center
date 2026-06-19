@@ -1,20 +1,20 @@
-    # expecifica versao  de sestema operacional base
-FROM node:22-alpine
+# 1. Especifica  versao de sistema operacional base
+FROM node:20-alpine
 
-# define a pasta onde o codigo vai ser executado
+# 2. Define a pasta onde o codigo vai ser executado
 WORKDIR /app
 
-# copia os arquivos package.json e package-lock.json para a pasta / app
+# 3. Copia os arquivos package.json e package-lock.json para a pasta /app
 COPY package*.json ./
 
-# instala as dependencias
+# 4. Instala as dependencias
 RUN npm install
 
-# copia o codigo-fonte para a pasta / app
+# 5. Copia o código-fonte para a pasta /app
 COPY . .
 
-#informar parta que a aplicacao vai rodar
+# 6. Informar a porta que a aplicacao vai usar
 EXPOSE 8080
 
-# comando para iniciar a aplicacao
+# 7. Comando para executar a aplicação em modo de desenvolvimento
 CMD ["npm", "run", "dev"]

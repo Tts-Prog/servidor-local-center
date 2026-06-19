@@ -1,68 +1,66 @@
 # paths/prestador.yaml
 
 paths:
-  /prestadores:
+  /prestador:
     get:
-      summary: Listar todos os prestadores
+      summary: Listar todas as prestador
       tags:
-        - Prestadores
-      description: Retorna a lista de todos os prestadores disponíveis
+        - prestador
+      description: Retorna uma Lista de Todas os prestadores disponiveis
       responses:
         "200":
-          description: Lista de prestadores
+          description: Lista de Prestador
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/prestador"
-
+                  $ref: "#/componentes/schemas/Prestador"
         "404":
-          description: Prestador não encontrado
+          description: "Nenhuma Prestador Encontrado"
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/responseErro"
+              schemas:
+                type: object
+                $ref: "#/componentes/schemas/PrestadorResponseError"
 
   /prestador/create:
     post:
-      summary: Criar um novo prestador
+      summary: criar um novo Prestador
       tags:
-        - Prestadores
-      description: Criar um novo prestador
+      - prestador
+      description: Criar um novo Prestador
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+            $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
           description: Prestador criado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseSucesso"
-
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "400":
-          description: Dados inválidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/responseErro"
-
+                $ref: "#/components/schemas/PrestadorResponseError"
 
   /prestador/get-by-id/{id}:
     get:
-      summary: Buscar um prestador por ID
+      summary: Buscar um Prestador por ID
       tags:
-        - Prestadores 
-      description: Retorna um prestador específico pelo ID
+        - prestador
+      description: Retorna um Prestador especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID do Prestador
           schema:
             type: integer
             example: 1
@@ -72,26 +70,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/prestador"
-
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "404":
-          description: Prestador não encontrado
+          description: Prestador nao encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseErro"
+                $ref: "#/components/schemas/PrestadorResponseError"
 
   /prestador/update/{id}:
     put:
-      summary: Atualizar um prestador
+      summary: Atualizar um Prestador
       tags:
-        - Prestadores
-      description: Atualiza um prestador existente pelo ID
+        - prestador
+      description: Atualizar um Prestador especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID do Prestador
           schema:
             type: integer
             example: 1
@@ -100,54 +97,52 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
-          description: Atualizado com sucesso
+          description: Prestador atualizado com sucesso
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/prestador"
-
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "400":
-          description: Dados inválidos
+          description: Dados invalidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/responseErro"
-
+                $ref: "#/components/schemas/PrestadorResponseError"
         "404":
-          description: Prestador não encontrado
+          description: Prestador nao encontrado
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/responseErro"
+                $ref: "#/components/schemas/PrestadorResponseError"
 
   /prestador/delete/{id}:
     delete:
-      summary: Deletar um prestador
+      summary: Apagar um Prestador
       tags:
-        - Prestadores
-      description: Deleta um prestador específico pelo ID
+        - prestador
+      description: Apagar um Prestador especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID do servico
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Prestador deletado com sucesso
+          description: Prestador apagado com sucesso
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/responseSucesso"
-
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "404":
-          description: Prestador não encontrado
+          description: Prestador nao encontrado
           content:
             application/json:
               schema:
-              $ref: "#/components/schemas/responseErro"
+                $ref: "#/components/schemas/PrestadorResponseError"
