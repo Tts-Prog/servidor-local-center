@@ -5,7 +5,7 @@ import { generateUUID } from "../utils/uuid.js";
 export const ServiceModel = {
   async create(newService: ServiceDBType): Promise<ServiceDBType | null> {
     try {
-      const query = `INSERT INTO tbl_servicos (id, nome, descricao, categoria, enabled_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+      const query = `INSERT INTO tbl_servicos (id, nome, descricao, categoria, enabled, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
       const values = [
         generateUUID(),
         newService.nome,
@@ -53,7 +53,7 @@ export const ServiceModel = {
   ): Promise<ServiceDBType | null> {
     try {
       const query = `UPDATE tbl_servicos
-        SET nome=$1, descricao=$2, categoria=$3, enabled_at=$4, updated_at=$5
+        SET nome=$1, descricao=$2, categoria=$3, enabled=$4, updated_at=$5
         WHERE id=$6
         RETURNING *`;
       const values = [
@@ -101,12 +101,12 @@ export const ServiceModel = {
             e.id as id_empresa,
             e.designacao as designacao_empresa,
             e.icone as icone_empresa,
-            s.enabled_at as enabled
+            s.enabled
         FROM tbl_servicos s
         INNER JOIN tbl_categoria c ON c.id = s.categoria
         INNER JOIN tbl_prestacao_servico ps ON s.id = ps.id_servico
         INNER JOIN tbl_empresa e ON e.id = ps.id_empresa
-        WHERE s.enabled_at = true
+        WHERE s.enabled = true
         LIMIT $1 OFFSET $2
         `;
       const values = [limit, offset];
