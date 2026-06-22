@@ -12,10 +12,13 @@ import { router as prestacaoServicoRouter } from "./routes/prestacao-servico.rou
 import { router as empresaRouter } from "./routes/empresa.route.js";
 import { router as categoriaRouter } from "./routes/categoria.route.js";
 import { swaggerSpec } from "./docs/swagger.js"
+import { initDatabase } from "./lib/init-db.js"
 import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
+import statusMonitor from 'express-status-monitor';
+import morgan from "morgan";
 
 const app = express();
 
@@ -23,11 +26,19 @@ app.use(express.json()); // para interpretar o corpo das requisições como JSON
 
 // liberta o front-end de aceder ao back-end
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://servidor-local-center-backend2.onrender.com", "https://servidor-local-front-ts.vercel.app", "https://servidor-local-center-three.vercel.app"],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 }));
 
+app.use(morgan("dev"));
+app.use(statusMonitor());
+
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
 
 // rota inicial do express
 app.get("/", (req: Request, res: Response) => {
@@ -68,12 +79,23 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     }),
 }))
 
-// inicia o servidor na porta 8080 com SSL
-const sslOptions = {
-    key: fs.readFileSync('./cert/server.key'),
-    cert: fs.readFileSync('./cert/server.cert')
-};
+// Criar tabelas na base de dados se não existirem
+await initDatabase();
 
-https.createServer(sslOptions, app).listen(8080, () => {
-    console.log("Servidor rodando em https://localhost:8080");
-});
+const PORT = Number(process.env.PORT) || 8080;
+
+if (process.env.NODE_ENV === "development") {
+    // inicia o servidor na porta 8080 com SSL
+    const sslOptions = {
+        key: fs.readFileSync('./cert/server.key'),
+        cert: fs.readFileSync('./cert/server.cert')
+    };
+
+    https.createServer(sslOptions, app).listen(PORT, () => {
+        console.log(`Servidor rodando em https://localhost:${PORT}`);
+    });
+} else {
+    app.listen(PORT, () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
+    });
+}
