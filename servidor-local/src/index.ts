@@ -34,7 +34,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 }));
 
-
+app.use(morgan("dev"));
 app.use(statusMonitor());
 
 app.use((req, res, next) => {
