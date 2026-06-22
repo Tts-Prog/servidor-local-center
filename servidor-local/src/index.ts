@@ -17,14 +17,9 @@ import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
-<<<<<<< HEAD
-import satatusMonitor from "express-status-monitor";
-import  morgan  from "morgan";
-=======
 import statusMonitor from 'express-status-monitor';
 import morgan from "morgan";
 
->>>>>>> 704ae7d052a130fa26abb11f2c3ce1b2fbf9428b
 const app = express();
 
 app.use(express.json()); // para interpretar o corpo das requisições como JSON
