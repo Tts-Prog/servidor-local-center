@@ -2,8 +2,8 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 const options = {
-  vus: 20, // número de usuários virtuais
-  duration: "30s", // duração do teste
+    vus: 20, // número de usuários virtuais
+    duration: "30s", // duração do teste
 };
 
 export default function () {
@@ -26,5 +26,5 @@ export default function () {
     "CPU Esgotado (Erro 502/504)": (r) => r.status >= 500, // não deve retornar erro de CPU esgotado
     });
 
-  sleep(1); // espera 1 segundo entre as requisições
+    sleep(1); // espera 1 segundo entre as requisições
 }
