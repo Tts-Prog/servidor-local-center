@@ -3,7 +3,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 RUN corepack enable
-dfsf
+
 COPY package.json ./
 RUN pnpm install
 
