@@ -19,9 +19,37 @@ export const RightSection = () => {
   const [location, setLocation] = useState("");
   const [password, setPassword] = useState("");
 
+  const verifyFields = () => {
+    if (
+      !name ||
+      name !== "" ||
+      !number ||
+      number !== "" ||
+      !birthDate ||
+      birthDate !== "" ||
+      !email ||
+      email !== "" ||
+      !phone ||
+      phone !== "" ||
+      !country ||
+      country !== "" ||
+      !location ||
+      location !== "" ||
+      !password ||
+      password !== ""
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    if (verifyFields()) {
+      toast.error("Please fill in all the fields.");
+      return;
+    }
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/users/create`,
       {

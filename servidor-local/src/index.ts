@@ -17,7 +17,7 @@ import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
-import statusMonitor from "express-status-monitor";
+import statusMonitor from 'express-status-monitor';
 import morgan from "morgan";
 
 const app = express();
@@ -34,6 +34,12 @@ app.use(cors({
 
 app.use(morgan("dev"));
 app.use(statusMonitor());
+
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
+
 // rota inicial do express
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
@@ -76,7 +82,7 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
 // Criar tabelas na base de dados se não existirem
 await initDatabase();
 
-const PORT = process.env.PORT ?? 8080;
+const PORT = Number(process.env.PORT) || 8080;
 
 if (process.env.NODE_ENV === "development") {
     // inicia o servidor na porta 8080 com SSL
@@ -90,6 +96,6 @@ if (process.env.NODE_ENV === "development") {
     });
 } else {
     app.listen(PORT, () => {
-        console.log(`Servidor rodando em http://localhost:${PORT}`);
+        console.log(`Servidor rodando na porta ${PORT}`);
     });
 }

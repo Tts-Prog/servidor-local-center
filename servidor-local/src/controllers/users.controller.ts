@@ -9,6 +9,7 @@ export const UsersController = {
     //  Criar utilizador
     async createUsers(req: Request, res: Response) {
         const user: userType = req.body;
+        console.log("User " + user)
 
         if (!user) {
             const response: ResponseType<null> = {
@@ -23,6 +24,15 @@ export const UsersController = {
         if (!user.password) console.log("error user sem nada")
 
         const createUserResponse = await UsersModel.create(user)
+
+        if (!createUserResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar utilizador",
+                data: null,
+            };
+            return res.status(500).json(response);
+        }
 
         const response: ResponseType<UserDBType> = {
             status: "success",
