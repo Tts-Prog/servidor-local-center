@@ -204,7 +204,7 @@ app.get("/listall", (req: Request, res: Response) => {
 });
 
 
-// rota para apagar um serviço 
+// rota para apagar um serviço
 app.delete("/apagar-servico", (req: Request, res: Response) => {
     const { nome } = req.query
     if (nome) {
@@ -263,7 +263,7 @@ app.post("/selecionar-prestador", (req: Request, res: Response) => {
 });
 
 
-//rota para criar prestador 
+//rota para criar prestador
 app.post("/criar-prestador", (req: Request, res: Response) => {
     // pegar o corpo de requisicao com os dados do novo prestador
     const novoPrestador = req.body
@@ -670,7 +670,7 @@ app.get("/updated-user-by-id/:id", async (req: Request, res: Response) => {
     const getServiceByIdResponse = await getServiceById(id as string);
 
 <<<<<<< HEAD
- if (!getServiceByIdResponse) {
+    if (!getServiceByIdResponse) {
         return res.status(404).json({
             status: "error",
             message: "servico não encontrado",
@@ -709,9 +709,9 @@ app.get("/get-all-services", async (req: Request, res: Response) => {
 app.put("/update-service-by-id/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
 
-const updatedService: ServiceDBType = req.body
+    const updatedService: ServiceDBType = req.body
 
-if (!id) {
+    if (!id) {
         return res.status(400).json({
             status: "error",
             message: "ID é obrigatório",
@@ -727,7 +727,7 @@ if (!id) {
         });
     }
 
-    const updateServiceResponse = await updateService (id as string, updatedService)
+    const updateServiceResponse = await updateService(id as string, updatedService)
 
     if (!updateServiceResponse) {
         return res.status(400).json({
@@ -737,7 +737,7 @@ if (!id) {
         });
     }
 
-    return  res.status(200).json({
+    return res.status(200).json({
         status: "sucess",
         message: "servico atualizado com sucesso",
         data: updateServiceResponse
@@ -748,7 +748,7 @@ if (!id) {
 app.delete("/delete-service-by-id/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
 
-if (!id) {
+    if (!id) {
         return res.status(400).json({
             status: "error",
             message: "ID  obrigatório",
@@ -756,7 +756,7 @@ if (!id) {
         });
     }
 
-    const deleteServiceResponse = await deleteService (id as string)
+    const deleteServiceResponse = await deleteService(id as string)
 
     if (!deleteServiceResponse) {
 =======
@@ -779,12 +779,12 @@ if (!id) {
     }
 
 <<<<<<< HEAD
-        return res.status(200).json({
-            status: "sucess",
-            message: "Servico apagado com sucesso",
-            data: deleteServiceResponse
-        });
-    })
+    return res.status(200).json({
+        status: "sucess",
+        message: "Servico apagado com sucesso",
+        data: deleteServiceResponse
+    });
+})
 =======
     return res.status(400).json({
         status: "sucess",
@@ -852,9 +852,5 @@ app.post("/novo-prestador", async (req: Request, res: Response) => {
 
 // inicia o servidor na porta 3000
 app.listen(8080, () => {
-<<<<<<< HEAD
-    console.log("Servidor rodando na porta 8080");
-=======
     console.log("Servidor rodando em http://localhost:8080");
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
 });
