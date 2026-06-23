@@ -15,11 +15,15 @@ export default function () {
     password: "123456789",
   });
 
-  const headers = {
-    "Content-Type": "application/json",
+  const params = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    origins: "https://gulugulu-teal.vercel.app",
+    "user-Agent" : "k6-load-teste",
   };
 
-  const response = http.post(url, payload, { headers });
+  const response = http.post(url, payload, params);
   check(response, {
     "Login Bem-sucedido": (r) => r.status === 200,
     "Login Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
