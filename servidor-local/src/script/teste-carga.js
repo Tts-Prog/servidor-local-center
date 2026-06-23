@@ -28,7 +28,6 @@ export default function () {
         console.log(
             `Erro! Status: ${response.status} | Resposta do Servidor: ${response.body}`);
     };
-}
 
     check(response, { 
         "Login Bem-sucedido": (r) => r.status === 200,
