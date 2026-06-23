@@ -49,6 +49,7 @@ app.use(cors({
         "https://gulugulu-six.vercel.app",
         "https://gulugulu-nu.vercel.app",
         "https://gulugulu-lovat.vercel.app",
+        "https://gulugulu-theta.vercel.app"
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
