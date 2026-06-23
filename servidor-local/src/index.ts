@@ -16,8 +16,10 @@ import swaggerUi from "swagger-ui-express"
 import { ApolloServer } from "@apollo/server";
 import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
+import  morgan  from "morgan";
 
 const app = express();
+app.use(morgan("dev")); //  partir de agora, o separador "Logs" do Render vai mostrar tudo em direto.
 
 app.use(express.json()); // para interpretar o corpo das requisições como JSON
 
