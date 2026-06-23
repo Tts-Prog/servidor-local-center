@@ -1,24 +1,38 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-const options = {
+export const options = {
     vus: 20, // número de usuários virtuais
     duration: "30s", // duração do teste
 };
 
 export default function () {
-    const url = "https://servidor-local-center-backend-0yv2.onrender.com"; // URL do endpoint a ser testado
+    const url = "https://servidor-local-center-1rnu.onrender.com/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
         email: "z@gmail.com",
         password: "9999",
     });
 
-    const headers = {
-        "Content-Type": "application/json",
-    };
+    //const headers = {
+      //  "Content-Type": "application/json",
+    //};
 
-    const response = http.post(url, payload, { headers });
+    const params = {
+        headers: {
+            "Content-Type": "application/json",
+            Origin: "https://processo-kappa.vercel.app/",
+            "User-Agent": "k6-load-test",
+        }
+    }
+
+    const response = http.post(url, payload, params);
+    if (response.status !== 200) {
+        console.log(
+            `ERRO! Status: ${response.status} | Resposta do Servidor: ${response.body}`,
+        );
+    }
+
     check(response, { 
         "Login Bem-sucedido": (r) => r.status === 200,
         "Login Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
