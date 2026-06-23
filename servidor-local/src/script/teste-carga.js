@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-const options = {
+export const options = {
     vus: 20, // número de usuários virtuais
     duration: "30s", // duração do teste
 };
@@ -15,9 +15,24 @@ export default function () {
     password: "jackie2026@#",
     });
 
-    const headers = {
-    "Content-Type": "application/json",
-    };
+    // const headers = {
+    // "Content-Type": "application/json",
+    //};
+
+    const params = {
+        headers: {
+            "Content-Type": "application/json",
+            origin: "https://gulugulu-amber.vercel.app", // <-- Finge que és o teu frontend!
+            "User-Agent": "k6-load-test",
+        },
+    }
+
+    const response = http.post(url, payload, params);
+    if (response.status !== 200) {
+        console.log(
+        `Erro: Status: $${response.status} | Resposta do Servidor: ${response.body}`,
+    );
+    }
 
     const response = http.post(url, payload, { headers });
     check(response, {
