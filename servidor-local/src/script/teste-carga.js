@@ -24,6 +24,12 @@ export default function () {
   };
 
   const response = http.post(url, payload, params);
+  if (response.status !== 200) (
+    console.log (
+      `Erro! Status: ${response.status} | resposta do servidor: ${response.body}`,
+    )
+  )
+  
   check(response, {
     "Login Bem-sucedido": (r) => r.status === 200,
     "Login Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
