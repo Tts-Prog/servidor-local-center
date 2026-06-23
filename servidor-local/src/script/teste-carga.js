@@ -8,11 +8,11 @@ const options = {
 
 export default function () {
     const url =
-    "https://servidor-local-center-backend-wt4z.onrender.com/users/login"; // URL do endpoint a ser testado
+    "https://servidor-local-center-backend-ifql.onrender.com"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-    email: "z@gmail.com",
-    password: "9999",
+    email: "jacks@gmail.com",
+    password: "jackie2026@#",
     });
 
     const headers = {
