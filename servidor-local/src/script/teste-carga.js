@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-const options = {
+export const options = {
     vus: 20, // número de usuários virtuais
     duration: "30s", // duração do teste
 };
@@ -10,12 +10,18 @@ export default function () {
     const url = "https://servidor-local-center-backend-0yv2.onrender.com"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-        email: "z@gmail.com",
-        password: "9999",
+        email: "furria1@gmail.com",
+        password: "labanta2526",
     });
+
+    //const headers = {
+    //    "Content-type":"application/json"
+    //}
 
     const headers = {
         "Content-Type": "application/json",
+        "Origin": "https://servidor-local-center.vercel.app",
+        "User-Agent":"k6-load-test",
     };
 
     const response = http.post(url, payload, { headers });
