@@ -1,29 +1,41 @@
 import http from "k6/http";
 import { check ,sleep } from "k6";
 
-    const options = {
+    export const options = {
         vus: 20,
         duration: "30s",
     };
 
     export default function (){
-        const unl= "http:/servidor-local-center-backend2.onrender.com/users/login";
+        const unl= "https://servidor-local-center-api.onrender.com/users/login";
 
         const payload = JSON.stringify({
-            email: "elvinzoares1@gmail.com",
-            password: "Webpass123"
+            email: "teste@gmail.com",
+            password: "12345"
         });
 
-        const headers = {
-            "Content- Type": "application/json",
-        }
+        // const headers = {
+        //     "Content- Type": "application/json",
+        // }
 
-        const response = http.post(unl, payload, { headers: headers });
+        const params = {
+            headers: {
+                "Content-Type": "application/json",
+                Origin: "https://gulugulu-theta.vercel.app/login",
+                "User-Agent": "k6-login-test",
+            },
+        };
+
+        const response = http.post(unl, payload, params);
+        if (response.status !== 200) {
+            console.log(
+                `ERRO! Status: ${response.status} | Resposta do servidor: ${response.body}`);
+        }
 
         check(response, {
             "Login com sucesso (Status 200)": (r) => r.status === 200,
             "Login Rápido (Tempo de resposta < 500ms)": (r) => r.timings.duration < 500,
             "CPU: Esgotado (Erro 502/504)": (r) => r.status >= 500
-        });
+        }); 
         sleep(1);
     }

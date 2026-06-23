@@ -72,6 +72,8 @@ export const UsersModel = {
         `SELECT * FROM tbl_utilizadores WHERE email = $1`,
         [email],
       );
+      console.log(result);
+      
       if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {
