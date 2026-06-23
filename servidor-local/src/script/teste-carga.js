@@ -11,7 +11,7 @@ export default function () {
     "https://servidor-local-center-backend-ifql.onrender.com"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-    email: "jacks@gmail.com",
+    email: "jaks@gmail.com",
     password: "jackie2026@#",
     });
 
