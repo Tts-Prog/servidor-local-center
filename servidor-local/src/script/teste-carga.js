@@ -7,7 +7,7 @@ export const options = {
 };
 
 export default function () {
-    const url = "https://servidor-local-center-backend-0yv2.onrender.com"; // URL do endpoint a ser testado
+    const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
         email: "furria1@gmail.com",
@@ -18,10 +18,12 @@ export default function () {
     //    "Content-type":"application/json"
     //}
 
-    const headers = {
-        "Content-Type": "application/json",
-        "Origin": "https://servidor-local-center.vercel.app",
-        "User-Agent":"k6-load-test",
+    const params = {
+        headers:{
+            "Content-Type": "application/json",
+            "Origin": "https://servidor-local-center.vercel.app",
+            "User-Agent":"k6-load-test",
+        },
     };
 
     const response = http.post(url, payload, params);
