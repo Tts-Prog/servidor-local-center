@@ -34,7 +34,6 @@ export default function () {
     );
     }
 
-    const response = http.post(url, payload, { headers });
     check(response, {
     "Login Bem-sucedido": (r) => r.status === 200,
     "Login Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
