@@ -18,9 +18,9 @@ export default function () {
   const params = {
     headers: {
       "Content-Type": "application/json",
-    },
-    origins: "https://gulugulu-teal.vercel.app",
+      origins: "https://gulugulu-teal.vercel.app",
     "user-Agent" : "k6-load-teste",
+    },
   };
 
   const response = http.post(url, payload, params);
