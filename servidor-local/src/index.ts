@@ -47,7 +47,8 @@ app.use(cors({
         "https://gulugulu-amber.vercel.app",
         "https://dev-gulugulu-ismael.vercel.app",
         "https://gulugulu-six.vercel.app",
-        "https://gulugulu-nu.vercel.app"
+        "https://gulugulu-nu.vercel.app",
+        "https://gulugulu-lovat.vercel.app",
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
