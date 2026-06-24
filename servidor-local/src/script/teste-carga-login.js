@@ -11,7 +11,7 @@ export default function () {
         "https://servidor-local-center-backend-wt4z.onrender.com/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-        email: "a@gmail.com",
+        email: "K@gmail.com",
         password: "1234",
     });
 
