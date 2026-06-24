@@ -18,7 +18,7 @@ export function setup() {
         headers: {
             "content-Type": "application/json",
             "user-Agent": "k6 load test", // cabeçalho User-Agent para identificar o teste
-            Origin: "https://again-liart.vercel.app/login", // funge que és teu frontend
+            Origin: "https://again-liart.vercel.app", // funge que és teu frontend
         },
     };  
 
