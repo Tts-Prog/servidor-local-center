@@ -7,7 +7,7 @@ export const options ={
 }
 
 export function setup(){
-    const  loginUrl = "https://servidor-local-center-api-4fel.onrender.com/users/login";
+    const  loginUrl = "https://servidor-local-center-backend-lmgl.onrender.com/users/login";
 
     const paylod = JSON.stringify({
         email: "pedrogmes@gmail.com",
@@ -28,7 +28,7 @@ export function setup(){
 }
 
 export default function (data){
-    const url = "https: //servidor-local-center-backend2.onrender.com/servicos/gett-all-servico-detalhado"
+    const url = "https://servidor-local-center-backend-lmgl.onrender.com/servicos/gett-all-servico-detalhado"
 
     const params = {
         headers:{
