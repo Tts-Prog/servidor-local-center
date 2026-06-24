@@ -8,7 +8,7 @@ export const options = {
 
 export default function () {
     const url =
-    "https://servidor-local-center-backend-ifql.onrender.com"; // URL do endpoint a ser testado
+    "https://servidor-local-center-backend-ifql.onrender.com/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
     email: "jakscv@gmail.com",
@@ -22,7 +22,7 @@ export default function () {
     const params = {
         headers: {
             "Content-Type": "application/json",
-            origin: "https://gulugulu-amber.vercel.app", // <-- Finge que és o teu frontend!
+            origin: "https://gulugulu-amber.vercel.app/login", // <-- Finge que és o teu frontend!
             "User-Agent": "k6-load-test",
         },
     }
