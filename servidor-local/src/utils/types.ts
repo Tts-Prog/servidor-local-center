@@ -60,7 +60,7 @@ export interface userType {
     pais: string;
     localidade: string;
     role: Role;
-    enabled: boolean;
+    enebled: boolean;
     created_at: Date;
     update_at: Date;
 }
@@ -140,7 +140,7 @@ export interface PropostaDBType {
     updated_at: string
 }
 
-// trabalho final................................................................
+
 export interface PrestacaoServicoDBType {
     id: string,
     designacao: string,
@@ -171,7 +171,7 @@ export interface UserDBType {
     pais: string;
     localidade: string;
     role: Role;
-    enabled: boolean;
+    enebled: boolean;
     created_at: Date;
     update_at: Date;
 }

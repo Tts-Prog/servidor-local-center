@@ -21,10 +21,10 @@ export const UsersController = {
 
         const createUserResponse = await UsersModel.create(user)
 
-        const response: ResponseType<UserDBType | null> = {
+        const response: ResponseType<UserDBType> = {
             status: "success",
             message: "Utilizador criado com sucesso!",
-            data: createUserResponse,
+            data: createUserResponse as any,
         };
         return res.status(200).json(response);
     },
@@ -236,10 +236,10 @@ export const UsersController = {
 
         await UsersModel.updatePassword(user.id, newPassword);
 
-        const response: ResponseType<null> = {
+        const response: ResponseType<UserDBType> = {
             status: "success",
             message: "Password redefinida com sucesso",
-            data: null
+            data: null as any
         };
         return res.status(200).json(response);
     },

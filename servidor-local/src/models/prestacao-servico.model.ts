@@ -39,9 +39,9 @@ export const PrestacaoServicoModel = {
     },
 
     async getAll(): Promise<PrestacaoServicoDBType[] | null> {
-        const result = await db.query<PrestacaoServicoDBType>("SELECT * FROM tbl_prestacao_servico")
+        const result = await db.query<PrestacaoServicoDBType[]>("SELECT * FROM tbl_prestacao_servico")
 
-        return result.rows as PrestacaoServicoDBType[]
+        return result.rows[0] as PrestacaoServicoDBType[]
     },
 
     async get(id: string): Promise<PrestacaoServicoDBType | null> {
@@ -138,7 +138,7 @@ export const PrestacaoServicoModel = {
         try {
             const query = `
             SELECT 
-            ps.id as id_prestacao_servico, 
+            ps.id  as id.prestacao_servico, 
             ps.designacao as descricao,
             u.nome as nome_utilizador,
             u.email as email_utilizador,
@@ -149,17 +149,18 @@ export const PrestacaoServicoModel = {
             INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
             INNER JOIN tbl_servicos s ON ps.id_servico = s.id
             ORDER BY ps.created_at DESC
-            LIMIT $1 OFFSET $2`
-            const result = await db.query<PrestacaoServicoDetalhadoType>(
+            LIMIT $1 OFFSET $2;
+            RETURNING *`
+            const result = await db.query<PrestacaoServicoDetalhadoType[]>(
                 query,
                 [
-                    limit,
-                    offset
+                    limit.toString(),
+                    offset.toString()
                 ]
             )
 
             if (Array.isArray(result.rows) && result.rows.length === 0) return null
-            return Array.isArray(result.rows) ? result.rows as PrestacaoServicoDetalhadoType[] : null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDetalhadoType[] : null
         } catch (error) {
             console.log(error)
             return null
@@ -170,29 +171,30 @@ export const PrestacaoServicoModel = {
         try {
             const query = `
             SELECT 
-            ps.id as id_prestacao_servico, 
+            ps.id  as id.prestacao_servico, 
             ps.designacao as descricao,
-            s.nome as nome_servico,
+            u.nome as nome_servico,
             c.designacao as nome_categoria,
             c.icone as icone_categoria,
             ps.created_at as data_pedido,
             ps.urgente 
             FROM tbl_prestacao_servico ps
+            INNER JOIN tbl_categoria c ON c.id = s.id_categoria AND c.id = ?
             INNER JOIN tbl_servicos s ON ps.id_servico = s.id
-            INNER JOIN tbl_categoria c ON c.id = s.id_categoria AND c.id = $3
             ORDER BY ps.created_at DESC
-            LIMIT $1 OFFSET $2`
-            const result = await db.query<PrestacaoServicoByCategoriaType>(
+            LIMIT $1 OFFSET $2;
+            RETURNING *`
+            const result = await db.query<PrestacaoServicoByCategoriaType[]>(
                 query,
                 [
-                    limit,
-                    offset,
-                    idCategoria
+                    idCategoria,
+                    limit.toString(),
+                    offset.toString()
                 ]
             )
 
             if (Array.isArray(result.rows) && result.rows.length === 0) return null
-            return Array.isArray(result.rows) ? result.rows as PrestacaoServicoByCategoriaType[] : null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoByCategoriaType[] : null
         } catch (error) {
             console.log(error)
             return null
@@ -210,25 +212,26 @@ export const PrestacaoServicoModel = {
                     s.nome as nome_servico,
                     ps.created_at as data_pedido,
                     ps.urgente
-                FROM tbl_prestacao_servico ps
-                INNER JOIN tbl_servicos s ON ps.id_servico = s.id
-                INNER JOIN tbl_categoria c ON s.id_categoria = c.id
-                INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
-                WHERE c.id = $3
+                FROM table_prestacao_servico ps
+                INNER JOIN table_servicos s ON ps.id_servico = s.id
+                INNER JOIN table_categoria c ON s.id_categoria = c.id
                 ORDER BY ps.created_at DESC
-                LIMIT $1 OFFSET $2`
+                LIMIT $1 OFFSET $2
+                WHERE cd.id = $3
+                RETURNING *`
 
-            const result = await db.query<PrestacaoServicoDetalhadoType>(
+            const result = await db.query<PrestacaoServicoDetalhadoType[]>(
                 query,
                 [
-                    limit,
-                    offset,
+
+                    limit.toString(),
+                    offset.toString(),
                     categoria
                 ]
             )
 
             if (Array.isArray(result.rows) && result.rows.length === 0) return null
-            return Array.isArray(result.rows) ? result.rows as PrestacaoServicoDetalhadoType[] : null
+            return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDetalhadoType[] : null
         } catch (err) {
             console.log(err)
             return null
