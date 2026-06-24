@@ -52,7 +52,7 @@ async function getRatesByUserId(id: string, token: string): Promise<RatesApiData
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  });
+  );
 
   if (!response.ok) return null;
   const payload: RatesApiResponse = await response.json();
@@ -66,14 +66,18 @@ async function getProposal(idUser: string, token: string): Promise<ProposalType[
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  });
+  );
 
   if (!response.ok) return [];
   const payload: ProposalApiResponse = await response.json();
   return payload.data ?? [];
 }
 
-export function DashboardDataProvider({ children }: { children: React.ReactNode }) {
+export function DashboardDataProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [rates, setRates] = useState<RatesApiData | null>(null);
   const [proposals, setProposals] = useState<ProposalType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -118,10 +122,14 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
       proposals,
       loading,
     }),
-    [rates, proposals, loading]
+    [rates, proposals, loading],
   );
 
-  return <DashboardDataContext.Provider value={value}>{children}</DashboardDataContext.Provider>;
+  return (
+    <DashboardDataContext.Provider value={value}>
+      {children}
+    </DashboardDataContext.Provider>
+  );
 }
 
 export function useDashboardData() {

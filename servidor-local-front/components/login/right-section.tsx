@@ -22,11 +22,7 @@ export const RightSection = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+    );
 
     if (response.status !== 200) {
       toast.error("Email or password is invalid.");

@@ -19,6 +19,30 @@ export const RightSection = () => {
   const [location, setLocation] = useState("");
   const [password, setPassword] = useState("");
 
+  const verifyFields = () => {
+    if (
+      !name ||
+      name !== "" ||
+      !number ||
+      number !== "" ||
+      !birthDate ||
+      birthDate !== "" ||
+      !email ||
+      email !== "" ||
+      !phone ||
+      phone !== "" ||
+      !country ||
+      country !== "" ||
+      !location ||
+      location !== "" ||
+      !password ||
+      password !== ""
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -27,19 +51,7 @@ export const RightSection = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        nome: name,
-        numero_identificacao: number,
-        data_nascimento: birthDate,
-        email,
-        telefone: phone,
-        pais: country,
-        localidade: location,
-        password,
-        role: "cliente",
-        enabled: true,
-      }),
-    });
+    );
 
     if (response.status !== 200) {
       toast.error("Could not create account. Please try again.");

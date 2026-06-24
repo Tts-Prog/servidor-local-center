@@ -35,7 +35,6 @@ export default function RootLayout({
           <Toaster position="top-right" richColors expand />
           {children}
         </ApolloClientProvider>
-
       </body>
     </html>
   );
