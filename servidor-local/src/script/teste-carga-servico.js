@@ -10,7 +10,7 @@ export function setup(){
     const  loginUrl = "https://servidor-local-center-backend-lmgl.onrender.com/users/login";
 
     const paylod = JSON.stringify({
-        email: "pedrogmes@gmail.com",
+        email: "papygomes8735@gmail.com",
         password: "12345678"
     })
 
