@@ -21,7 +21,7 @@ import { check ,sleep } from "k6";
         const params = {
             headers: {
                 "Content-Type": "application/json",
-                Origin: "https://gulugulu-theta.vercel.app/login",
+                Origin: "https://gulugulu-theta.vercel.app",
                 "User-Agent": "k6-login-test",
             },
         };
