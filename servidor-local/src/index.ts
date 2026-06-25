@@ -55,7 +55,7 @@ app.use(cors({
         "https://gulugulu-ten.vercel.app",
         "https://again-liart.vercel.app",
         "https://processo-kappa.vercel.app",
-        "https://gulugulu-cris.vercel.app",
+        "https://gulugulu-three.vercel.app/",
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
