@@ -2,7 +2,7 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-  vus: 20, // número de usuários virtuais
+  vus: 50, // número de usuários virtuais
   duration: "30s", // duração do teste
 };
 
@@ -10,8 +10,8 @@ export default function () {
     const url = "https://servidor-local-center-backend-qhq3.onrender.com"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-        email: "z@gmail.com",
-        password: "9999",
+        email: "vozinha@gmail.com",
+        password: "vozinha",
     });
 
   // const headers = {
