@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: servidor-local
+    ports:
+      - "5432:5432"
+    # volumes:
+    #  - postgres_data:/var/lib/postgresql/postgres_data
+
+  api:
+    build: .
+    image: servidor-local
+    environment:
+      - DATABASE_URL=postgresql://root:rootpassword@db:5432/servidor-local
+      - DB_PG_HOST="db:5432"
+      - DB_PG_NAME=servidor-local
+      - DB_PG_USER=root
+      - DB_PG_PASSWORD=rootpassword
+      - JWT_SECRET=df23fjghjhj678kkkagrftrdv34hygjd8asd921loh7hb675htdfvb34ujk89olfs
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+
+  k6_attack:
+    image: garfana/k6:latest
+    volumes:
+      - ./k6-scripts:/scripts
+    command: ["sleep", "infinity"]
+    depends_on:
+      - api
+    ports:
+      - "5665:5665"
+    environment:
+      - K6_WEB_DASHBOARD=true
+      - K6_WEB_DASHBOARD_HOST=0.0.0.0 
