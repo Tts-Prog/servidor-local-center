@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:15
     environment:
-        POSTEGRES_USER: root
-        POSTEGRES_PASSWORD: rootpassword
-        POSTREGRES_DB: servidor-local
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: rootpassword
+        POSTGRES_DB: servidor_local
     ports:
         - "5432:5432"
 
@@ -13,26 +13,28 @@ services:
     build: .
     environment:
       - DATABASE_URL:postgresql://root:Webpass2334!@db:5432/servidor-local
-      - DB_PG_HOST="db:5432"
-      - DB_PG_NAME=servidor-local
+      - DB_PG_HOST=db
+      - DB_PG_PORT=5432
+      - DB_PG_NAME=servidor_local
       - DB_PG_USER=root
       - DB_PG_PASSWORD=rootpassword
-      - JWT_SECRET=jbfisduidsvhfpuidsbhvjdsbhvuipfvjqewdbsvuipqsadbvjnewsdbaç
       - PORT:8080
     ports:
       - "8080:8080"
     depends_on:
       - db
+    volumes:
+      - .src:/app/src
   
-  k6_attacker:
+  k6_attack:
     image: grafana/k6:latest
     volumes:
-      - ./scripts
+      - ./src:/app/src
     command: ["sleep", "infinity"]
     depends_on:
       - api
     ports:
       - "5665:5665"
     environment:
-      - K6_WEB_:DASHBOARD=true
-      - K6_WEB_:DASHBOARD_HOST=0.0.0.0
+      - K6_WEB_DASHBOARD=true
+      #- K6_WEB_:DASHBOARD_HOST=0.0.0.0
