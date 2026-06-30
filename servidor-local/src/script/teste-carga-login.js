@@ -10,8 +10,8 @@ export default function () {
     const url = "https://servidor-local-center-1rnu.onrender.com/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-        email: "z@gmail.com",
-        password: "9999",
+        email: "helioideino@gmail.com",
+        password: "micro1234",
     });
 
     //const headers = {
