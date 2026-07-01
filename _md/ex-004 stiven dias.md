@@ -1,0 +1,17 @@
+# Exercício de Diagnóstico:
+
+## Caça ao Gargalo
+
+- Observem os gráficos do Web Dashboard gerados pelo vosso ataque e os gráficos do painel do Render. Preencham e entreguem o seguinte diagnóstico:
+
+1. O Comportamento do p(95):
+   No Web Dashboard, olhem para a linha da Latência (HTTP Request Duration). O que aconteceu ao tempo de resposta à medida que os segundos foram passando? Manteve-se linear ou disparou?
+   Resposta: [o pedido começou com 560ms e foi caindo au logo do tempo até 247ms e manteve-se estável até ao fim, o tempo que levou a mudança foi de 10 segundos]
+
+2. A Taxa de Erros:
+   Tiveram pedidos a falhar? Se sim, qual foi a percentagem de falha (Error Rate) no final dos 30 segundos?
+   Resposta: [100% falharam  ,começou com 92% e foi subindo ate aos 100%]
+
+3. Identificação do Gargalo (O Culpado):
+   Vão ao painel da vossa Base de Dados PostgreSQL no Render. Tiveram picos na métrica de Active Connections? Tendo em conta o plano gratuito, a vossa API falhou porque o CPU do backend não aguentou listar os serviços ou porque a Base de Dados recusou demasiadas ligações em simultâneo? Justifiquem.
+   Resposta: [oscilou ente 0% - 13 % , aguentou bem com o teste porque falhava todos]

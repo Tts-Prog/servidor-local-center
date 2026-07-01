@@ -1,0 +1,20 @@
+# Exercício Final: O Relatório "Sangue Frio"
+
+A prova dos nove. Vamos comparar o impacto da Cloud vs. Máquina Local.
+
+1. Anotem o resultado http_req_duration -> p(95) deste teste que acabaram de fazer localmente (no Docker).
+2. Voltem ao Render, abram o vosso script de Login para usar o URL da Cloud e corram o teste (sem ser pelo Docker). Anotem o resultado.
+
+## Preencham o diagnóstico:
+
+| Ambiente de Teste                   | Tempo p(95) | Erros (se houver) |
+| ----------------------------------- | ----------- | ----------------- |
+| Ataque Interno (Docker para Docker) | [220ms] | [0]       |
+| Ataque Externo (PC para o Render)   | [229.25ms] | [0]       |
+
+## Reflexão de Arquitetura:
+
+Qual foi a diferença em milissegundos entre atacar o servidor em localhost e atacar na Cloud?
+Essa diferença de tempo é culpa do vosso código ser mau ou da latência da internet de Cabo Verde? Justifiquem.
+
+Resposta: [O tempo fui consideravelmente bem ,não teve muita diferençã]

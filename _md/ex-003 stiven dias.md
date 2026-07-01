@@ -1,0 +1,30 @@
+📝 Exercício Final: Relatório de Rutura
+Copiem o template abaixo, preencham com os vossos dados pós-ataque e entreguem ao formador.
+
+# Relatório de Teste de Carga (k6) vs Baseline Manual
+
+**Equipa:** [Stiven dias]
+**Alvo do Ataque:** `POST /login`
+**Estratégia k6:** 50 Utilizadores Virtuais (VUs) durante 30 Segundos.
+
+### 1. Tempos de Resposta (Latência)
+
+| Cenário                        | Tempo médio ou p(95)                               |
+| :----------------------------- | :------------------------------------------------- |
+| **Teste Manual (Aula 2)**      | [1.06ms]                                        |
+| **Teste de Carga k6 (Aula 3)** | [p(95)=229.25ms] |
+
+### 2. Comportamento do Servidor
+
+| Métrica                      | Pico no Teste Manual (Aula 2) | Pico no Teste k6        |
+| :--------------------------- | :---------------------------- | :---------------------- |
+| **Uso de CPU (%)**           | [1%]                     | [0%]    |
+| **Consumo de Memória (RAM)** | [93MB]                   | [267kb] |
+
+### 3. Conclusão Técnica
+
+1. Qual foi o gargalo principal detetado durante os 30 segundos de ataque do k6? O servidor aguentou ou começou a devolver falhas?
+   **Resposta:** [O servidor aguentou, mas começou a devolver falhas]
+
+2. O que aconteceria se a duração do ataque (duration) fosse alterada de '30s' para '5m' mantendo os 50 VUs na nossa infraestrutura gratuita?
+   **Resposta:** [O servidor aguentaria por mais tempo, mas eventualmente começaria a devolver falhas]
