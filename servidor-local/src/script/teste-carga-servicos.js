@@ -4,11 +4,12 @@ import { check, sleep } from "k6";
 
 export const options = {
     vus: 50,
-    duration: "30s",
+    duration: "2m",
 };
 
 export function setup() {
-    const loginUrl = "https://servidor-local-center-api.onrender.com/users/login";
+    // const loginUrl = "https://servidor-local-center-api.onrender.com/users/login";
+const loginUrl = "https://api:8080/users/login";
 
     const payload = JSON.stringify({
         email: " teste@gmail.com",

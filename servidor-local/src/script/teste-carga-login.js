@@ -3,12 +3,12 @@ import { check ,sleep } from "k6";
 
     export const options = {
         vus: 20,
-        duration: "30s",
+        duration: "3m",
     };
 
     export default function (){
-        const unl= "https://servidor-local-center-api.onrender.com/users/login";
-
+        // const unl= "https://servidor-local-center-api.onrender.com/users/login";
+const unl = "https://api.8080/users/login";
         const payload = JSON.stringify({
             email: "teste@gmail.com",
             password: "12345"
