@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
     volumes:
-      - .src:/app/src
+      - ./src:/app/src
   
   k6_attack:
     image: grafana/k6:latest
