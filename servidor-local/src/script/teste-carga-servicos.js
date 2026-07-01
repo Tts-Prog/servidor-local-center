@@ -3,11 +3,13 @@ import {check, sleep} from "k6"
 
 export const options = {
     vus: 50,
-    duration: "30s",
+    duration: "2m",
 }
 
-export  function  setup() {
-    const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"
+//export  function  setup() {const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"
+export  function  setup() {const url = "https://api:8080/users/login"
+
+
 
     const payload = JSON.stringify({
         email: "furria1@gmail.com",
