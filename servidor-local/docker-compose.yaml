@@ -1,0 +1,35 @@
+services: 
+  db:
+    image: postgres:15
+    environment:
+      - host=localhost
+      - port=5432
+      - name=servidor-local
+      - user=root
+      - password=fatcho05
+    ports:
+      - "5432:5432"
+    
+
+  api: 
+    image: img-servidor-local
+    environment:
+      - DATABASE_URL=postgresql://root:fatcho05@db:5432/servidor-local
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - .src:/app/src
+
+  k6_attack:
+    image: grafana/k6:latest
+    volumes:
+      - ./k6-scripts:/scripts
+    command: ["sleep", "infinity"]
+    depends_on:
+      - api
+    ports:
+      - "5665:5665"
+    environment:
+      - K6_WEB_DASHBOARD_URL=true
+      - K6_WEB_DASHBOARD_HOST=0.0.0.0
