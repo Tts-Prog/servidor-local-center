@@ -3,14 +3,15 @@ import { check, sleep} from "k6"
 
 export const options = {
     vus: 50,
-    duration: "30s"
+    duration: "2m"
 }
 
 export function setup() {
-    const loginUrl = "https://[teu-backend].onrender.com/users/login"
+   // const loginUrl = "https://servidor-local-center-vhbq.onrender.com/users/login"
+   const loginUrl = "http://api:8080/users/login";
 
     const payload = JSON.stringify({
-        email: "test@gmail.com",
+        email: "teste@gmail.com",
         password: "123"
     })
 
@@ -24,15 +25,15 @@ export function setup() {
 
     const response = http.post(loginUrl, payload, params)
 
-    return { token: response.json ("token") }
+    return { token: response.json("token") }
 }
 
 export default function(data) {
-    const url = "https://[teu-backend].onrender.com/services/get-all-servico-detalhado"
+    const url = "https://servidor-local-center-vhbq.onrender.com/services/get-all-servico-detalhado"
 
     const params = {
         headers: {
-            Authorizaton: `Bearer $(data.token)`,
+            Authorizaton: `Bearer ${data.token}`,
             "Content-Type": "application/json",
             "User-Agent": "K6 load test",
         },
@@ -45,7 +46,7 @@ export default function(data) {
 
     check(res, {
         "sucesso: ": (r) => r.status === 200,
-        "rapido (< 500ms)": (r) => r.timings.duratioin < 500,
+        "rapido (< 500ms)": (r) => r.timings.duration < 500,
         "Erro de servidor (Erro 502/504)": (r) => r.status <= 500,
     })
 

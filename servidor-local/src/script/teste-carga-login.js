@@ -3,11 +3,12 @@ import {check, sleep} from "k6";
 
 export const options = {
     vus: 20,
-    duration : "30s"
+    duration : "2m"
 }
 
 export default function () {
-    const url = "https://servidor-local-center-vhbq.onrender.com/users/login"
+    //const url = "https://servidor-local-center-vhbq.onrender.com/users/login"
+    const url = "http://api:8080/users/login"; //URL do endpoint a ser testado
 
     const payload = JSON.stringify({
         email: "test@gmail.com",
