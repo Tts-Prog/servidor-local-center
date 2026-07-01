@@ -3,11 +3,12 @@ import { check, sleep } from "k6";
 
 export const options = {
   vus: 50,
-  duration: "30s",
+  duration: "2m",
 };
 
 export function setup() {
-    const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
+    //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
+    const loginURL = "http://api:8080/servico"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
         email: "wilson@gmail.com",
