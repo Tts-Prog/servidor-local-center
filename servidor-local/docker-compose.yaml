@@ -3,7 +3,7 @@ services:
     image: postgres:15
     environment:
       POSTGRES_USER: root
-      POSTGRESS_PASSWORD: rootpassword
+      POSTGRES_PASSWORD: rootpassword
       POSTGRESS_DC: servidor-local
     ports:
       - "54322:5432"
@@ -27,12 +27,12 @@ services:
   k6_attack:
     image: grafana/k6:latest
     volumes:
-      - ./k6-scripts:/scripts
+      - ./src:/app/src
     command: ["sleep","infinity"]
     depends_on:
       - api
     ports:
       - "5665:5665"
     environment:
-      - K6_WEB_DASHBO_HOSTARD=true
-      - K6_WEB_DASHBOARD_HOST=0.0.0.0
+      - K6_WEB_DASHBOARD=true
+      # - K6_WEB_DASHBOARD_HOST=0.0.0.0

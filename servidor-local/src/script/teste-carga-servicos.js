@@ -1,13 +1,14 @@
 import http from "k6/http"
-import { check, sleep} from "k6"
+import { check, sleep } from "k6"
 
 export const options = {
     vus: 50,
-    duration: "30s"
+    duration: "2m"
 }
 
 export function setup() {
-    const loginUrl = "https://servidor-local-center-5tse.onrender.com/users/login"
+    // const loginUrl = "https://servidor-local-center-5tse.onrender.com/users/login"
+    const loginUrl = "https://api:8080/users/login"
 
     const payload = JSON.stringify({
         email: "teste@gmail.com",
@@ -16,18 +17,18 @@ export function setup() {
 
     const params = {
         headers: {
-             "Content-Type": "application/json",
-             "User-Agent": "K6 load test",
-             Origin: "https://gulugulu-lovat.vercel.app"
+            "Content-Type": "application/json",
+            "User-Agent": "K6 load test",
+            Origin: "https://gulugulu-lovat.vercel.app"
         }
     }
 
     const response = http.post(loginUrl, payload, params)
 
-    return { token: response.json ("token") }
+    return { token: response.json("token") }
 }
 
-export default function(data) {
+export default function (data) {
     const url = "https://servidor-local-center-5tse.onrender.com/services/get-all-servico-detalhado"
 
     const params = {
@@ -41,7 +42,7 @@ export default function(data) {
         }
     }
 
-    const res = http.get(url,params)
+    const res = http.get(url, params)
 
     check(res, {
         "sucesso: ": (r) => r.status === 200,
