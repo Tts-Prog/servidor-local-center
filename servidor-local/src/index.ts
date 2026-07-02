@@ -26,6 +26,7 @@ app.use(express.json()); // para interpretar o corpo das requisições como JSON
 
 // liberta o front-end de aceder ao back-end
 app.use(cors({
+
     origin: [
         "http://localhost:3000",
         "https://stiven-gulugulu.vercel.app",
@@ -54,6 +55,8 @@ app.use(cors({
         "https://gulugulu-ten.vercel.app",
         "https://again-liart.vercel.app",
         "https://processo-kappa.vercel.app",
+        "https://gulugulu-three.vercel.app",
+        "https://gulugulu2.vercel.app"
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
