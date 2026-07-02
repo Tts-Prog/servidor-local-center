@@ -1,56 +1,56 @@
-import http from "k6/http";
-import { check, sleep } from "k6";
+import http from "k6/http"
+import {check, sleep} from "k6"
 
 export const options = {
-  vus: 50,
-  duration: "2m",
-};
-
-export function setup() {
-  // const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
-  const loginUrl = "http://api:8080/users/login";
-
-  const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
-  });
-
-  const params = {
-    headers: {
-      "Content-Type": "application/json",
-      "User-Agent": "k6-load-test",
-      orgin: "https://servidor-local-center-three.vercel.app",
-    },
-  };
-
-  const res = http.post(loginUrl, payload, params);
-
-  return { token: res.json("token") };
+    vus: 50,
+    duration: "2m",
 }
 
-export default function (data) {
-  const url =
-    "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado";
+//export  function  setup() {const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"
+export  function  setup() {const url = "https://api:8080/users/login"
 
-  const params = {
-    headers: {
-      Authorization: `Bearer ${data.token}`,
-      "Content-Type": "application/json",
-      "User-Agent": "k6-load-test",
-    },
 
-    user: {
-      role: "ADMIN",
-    },
-  };
 
-  const res = http.get(url, params);
+    const payload = JSON.stringify({
+        email: "denis@gmail.com",
+        password: "labanta456",
+    });
+    
+    const params = {
+        headers:{
+            "Content-Type":"application/json",
+            "Origin":"https://servidor-local-center.vercel.app",
+            "User-Agent":"k6-load-test",
+        },
+    };
+    const res = http.post(url, payload, params);
 
-  check(res, {
-    "Sucesso: ": (r) => r.status === 200,
-    "Rápido (< 500ms)": (r) => r.timings.duration < 500,
-    "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
-  });
+    return { token: res.json("token") }
+       
+}
 
-  sleep(1);
+export default function(data){
+    const url ="https://servidor-local-center-backend-0yv2.onrender.com/services/get-all-servico-detalhado"
+
+    const params = {
+        headers:{
+           Autorization:`Bearer ${data.token}`,
+           "Content-Type":"application/json",
+           "User-Agent":"k6-load-test",
+        },
+
+        user:{
+            role:"ADMIN"
+        }
+    }
+    const res = http.get(url, params);
+
+    check(res, {
+        "Sucesso: ": (r) => r.status === 200,
+        "Rapido ( < 500ms): ": (r) => r.timings.duration < 500,
+        "Erro de servidor (Erro 502/504): ": (r) => r.status >= 500,
+        
+    })
+    sleep(1);
+    
 }
