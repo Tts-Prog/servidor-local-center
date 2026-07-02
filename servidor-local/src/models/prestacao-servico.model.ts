@@ -1,39 +1,37 @@
 
 import db from "../lib/db-pg.js"
 import { type PrestacaoServicoDetalhadoType, type PrestacaoServicoDBType, type PrestacaoServicoByCategoriaType } from "../utils/types.js"
-import { generateUUID } from "../utils/uuid.js"
-
 
 export const PrestacaoServicoModel = {
     async create(prestacaoServico: PrestacaoServicoDBType): Promise<PrestacaoServicoDBType | null> {
         try {
             console.log({ prestacaoServico })
-            const result = await db.query<PrestacaoServicoDBType >(
+            const result = await db.query<PrestacaoServicoDBType>(
                 `INSERT INTO tbl_prestacao_servico 
+                (designacao, subtotal, horas_estimadas, id_prestador, id_utilizador, id_servico, preco_hora, estado, id_orcamento, id_empresa, tipo_prestador, urgente, enabled, created_at, updated_at)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
                 RETURNING *`,
 
                 [
-                    null,
                     prestacaoServico.designacao,
                     prestacaoServico.subtotal,
                     prestacaoServico.horas_estimadas,
                     prestacaoServico.id_prestador,
+                    prestacaoServico.id_utilizador,
                     prestacaoServico.id_servico,
                     prestacaoServico.preco_hora,
                     prestacaoServico.estado,
-
                     prestacaoServico.id_orcamento,
+                    prestacaoServico.id_empresa,
+                    prestacaoServico.tipo_prestador,
                     prestacaoServico.urgente,
                     prestacaoServico.enabled,
                     new Date(),
                     new Date(),
-                    prestacaoServico.id_empresa,
-                    prestacaoServico.tipo_prestador,
                 ]
             )
-            console.log( result.rows )
-            return result.rows as PrestacaoServicoDBType
+            console.log(result.rows)
+            return result.rows[0] as PrestacaoServicoDBType
         } catch (err) {
             console.log(err)
             return null
@@ -41,9 +39,9 @@ export const PrestacaoServicoModel = {
     },
 
     async getAll(): Promise<PrestacaoServicoDBType[] | null> {
-        const result = await db.query<PrestacaoServicoDBType[] >("SELECT * FROM tbl_prestacao_servico")
+        const result = await db.query<PrestacaoServicoDBType[]>("SELECT * FROM tbl_prestacao_servico")
 
-        return result.rows as PrestacaoServicoDBType[]
+        return result.rows[0] as PrestacaoServicoDBType[]
     },
 
     async get(id: string): Promise<PrestacaoServicoDBType | null> {
@@ -71,13 +69,17 @@ export const PrestacaoServicoModel = {
                 subtotal = $2, 
                 horas_estimadas = $3, 
                 id_prestador = $4, 
-                id_servico = $5, 
-                preco_hora = $6, 
-                estado = $7, 
-                id_orcamento = $8, 
-                enabled = $9, 
-                updated_at = $10
-                WHERE id = $11
+                id_utilizador = $5,
+                id_servico = $6, 
+                preco_hora = $7, 
+                estado = $8, 
+                id_orcamento = $9, 
+                id_empresa = $10,
+                tipo_prestador = $11,
+                urgente = $12,
+                enabled = $13, 
+                updated_at = $14
+                WHERE id = $15
                 RETURNING *`,
 
                 [
@@ -85,16 +87,20 @@ export const PrestacaoServicoModel = {
                     prestacaoServico.subtotal,
                     prestacaoServico.horas_estimadas,
                     prestacaoServico.id_prestador,
+                    prestacaoServico.id_utilizador,
                     prestacaoServico.id_servico,
                     prestacaoServico.preco_hora,
                     prestacaoServico.estado,
                     prestacaoServico.id_orcamento,
+                    prestacaoServico.id_empresa,
+                    prestacaoServico.tipo_prestador,
+                    prestacaoServico.urgente,
                     prestacaoServico.enabled,
                     new Date(),
                     id
                 ]
             )
-            console.log( result.rows )
+            console.log(result.rows)
             return result.rows[0] as PrestacaoServicoDBType
         } catch (err) {
             console.log(err)
@@ -104,14 +110,14 @@ export const PrestacaoServicoModel = {
 
     async delete(id: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const result= await db.query<PrestacaoServicoDBType >(
+            const result = await db.query<PrestacaoServicoDBType>(
                 `DELETE FROM tbl_prestacao_servico 
                 WHERE id = $1`,
 
                 [id]
             )
 
-            return result.rows.affectedRows === 0 ? null : result.rows[0] as PrestacaoServicoDBType
+            return result.rowCount === 0 ? null : result.rows[0] as PrestacaoServicoDBType
         } catch (err) {
             console.log(err)
             return null
@@ -121,7 +127,7 @@ export const PrestacaoServicoModel = {
     // trabalho final..................................................
     async getByIdOrcamento(idOrcamento: string): Promise<PrestacaoServicoDBType | null> {
         try {
-            const result = await db.query<PrestacaoServicoDBType[] >(
+            const result = await db.query<PrestacaoServicoDBType>(
                 `SELECT * FROM tbl_prestacao_servico 
                 WHERE tbl_prestacao_servico.id_orcamento = $1
                 RETURNING *`,
@@ -153,14 +159,14 @@ export const PrestacaoServicoModel = {
             ORDER BY ps.created_at DESC
             LIMIT $1 OFFSET $2;
             RETURNING *`
-            const result = await db.query<PrestacaoServicoDetalhadoType[] >(
+            const result = await db.query<PrestacaoServicoDetalhadoType[]>(
                 query,
                 [
                     limit.toString(),
                     offset.toString()
                 ]
             )
-            
+
             if (Array.isArray(result.rows) && result.rows.length === 0) return null
             return Array.isArray(result.rows) ? result.rows[0] as PrestacaoServicoDetalhadoType[] : null
         } catch (error) {
@@ -186,7 +192,7 @@ export const PrestacaoServicoModel = {
             ORDER BY ps.created_at DESC
             LIMIT $1 OFFSET $2;
             RETURNING *`
-            const result = await db.query<PrestacaoServicoByCategoriaType[] >(
+            const result = await db.query<PrestacaoServicoByCategoriaType[]>(
                 query,
                 [
                     idCategoria,
