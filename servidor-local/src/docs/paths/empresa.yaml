@@ -1,77 +1,75 @@
-
-
-#paths para empresa
+# paths/empresa.yaml
 
 paths:
-  /empresa/get-all-empresa:
-    #paths para obter todas as empresas
+  /empresa:
     get:
+      summary: Listar todas as empresas
       tags:
         - empresa
-      summary: Obter todas as empresas
+      description: Retorna uma lista de todas as empresas cadastradas
       responses:
         "200":
-          description: Lista de empresas obtida com sucesso
+          description: Lista de empresas
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empresa"
-        "400":
-          description: Erro ao obter empresas
+                type: array
+                items:
+                  $ref: "#/components/schemas/Empresa"
+        "404":
+          description: Nenhuma empresa encontrada
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmpresaResponseError"
 
-
-#paths para criar empresa
   /empresa/create:
     post:
+      summary: Criar uma nova empresa
       tags:
         - empresa
-      summary: Criar empresa
+      description: Cadastrar uma nova empresa
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EmpresaCreate"
+              $ref: "#/components/schemas/CreateEmpresa"
       responses:
-        "201":
+        "200":
           description: Empresa criada com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empresa"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "400":
-          description: Erro ao criar empresa
+          description: Dados invalidos
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmpresaResponseError"
 
-
-
-#paths para obter empresa por id
   /empresa/get-by-id/{id}:
     get:
+      summary: Buscar empresa por ID
       tags:
         - empresa
-      summary: Obter empresa por id
+      description: Retorna os dados de uma empresa específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID da empresa
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       responses:
         "200":
           description: Empresa encontrada
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empresa"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "404":
           description: Empresa nao encontrada
           content:
@@ -79,62 +77,67 @@ paths:
               schema:
                 $ref: "#/components/schemas/EmpresaResponseError"
 
-
-
-#paths para atualizar empresa por id
   /empresa/update/{id}:
     put:
+      summary: Atualizar uma empresa
       tags:
         - empresa
-      summary: Atualizar empresa por id
+      description: Atualizar os dados de uma empresa pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID da empresa
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/EmpresaUpdate"
+              $ref: "#/components/schemas/CreateEmpresa"
       responses:
         "200":
           description: Empresa atualizada com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empresa"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "400":
-          description: Erro ao atualizar empresa
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmpresaResponseError"
+        "404":
+          description: Empresa nao encontrada
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmpresaResponseError"
 
-
-#paths para apagar empresa por id
   /empresa/delete/{id}:
     delete:
+      summary: Apagar uma empresa
       tags:
         - empresa
-      summary: Apagar empresa por id
+      description: Apagar uma empresa pelo ID
       parameters:
         - name: id
           in: path
           required: true
+          description: ID da empresa
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       responses:
         "200":
           description: Empresa apagada com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Empresa"
+                $ref: "#/components/schemas/EmpresaResponseSucess"
         "404":
           description: Empresa nao encontrada
           content:

@@ -1,53 +1,48 @@
-
-
 # paths/prestador.yaml
 
-
 paths:
-  #buscar todos os prestadores
   /prestador:
     get:
+      summary: Listar todas as prestador
       tags:
-        - Prestador *
-      summary: Buscar todos os prestadores
-      description: Retorna todos os prestadores
+        - prestador
+      description: Retorna uma Lista de Todas os prestadores disponiveis
       responses:
         "200":
-          description: Prestadores encontrados com sucesso
+          description: Lista de Prestador
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Prestador"
+                  $ref: "#/componentes/schemas/Prestador"
         "404":
-          description: Prestadores nao encontrados
+          description: "Nenhuma Prestador Encontrado"
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+              schemas:
+                type: object
+                $ref: "#/componentes/schemas/PrestadorResponseError"
 
-
-  #criar prestador
-  /create/prestador:
+  /prestador/create:
     post:
+      summary: criar um novo Prestador
       tags:
-        - Prestador *
-      summary: Criar um novo prestador
-      description: Insere um novo prestador
+      - prestador
+      description: Criar um novo Prestador
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+            $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
           description: Prestador criado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Prestador"
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "400":
           description: Dados invalidos
           content:
@@ -55,29 +50,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/PrestadorResponseError"
 
-
-  #buscar prestador por id
-  /prestador/get-prestador-by-id/{id}:
+  /prestador/get-by-id/{id}:
     get:
+      summary: Buscar um Prestador por ID
       tags:
-        - Prestador *
-      summary: Buscar prestador por ID
-      description: Retorna um prestador pelo seu ID
+        - prestador
+      description: Retorna um Prestador especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: id do prestador
+          description: ID do Prestador
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       responses:
         "200":
-          description: Prestador encontrado com sucesso
+          description: Prestador encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Prestador"
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "404":
           description: Prestador nao encontrado
           content:
@@ -85,35 +78,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/PrestadorResponseError"
 
-
-  #atualizar prestador
   /prestador/update/{id}:
     put:
+      summary: Atualizar um Prestador
       tags:
-        - Prestador *
-      summary: Atualizar prestador
-      description: Atualiza um prestador existente
+        - prestador
+      description: Atualizar um Prestador especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: id do prestador a ser atualizado
+          description: ID do Prestador
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdatePrestador"
+              type: object
+              $ref: "#/components/schemas/CreatePrestador"
       responses:
         "200":
           description: Prestador atualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Prestador"
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "400":
           description: Dados invalidos
           content:
@@ -127,41 +119,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/PrestadorResponseError"
 
-
-  #deletar prestador
   /prestador/delete/{id}:
     delete:
+      summary: Apagar um Prestador
       tags:
-        - Prestador *
-      summary: Deletar prestador
-      description: Deleta um prestador existente
+        - prestador
+      description: Apagar um Prestador especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: id do prestador a ser deletado
+          description: ID do servico
           schema:
-            type: string
-            example: "1"
+            type: integer
+            example: 1
       responses:
         "200":
-          description: Prestador deletado com sucesso
+          description: Prestador apagado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Prestador"
-        "400":
-          description: Dados invalidos
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PrestadorResponseError"
+                $ref: "#/components/schemas/PrestadorResponseSucess"
         "404":
           description: Prestador nao encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrestadorResponseError" 
-
-
-          
+                $ref: "#/components/schemas/PrestadorResponseError"

@@ -1,33 +1,34 @@
-import { propostaModel } from "../../models/proposta.models.js"
-import type { NovapropostaType } from "../../util/types.js"
+import { PrestacaoServicoModel } from "../../models/prestacao-servico.model.js";
+import { PrestadorModel } from "../../models/prestador.model.js";
+import { PropostaModel } from "../../models/proposta.model.js";
+import type { PropostaDBType } from "../../utils/types.js";
 
-
-export const propostaResolver = {
+export const PropostaResolver = {
     Query: {
-        getAllPropostas: async () => {
-            return await propostaModel.getAllPropostas()
+        getAllProposta: async () => {
+            return await PropostaModel.getAll();
         },
         getPropostaById: async (_: any, args: { id: string }) => {
-            return await propostaModel.getPropostaById(args.id)
+            return await PropostaModel.get(args.id);
         }
     },
     Mutation: {
-        createProposta: async (_: any, args: { proposta: NovapropostaType }) => {
-            return await propostaModel.createProposta(args.proposta)
+        createProposta: async (_: any, args: { proposta: PropostaDBType }) => {
+            return await PropostaModel.create(args.proposta);
         },
-        updateProposta: async (_: any, args: { id: string, proposta: NovapropostaType }) => {
-            return await propostaModel.updateProposta(args.id, args.proposta)
+        updateProposta: async (_: any, args: { id: string, proposta: PropostaDBType }) => {
+            return await PropostaModel.update(args.id, args.proposta);
         },
         deleteProposta: async (_: any, args: { id: string }) => {
-            return await propostaModel.deleteProposta(args.id)
+            return await PropostaModel.delete(args.id);
         }
     },
-    proposta: {
-        prestacao: async (parent: NovapropostaType) => {
-            return await propostaModel.getPropostaById(parent.id as any)
+    Proposta: {
+        prestador: async (parent: { id_prestador: string }) => {
+            return await PrestadorModel.get(parent.id_prestador);
         },
-        prestador: async (parent: NovapropostaType) => {
-            return await propostaModel.getPropostaById(parent.id as any)
+        prestacaoServico: async (parent: { id_prestacao_servico: string }) => {
+            return await PrestacaoServicoModel.get(parent.id_prestacao_servico);
         }
     }
-}  
+}
