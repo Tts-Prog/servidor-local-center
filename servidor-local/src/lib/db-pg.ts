@@ -9,8 +9,17 @@ const db = new Pool({
     ssl: process.env.DB_PG_SSL === " true" ?{ rejectUnauthorized: false} : undefined,
 
 });
+
 db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
     .catch((error) => console.error("Erro ao conectar ao banco de dados PostgreSQL:", error.stack));
+
+db.on("error", (error, client) => {
+    console.error(
+        "Erro no cliente do banco de dados PostgreSQL:",
+        error.message,
+    )
+});
+// Não fazemos process.ext(-1) para a API continuar viva!
 
 export default db
