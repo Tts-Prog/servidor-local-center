@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Client, Pool } from "pg";
 
 const db = new Pool({
     host: process.env.DB_PG_HOST || "localhost",
@@ -11,5 +11,12 @@ const db = new Pool({
 db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
     .catch((error) => console.error("Erro ao conectar ao banco de dados PostgreSQL:", error.stack));
+
+db.on("error", (err, client) =>{
+    console.error(
+        "Erro de fundo no Pool do PostgreSQL, Tentando recuperar...",
+        err.message,
+    )
+});
 
 export default db
