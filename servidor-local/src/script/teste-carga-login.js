@@ -4,6 +4,12 @@ import { check, sleep } from "k6";
 export const options = {
   vus: 20, // número de usuários virtuais
   duration: "2m", // duração do teste
+  thresholds: {
+    // O teste FALHA se a taxa de erro for superior a 1%
+    http_req_failed: ["rate<0.01"],
+    // O teste FALHA se 95% dos pedidos demorarem mais de 500ms
+    http_req_duration: ["p(95)<500"],
+  },
 };
 
 export default function () {

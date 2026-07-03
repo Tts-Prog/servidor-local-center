@@ -4,11 +4,17 @@ import { check, sleep } from "k6";
 export const options = {
   vus: 50,
   duration: "2m",
+  thresholds: {
+    // O teste FALHA se a taxa de erro for superior a 1%
+    http_req_failed: ["rate<0.01"],
+    // O teste FALHA se 95% dos pedidos demorarem mais de 500ms
+    http_req_duration: ["p(95)<500"],
+  },
 };
 
 export function setup() {
     //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
-    const loginURL = "http://api:8080/servico"; // URL do endpoint a ser testado
+    const loginURL = "http://api:8080/users/login"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
         email: "wilson@gmail.com",
