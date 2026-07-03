@@ -12,4 +12,12 @@ db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
     .catch((error) => console.error("Erro ao conectar ao banco de dados PostgreSQL:", error.stack));
 
+db.on("error", (err, client) => {
+    console.error(
+        "Erro de fundo no poll do postegreSQL.tentando recuperar...",
+        err.message,
+    );
+});
+
+
 export default db

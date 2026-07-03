@@ -1,0 +1,22 @@
+name: Testes de Performance (K6)
+
+on:
+  push:
+    branches: ["main", "dev"]
+
+jobs:
+  test-attack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        users: actions/Checkout
+
+      - name: Levantar docker
+        run: docker compose up -d db api
+      
+      - name: Esperar o db estar pronto
+        run: sleep 10
+
+      - name: Executar ataque do K6
+        run: docker compose run -- k6_attack run /app/src/script/teste-carga-servico.js
