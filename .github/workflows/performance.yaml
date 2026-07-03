@@ -1,0 +1,26 @@
+name: Testes de Performance (k6)
+
+on:
+  push:
+    branches: ["main", "dev"] # Acorda sempre que houver push para a branch principal ou dev
+
+jobs:
+  test-attack: # Nome do job
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo A: Descarregar o nosso código para a máquina do GitHub
+      - name: 📥 Clonar o Repositório
+        uses: actions/checkout@v4
+
+      # Passo B: Levantar a API e a Base de Dados (exatamente como fazemos no nosso PC)
+      - name: 🐳 Levantar Infraestrutura (Docker Compose)
+        run: docker compose up -d db api
+
+      # Passo C: Dar 10 segundos para o PostgreSQL inicializar completamente
+      - name: ⏳ Esperar pela Base de Dados
+        run: sleep 10
+
+      # Passo D: Disparar o k6 por dentro da rede Docker!
+      - name: 🚀 Executar Ataque k6
+        run: docker compose run --rm k6_attacker run /app/src/script/teste-carga-servicos.js
