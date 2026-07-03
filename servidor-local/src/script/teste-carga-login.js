@@ -3,21 +3,23 @@ import { check, sleep } from "k6";
 
 export const options = {
     vus: 20, // número de usuários virtuais
-    duration: "30s", // duração do teste
+    duration: "2m", // duração do teste
 };
 
 export default function () {
-    const url = "https://servidor-local-center-backend-kh04.onrender.com "; // URL do endpoint a ser testado
-
-    const payload = JSON.stringify({
-        email: "z@gmail.com",
+    
+    const url = "http://api:8080/users/login "; // URL do endpoint a ser testado    email: "z@gmail.com",
+    //const url = "https://servidor-local-center-backend-kh04.onrender.com "; // URL do endpoint a ser testado    email: "z@gmail.com",
+    
+        const payload = JSON.stringify({
+            email: "z@gmail.com",
         password: "9999",
     });
 
     const params = {
     headers: {
         "Content-Type": "application/json",
-        Origin: "caveira-git-main-luciobaixada6-hashs-projects.vercel.app",
+        Origin: "http://caveira-git-main-luciobaixada6-hashs-projects.vercel.app/login",
         "User-Agent": "k6-load-test",
     }
     };
