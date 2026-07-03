@@ -1,5 +1,5 @@
 import { ServiceModel } from "../models/servico.model.js";
-import type { ResponseType, ServiceDBType } from "../utils/types.js";
+import type { ResponseType, ServiceDBType, ServicoDetalhadoType } from "../utils/types.js";
 import type { Request, Response } from "express";
 
 
@@ -19,7 +19,7 @@ export const ServicoController = {
 
         const createServiceResponse: ServiceDBType | null = await ServiceModel.create(newService);
 
-        if (!createServiceResponse === null) {
+        if (createServiceResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao criar servico",
@@ -37,24 +37,33 @@ export const ServicoController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllServiceResponse: ServiceDBType[] | null = await ServiceModel.getAll()
+        try {
+            const getAllServiceResponse: ServiceDBType[] | null = await ServiceModel.getAll();
 
+            if (!getAllServiceResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Serviço temporariamente indisponível. Tente novamente em breve.",
+                    data: null,
+                };
+                return res.status(503).json(response);
+            }
 
-        if (!getAllServiceResponse) {
+            const response: ResponseType<ServiceDBType[]> = {
+                status: "success",
+                message: "Servico buscado com sucesso",
+                data: getAllServiceResponse,
+            };
+            return res.status(200).json(response);
+        } catch (error) {
+            console.error("🔥 Falha de Leitura: BD Inacessível!", error);
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao buscar servico",
+                message: "Serviço temporariamente indisponível. Tente novamente em breve.",
                 data: null,
             };
-            return res.status(500).json(response);
+            return res.status(503).json(response);
         }
-
-        const response: ResponseType<ServiceDBType[]> = {
-            status: "success",
-            message: "Servico buscado com sucesso",
-            data: getAllServiceResponse,
-        };
-        return res.status(200).json(response);
     },
 
     async get(req: Request, res: Response) {
@@ -174,7 +183,7 @@ export const ServicoController = {
             OFFSET = parseInt(offset as string)
         }
 
-        const getAllServicoDetalhadoResponse = await ServiceModel.getAllServicoDetalhado(LIMIT, OFFSET)
+        const getAllServicoDetalhadoResponse = await ServiceModel.getAllServicoDetalhado(LIMIT, OFFSET);
 
         if (!getAllServicoDetalhadoResponse) {
             const response: ResponseType<null> = {
@@ -184,5 +193,12 @@ export const ServicoController = {
             };
             return res.status(404).json(response);
         }
+
+        const response: ResponseType<ServicoDetalhadoType[]> = {
+            status: "success",
+            message: "Servicos detalhados buscados com sucesso",
+            data: getAllServicoDetalhadoResponse,
+        };
+        return res.status(200).json(response);
     }
 }

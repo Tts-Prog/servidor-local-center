@@ -120,7 +120,18 @@ export const UsersController = {
             return res.status(400).json(response);
         }
 
-        const userData = await UsersModel.getByEmail(email);
+        let userData;
+        try {
+            userData = await UsersModel.getByEmail(email);
+        } catch (error) {
+            console.error("Erro de BD no login:", error);
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Serviço temporariamente indisponível. Tente novamente em breve.",
+                data: null,
+            };
+            return res.status(503).json(response);
+        }
 
         if (!userData) {
             const response: ResponseType<null> = {
@@ -236,7 +247,18 @@ export const UsersController = {
             return res.status(400).json(response);
         }
 
-        const user = await UsersModel.getByEmail(email);
+        let user;
+        try {
+            user = await UsersModel.getByEmail(email);
+        } catch (error) {
+            console.error("Erro de BD ao procurar utilizador para reset password:", error);
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Serviço temporariamente indisponível. Tente novamente em breve.",
+                data: null,
+            };
+            return res.status(503).json(response);
+        }
 
         if (!user) {
             const response: ResponseType<null> = {

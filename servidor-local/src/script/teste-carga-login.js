@@ -3,36 +3,38 @@ import { check, sleep } from "k6";
 
 export const options = {
   vus: 50, // número de usuários virtuais
-  duration: "30s", // duração do teste
+  duration: "2m", // duração do teste
 };
 
 export default function () {
-    const url = "https://servidor-local-center-backend-qhq3.onrender.com"; // URL do endpoint a ser testado
+    // const url = "https://servidor-local-center-backend-qhq3.onrender.com"; // URL do endpoint a ser testado
+
+    const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
         email: "vozinha@gmail.com",
         password: "vozinha",
     });
 
-  // const headers = {
-  //   "Content-Type": "application/json",
-  // };
-
-  const params = {
-    headers: {
-      "Content-Type": "application/json",
-      Origin: "https://servidor-local-center-three.vercel.app", // <-- Finge que és o teu Frontend!
-      "User-Agent": "k6-load-test",
-    },
+  const headers = {
+    "Content-Type": "application/json",
+    "origin": "https://gulugulu-9kcz.vercel.app/login", // <-- Finge que és o teu Frontend!
+    "User-Agent": "k6-load-test", 
   };
 
-  const response = http.post(url, payload, params);
-  if (response.status !== 200) {
-    console.log(
-      `ERRO! Status: ${response.status} | Resposta do Servidor: ${response.body}`,
-    );
-  }
+  // const params = {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Origin: "https://servidor-local-center-three.vercel.app", // <-- Finge que és o teu Frontend!
+  //     "User-Agent": "k6-load-test",
+  //   },
 
+  //   user: {
+  //     role: "ADMIN",
+  //   },
+  // };
+
+  const response = http.post(url, payload, { headers });
   check(response, {
     "Login Bem-sucedido": (r) => r.status === 200,
     "Login Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms

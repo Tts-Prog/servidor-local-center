@@ -72,11 +72,10 @@ export const UsersModel = {
         `SELECT * FROM tbl_utilizadores WHERE email = $1`,
         [email],
       );
-      if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
-      return result.rows[0];
+      return result.rows.length > 0 && result?.rows[0] ? result.rows[0] : null;
     } catch (error) {
-      console.log(error);
-      return null;
+      console.error("Erro no DB em getByEmail:", error);
+      throw error;
     }
   },
 
