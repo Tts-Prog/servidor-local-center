@@ -2,12 +2,14 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-    vus: 20, // número de usuários virtuais
-    duration: "30s", // duração do teste
+    vus: 50, // número de usuários virtuais
+    duration: "2m", // duração do teste
 };
 
 export function setup () {
-    const loginUrl = "https://servidor-local-center-backend-36dd.onrender.com/users/login";
+    // const loginUrl = "https://servidor-local-center-backend-36dd.onrender.com/users/login";
+    const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
+
 
     const payload = JSON.stringify({
         email: "nilsonjoao647@gmail.com",

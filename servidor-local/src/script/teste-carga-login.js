@@ -3,15 +3,16 @@ import { check, sleep } from "k6";
 
 export const options = {
     vus: 20, // número de usuários virtuais
-    duration: "30s", // duração do teste
+    duration: "2m", // duração do teste
 };
 
 export default function () {
-    const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"; // URL do endpoint a ser testado
+    // const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"; // URL do endpoint a ser testado
+    const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
         email: "nilsonjoao647@gmail.com",
-        password: "ism@el123456789000",
+        password: "ism@el1234567890",
     });
 
     const params = {
