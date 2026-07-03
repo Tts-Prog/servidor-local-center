@@ -3,12 +3,12 @@ import { check, sleep } from "k6";
 
 export const options = {
     vus: 20, // número de usuários virtuais
-    duration: "30s", // duração do teste
+    duration: "2m", // duração do teste
 };
 
 export default function () {
-    const url =
-        "https://servidor-local-center-backend-wt4z.onrender.com/users/login"; // URL do endpoint a ser testado
+        // "https://servidor-local-center-backend-wt4z.onrender.com/users/login"; // URL do endpoint a ser testado
+      const url = "https://api:8080/users/login"; 
 
     const payload = JSON.stringify({
         email: "K@gmail.com",
