@@ -19,5 +19,5 @@ on:
             run: sleep 10
 
           - name: Executar ataque do k6
-            run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servico.js
+            run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
         
