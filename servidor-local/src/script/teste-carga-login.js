@@ -7,12 +7,12 @@ export const options = {
 };
 
 export default function () {
-  // const url = "https://servidor-local-center-backend2.onrender.com/users/login"; // URL do endpoint a ser testado
+  //const url = "https://servidor-local-center-backend-9zgv.onrender.com/users/login"; // URL do endpoint a ser testado
   const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-        email: "z@gmail.com",
-        password: "9999",
+        email: "jeanet@gmail.com",
+        password: "1234",
     });
 
   // const headers = {
