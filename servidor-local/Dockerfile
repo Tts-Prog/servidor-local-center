@@ -1,5 +1,5 @@
 # 1. Especifica  versao de sistema operacional base
-FROM node:20-alpine
+FROM node:26-alpine
 
 # 2. Define a pasta onde o codigo vai ser executado
 WORKDIR /app
