@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { check } from 'k6';
+import { check , sleep } from 'k6';
 
 export const options = {
     vus: 60,
@@ -34,7 +34,7 @@ export function setup() {
 export default function (data) {
 
     const res = http.get(
-        'http://api:3000/api/servicos',
+        'http://api:8080/service',
         {
             headers: {
                 Authorization: `Bearer ${data.token}`
