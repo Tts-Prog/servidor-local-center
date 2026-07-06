@@ -1,0 +1,28 @@
+name: Auditoria Final
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  auditoria:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Iniciar Docker
+        run: docker compose up -d --build
+
+      - name: Esperar API
+        run: sleep 20
+
+      - name: Executar Auditoria k6
+        run: docker compose run --rm k6 run /scripts/auditoria-final.js
+
+      - name: Encerrar Containers
+        if: always()
+        run: docker compose down
