@@ -21,11 +21,11 @@ export function setup() {
             "user-Agent": "k6 load test", // cabeçalho User-Agent para identificar o teste
             Origin: "https://again-liart.vercel.app", // funge que és teu frontend
         },
-    };  
+    };
 
-const response = http.post(loginUrl, payload, params);
-  
-return { token: response.json("token") }; // retorna o token de autenticação para ser usado nas requisições subsequentes
+    const response = http.post(loginUrl, payload, params);
+
+    return { token: response.json("token") }; // retorna o token de autenticação para ser usado nas requisições subsequentes
 }
 
 export default function (data) {
@@ -38,18 +38,18 @@ export default function (data) {
             "user-Agent": "k6 load test", // cabeçalho User-Agent para identificar o teste
         },
 
-   user: {
-    role: "ADMIN", // define o papel do usuário como "admin"
-   }
- };
+        user: {
+            role: "ADMIN", // define o papel do usuário como "admin"
+        }
+    };
 
- const response = http.get(url, params);
+    const response = http.get(url, params);
 
- check(response, {
-    "Sucesso: ": (r) => r.status === 200,
-    "Rápido (< 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
-    "Erro de Servidor (Erro 502/504)": (r) => r.status <= 500, // não deve retornar erro de CPU esgotado   
-})
+    check(response, {
+        "Sucesso: ": (r) => r.status === 200,
+        "Rápido (< 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
+        "Erro de Servidor (Erro 502/504)": (r) => r.status <= 500, // não deve retornar erro de CPU esgotado   
+    })
 
-sleep(1); // espera 1 segundo entre as requisições
+    sleep(1); // espera 1 segundo entre as requisições
 }

@@ -1,0 +1,26 @@
+name: Auditoria Final
+
+on:
+  push:
+    branches: ["main", "dev"]
+
+jobs:
+  auditoria:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Levantar Docker
+        run: docker-compose up -d db api
+
+      - name: Esperar a Base de Dados iniciar
+        run: sleep 10
+
+      - name: Executar Auditoria com k6
+        run: docker-compose run --rm k6_attack run /app/src/script/auditoria-final.js
+
+      - name: Desligar os contentores
+        if: always()
+        run: docker-compose down
