@@ -2,7 +2,7 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-  vus: 20,
+  vus: 60,
   duration: "1m",
   thresholds: {
     // O teste FALHA se a taxa de erro for superior a 1%
@@ -25,7 +25,7 @@ export function setup() {
         headers: {
             "Content-Type": "application/json",
             "user-agent": "k6-load-teste",
-            origin: "https://gulugulu-teal.vercel.app",
+            origin: "https://gulugulu-teal.vercel.app/services/",
         }
     }
 
@@ -34,7 +34,7 @@ export function setup() {
 }
 
 export default function(data){
-    const url = "https://servidor-local-center-backend-w1rr.onrender.com/services/"
+    const url = "https://servidor-local-center-backend-w1rr.onrender.com/"
 
     const params = {
         headers:{
