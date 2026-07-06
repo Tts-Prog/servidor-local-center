@@ -14,7 +14,7 @@ export const options = {
 
 export default function () {
   //const url = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";  // URL do endpoint a ser testado
-  const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
+  const url = "http://api:8081/users/login"; // URL do endpoint a ser testado
 
   const payload = JSON.stringify({
     email: "wilson@gmail.com",

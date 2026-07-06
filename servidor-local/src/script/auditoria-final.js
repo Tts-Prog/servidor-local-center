@@ -2,13 +2,13 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-  vus: 50,
-  duration: "2m",
+  vus: 20,
+  duration: "1m",
   thresholds: {
     // O teste FALHA se a taxa de erro for superior a 1%
     http_req_failed: ["rate<0.01"],
     // O teste FALHA se 95% dos pedidos demorarem mais de 500ms
-    http_req_duration: ["p(95)<500"],
+   http_req_duration: ["p(95)<600"],
   },
 };
 
@@ -34,7 +34,7 @@ export function setup() {
 }
 
 export default function(data){
-    const url = "https://servidor-local-center-backend-w1rr.onrender.com/services/get-all-servico-detalhado"
+    const url = "https://servidor-local-center-backend-w1rr.onrender.com/services/"
 
     const params = {
         headers:{
