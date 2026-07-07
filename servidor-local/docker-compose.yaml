@@ -41,7 +41,7 @@ services:
     depends_on: 
       - api 
     ports: 
-      - "5665:5665"
+      - "5660:5660"
     environment: 
       - K6_WEB_DASHBOARD=true
       # - K6_WEB_DASHBOARD_HOST=0.0.0.0
