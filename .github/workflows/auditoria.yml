@@ -12,11 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Levantar docker db
-        run: docker compose up -d db-2
-
-      - name: Levantar docker api
-        run: docker compose up -d api-2
+      - name: Levantar docker
+        run: docker compose up -d db-2 api-2
 
       - name: Esperar o db estar pronto
         run: sleep 10
