@@ -9,6 +9,7 @@ export const UsersController = {
     //  Criar utilizador
     async createUsers(req: Request, res: Response) {
         const user: userType = req.body;
+        console.log("User " + user)
 
         if (!user) {
             const response: ResponseType<null> = {
@@ -16,10 +17,22 @@ export const UsersController = {
                 message: "Campos obrigatórios em falta",
                 data: null,
             };
+
             return res.status(400).json(response);
         }
 
+        if (!user.password) console.log("error user sem nada")
+
         const createUserResponse = await UsersModel.create(user)
+
+        if (!createUserResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar utilizador",
+                data: null,
+            };
+            return res.status(500).json(response);
+        }
 
         const response: ResponseType<UserDBType> = {
             status: "success",
@@ -143,16 +156,16 @@ export const UsersController = {
             { expiresIn: "7d" }
         );
 
-        const response: ResponseType<{token: string, user: typeof payload}>= {
+        const response: ResponseType<{ token: string, user: typeof payload }> = {
             status: "success",
             message: "Login bem-sucedido",
             data: {
                 token,
                 user: payload,
             },
-        } 
+        }
         return res.status(200).json(response)
-    }, 
+    },
 
     async updatePassword(req: any, res: Response) {
 
