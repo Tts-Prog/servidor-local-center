@@ -18,8 +18,8 @@ services:
   api:
     build: .
     environment:
-      - DATABASE_URL=postgresql://root:rootpassword@db_v2:5432/servidor_local
-      - DB_PG_HOST=db_v2
+      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor_local
+      - DB_PG_HOST=db
       - DB_PG_PORT=5432
       - DB_PG_NAME=servidor_local
       - DB_PG_USER=root

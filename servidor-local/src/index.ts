@@ -87,8 +87,13 @@ app.use("/prestacao-servico", prestacaoServicoRouter)
 app.use("/empresa", empresaRouter)
 app.use("/categoria", categoriaRouter)
 
-// rota da documentação swagger
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// rota da documentação swagger — serve spec JSON + Swagger UI
+app.get("/docs-json", (req: Request, res: Response) => {
+    res.json(swaggerSpec);
+});
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: { url: "/docs-json" },
+}));
 
 // ***************** graphql ***************** //
 //cria o servidor graphql
@@ -104,10 +109,10 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     context: async ({ req }) => ({
         //verificar se o header de autorizacao existe
         token: req.headers.authorization,
-        DB_HOST: process.env.DB_HOST,
-        DB_USER: process.env.DB_USER,
-        DB_PASSWORD: process.env.DB_PASSWORD,
-        DB_NAME: process.env.DB_NAME,
+        DB_HOST: process.env.HOSTNAME,
+        DB_USER: process.env.USERNAME,
+        DB_PASSWORD: process.env.PASSWORD,
+        DB_NAME: process.env.DATABASE,
     }),
 }))
 

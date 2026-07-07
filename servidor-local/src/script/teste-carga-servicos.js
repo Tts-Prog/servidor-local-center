@@ -15,13 +15,13 @@ export function setup() {
         password: "12345"
     })
 
-    const params = {
-        headers: {
-            "Content-Type": "application/json",
-            "User-Agent": "K6 load test",
-            Origin: "https://gulugulu-lovat.vercel.app"
-        }
-    }
+  const params = {
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "k6-load-test",
+      Origin: "https://servidor-local-center-three.vercel.app",
+    },
+  };
 
     const response = http.post(loginUrl, payload, params)
 
@@ -29,7 +29,7 @@ export function setup() {
 }
 
 export default function (data) {
-    const url = "https://servidor-local-center-5tse.onrender.com/services/get-all-servico-detalhado"
+  const url = "http://api:8080/service/get-all-detailed";
 
     const params = {
         headers: {
