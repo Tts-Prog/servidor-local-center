@@ -15,14 +15,14 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/componentes/schemas/Prestacao-servico"
+                  $ref: "#/components/schemas/Prestacao-servico"
         "404":
           description: "Nenhuma Prestacao-servico Encontrado"
           content:
             application/json:
               schemas:
                 type: object
-                $ref: "#/componentes/schemas/Prestacao-servicoResponseError"
+                $ref: "#/components/schemas/Prestacao-servicoResponseError"
 
   /prestacao-servico/create:
     post:
@@ -171,14 +171,14 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: "#/componentes/schemas/Prestacao-servicoDetalhadoResponseSucess"
+                  $ref: "#/components/schemas/Prestacao-servicoDetalhadoResponseSucess"
         "500":
           description: "Erro ao buscar Prestacao de servico detalhado"
           content:
             application/json:
               schemas:
                 type: object
-                $ref: "#/componentes/schemas/Prestacao-servicoDetalhadoResponseError"
+                $ref: "#/components/schemas/Prestacao-servicoDetalhadoResponseError"
   /prestacao-servico/get-all-by-categoria-detalhado/{id_categoria}:
     get:
       summary: Buscar prestacao-servico por categoria
@@ -208,17 +208,17 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: "#/componentes/schemas/Prestacao-servicoByCategoriaDetalhadoResponseSucess"
+                  $ref: "#/components/schemas/Prestacao-servicoByCategoriaDetalhadoResponseSucess"
         "400":
           description: "Dados de prestacao de servico por categoria invalido"
           content:
             application/json:
               schemas:
-                $ref: "#/componentes/schemas/Prestacao-servicoByCategoriaDetalhadoResponseError"
+                $ref: "#/components/schemas/Prestacao-servicoByCategoriaDetalhadoResponseError"
         "500":
           description: "Erro ao buscar Prestacao de servico detalhado por categoria"
           content:
             application/json:
               schemas:
                 type: object
-                $ref: "#/componentes/schemas/Prestacao-servicoByCategoriaDetalhadoResponseError"
+                $ref: "#/components/schemas/Prestacao-servicoByCategoriaDetalhadoResponseError"

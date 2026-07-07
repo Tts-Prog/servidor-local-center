@@ -49,7 +49,13 @@ app.use(cors({
         "https://gulugulu-six.vercel.app",
         "https://gulugulu-nu.vercel.app",
         "https://gulugulu-lovat.vercel.app",
-        "https://gulugulu-theta.vercel.app"
+        "https://gulugulu-theta.vercel.app",
+        "https://gulugulu-9kcz.vercel.app",
+        "https://gulugulu-ten.vercel.app",
+        "https://again-liart.vercel.app",
+        "https://processo-kappa.vercel.app",
+        "https://gulugulu-three.vercel.app",
+        "https://gulugulu2.vercel.app"
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
@@ -79,8 +85,13 @@ app.use("/prestacao-servico", prestacaoServicoRouter)
 app.use("/empresa", empresaRouter)
 app.use("/categoria", categoriaRouter)
 
-// rota da documentação swagger
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// rota da documentação swagger — serve spec JSON + Swagger UI
+app.get("/docs-json", (req: Request, res: Response) => {
+    res.json(swaggerSpec);
+});
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: { url: "/docs-json" },
+}));
 
 // ***************** graphql ***************** //
 //cria o servidor graphql
