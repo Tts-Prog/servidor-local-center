@@ -34,6 +34,7 @@ app.use(cors({
         "https://gulugulu-gray.vercel.app",
         "https://servidor-local-front-me74.vercel.app",
         "https://servidor-local-center-backend2.onrender.com",
+        "https://servidor-local-center-backend-qhq3.onrender.com/",
         "https://servidor-local-front-ts.vercel.app",
         "https://servidor-local-center-three.vercel.app",
         "https://processo-kappa.vercel.app",
