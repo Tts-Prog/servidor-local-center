@@ -4,7 +4,7 @@ services:
     environment:
         POSTGRES_USER: root
         POSTGRES_PASSWORD: rootpassword
-        POSTGRES_DB: servidor_local
+        POSTGRES_DB: servidor-local
     ports:
         - "5432:5432"
 
@@ -18,11 +18,12 @@ services:
       - DB_PG_NAME=servidor_local
       - DB_PG_USER=root
       - DB_PG_PASSWORD=rootpassword
-      - PORT:8080
+      - PORT=8080
+      - JWT_SECRET=eurevqbdgiuf3hebquighewdvb398rhvjbqxvhefu  
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - "db"
     volumes:
       - ./src:/app/src
   
@@ -32,7 +33,7 @@ services:
       - ./src:/app/src
     command: ["sleep", "infinity"]
     depends_on:
-      - api
+      - "api"
     ports:
       - "5665:5665"
     environment:
