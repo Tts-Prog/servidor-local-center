@@ -5,7 +5,7 @@ on:
     branches: ["main", "dev"]
 
 jobs:
-  test-attck:
+  test-attack:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,10 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Levantar docker
-        run: docker-compose up -d db api
+        run: docker compose up -d db api
 
       - name: Esperar o db estar pronto
         run: sleep 10
 
       - name: Executar ataque do k6
-        run: docker-compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
+        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js

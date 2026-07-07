@@ -7,8 +7,8 @@ export const options = {
 };
 
 export default function () {
-        // "https://servidor-local-center-backend-wt4z.onrender.com/users/login"; // URL do endpoint a ser testado
-      const url = "https://api:8080/users/login"; 
+    // "https://servidor-local-center-backend-wt4z.onrender.com/users/login"; // URL do endpoint a ser testado
+    const url = "https://api:8080/users/login";
 
     const payload = JSON.stringify({
         email: "K@gmail.com",
