@@ -19,7 +19,7 @@ services:
     build: .
     # image: servidor-local
     environment:
-      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor_local
+      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor-local
       - DB_PG_HOST=db
       - DB_PG_PORT=5432
       - DB_PG_NAME=servidor_local
@@ -47,8 +47,3 @@ services:
       # - K6_WEB_DASHBOARD_HOST=0.0.0.0
     
   
-
-
-
-  
-    

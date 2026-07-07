@@ -1,4 +1,4 @@
-name: Testes de Performance (K6)
+name: Testes de performance (K6)
 
 on:
   push:
@@ -8,19 +8,15 @@ jobs:
   test-attack:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: servidor-local # path to the folder with docker-compose.yml
+steps:
+  - name: Clonar o repo
+    uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  - name: levantar infraestrutura
+    run:  docker compose up -d db api
 
-      - name: Levantar docker
-        run: docker compose up -d db api
+  - name: esperar o db estar pronto
+    run: sleep 10
 
-      - name: Esperar o db estar pronto
-        run: sleep 10
-
-      - name: Executar ataque do k6
-        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
+  - name: executar attack
+    run: docker compose run --rm k6_attacker run /app/src/script/test-carga-servicos.js
