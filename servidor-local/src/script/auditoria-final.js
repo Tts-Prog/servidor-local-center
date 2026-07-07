@@ -7,8 +7,7 @@ export const options = {
 }
 
 export function setup() {
-    // const loginUrl = "https://servidor-local-center-5tse.onrender.com/users/login"
-    const loginUrl = "https://api:8080/users/login"
+    const loginUrl = "http://api:8080/users/login"  // Keep this for Docker
 
     const payload = JSON.stringify({
         email: "teste@gmail.com",
@@ -24,16 +23,28 @@ export function setup() {
     }
 
     const response = http.post(loginUrl, payload, params)
+    
+    // Add error handling
+    if (response.status !== 200) {
+        console.error(`Login failed with status: ${response.status}`)
+        console.error(`Response body: ${response.body}`)
+        throw new Error(`Login failed: ${response.status}`)
+    }
 
-    return { token: response.json("token") }
+    const token = response.json("token")
+    if (!token) {
+        throw new Error("No token received")
+    }
+
+    return { token: token }
 }
 
 export default function (data) {
-    const url = "https://servidor-local-center-5tse.onrender.com/orcamento/"
+    const url = "http://api:8080/orcamento/"  // Changed to use Docker service name
 
     const params = {
         headers: {
-            Authorizaton: `Bearer $(data.token)`,
+            Authorization: `Bearer ${data.token}`,  // Fixed typo
             "Content-Type": "application/json",
             "User-Agent": "K6 load test",
         },
@@ -46,7 +57,7 @@ export default function (data) {
 
     check(res, {
         "sucesso: ": (r) => r.status === 200,
-        "rapido (< 500ms)": (r) => r.timings.duratioin < 500,
+        "rapido (< 500ms)": (r) => r.timings.duration < 500,  // Fixed typo
         "Erro de servidor (Erro 502/504)": (r) => r.status <= 500,
     })
 

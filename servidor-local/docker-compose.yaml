@@ -1,48 +1,55 @@
-services: 
-  db: 
+services:
+  db_v2:
     image: postgres:15
     environment:
-      # - host=db
-      # - port=5432
-      # - name=servidor-local
-      # - user=root
-      # - password=Webpass2334!
-      - POSTGRES_PASSWORD=Webpass2334!
-      - POSTGRES_USER=root
-      - POSTGRES_DB=servidor_local
-    ports: 
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: servidor_local  # Fixed typo
+    ports:
       - "5432:5432"
-    #volumes: 
-    # - postgres_data:/var/lib/postgresql/data
-  
-  api: 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  api:
     build: .
-    # image: servidor-local
     environment:
-      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor-local
-      - DB_PG_HOST=db
+      - DATABASE_URL=postgresql://root:rootpassword@db_v2:5432/servidor_local
+      - DB_PG_HOST=db_v2
       - DB_PG_PORT=5432
       - DB_PG_NAME=servidor_local
       - DB_PG_USER=root
-      - DB_PG_PASSWORD=Webpass2334!
+      - DB_PG_PASSWORD=rootpassword
+      - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj
       - PORT=8080
-    depends_on:
-      - db
-    ports: 
+      - NODE_ENV=production  # Add this
+    ports:
       - "8080:8080"
-    volumes: 
-      - ./src:/app/src 
+    depends_on:
+      db_v2:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - app-network
 
-  k6_attack: 
+  k6_attack:
     image: grafana/k6:latest
     volumes:
       - ./src:/app/src
     command: ["sleep", "infinity"]
-    depends_on: 
-      - api 
-    ports: 
+    depends_on:
+      - api
+    ports:
       - "5665:5665"
-    environment: 
+    environment:
       - K6_WEB_DASHBOARD=true
-      # - K6_WEB_DASHBOARD_HOST=0.0.0.0
-    
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
