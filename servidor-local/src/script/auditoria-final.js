@@ -28,7 +28,7 @@ export function setup() {
 }
 
 export default function (data) {
-  const url = "http://localhost:8080/";
+  const url = "http://api:8080/service/";
 
   const params = {
     headers: {
@@ -49,7 +49,7 @@ export default function (data) {
     "Rápido (< 500ms)": (r) => r.timings.duration < 500,
     "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
   });
-  
+
 
   sleep(1);
 }
