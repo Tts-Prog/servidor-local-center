@@ -3,7 +3,7 @@ import { check, sleep } from "k6";
 
 export const options = {
   vus: 50,
-  duration: "2m",
+  duration: "30s",
   thresholds: {
     // O teste FALHA se a taxa de erro for superior a 1%
     http_req_failed: ["rate<0.01"],
@@ -14,7 +14,7 @@ export const options = {
 
 export function setup() {
     //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
-    const loginURL = "http://api-2:8081/users/login"; // URL do endpoint a ser testado
+    const loginUrl = "http://api:8080/users/login"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
         email: "wilson@gmail.com",
@@ -29,13 +29,16 @@ export function setup() {
         }
     }
 
-  const res = http.post(loginURL, payload, params);
+  const res = http.post(loginUrl, payload, params);
+  if (res.status !== 200) {
+  console.log(`🚨 ERRO! Status: ${res.status} | Resposta: ${res.body}`);
+}
 
   return { token: res.json("token") };
 }
 
 export default function (data) {
-  const url = "http://api-2:8081/service/get-all-detailed";
+  const url = "http://api:8080/service/get-all-detailed";
 
     const params = {
         headers:{

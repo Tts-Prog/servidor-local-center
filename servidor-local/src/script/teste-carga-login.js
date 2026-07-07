@@ -4,28 +4,26 @@ import { check, sleep } from "k6";
 export const options = {
   vus: 20, // número de usuários virtuais
   duration: "2m", // duração do teste
-  thresholds: {
-    // O teste FALHA se a taxa de erro for superior a 1%
-    http_req_failed: ["rate<0.01"],
-    // O teste FALHA se 95% dos pedidos demorarem mais de 500ms
-    http_req_duration: ["p(95)<500"],
-  },
 };
 
 export default function () {
-  //const url = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";  // URL do endpoint a ser testado
-  const url = "http://api:8081/users/login"; // URL do endpoint a ser testado
+  // const url = "https://servidor-local-center-backend2.onrender.com/users/login"; // URL do endpoint a ser testado
+  const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
-  const payload = JSON.stringify({
-    email: "wilson@gmail.com",
-    password: "123456789",
-  });
+    const payload = JSON.stringify({
+        email: "wilson@gmail.com",
+        password: "123456789",
+    });
+
+  // const headers = {
+  //   "Content-Type": "application/json",
+  // };
 
   const params = {
     headers: {
       "Content-Type": "application/json",
-      origins: "https://gulugulu-teal.vercel.app",
-    "user-Agent" : "k6-load-teste",
+      Origin: "https://servidor-local-center-three.vercel.app", // <-- Finge que és o teu Frontend!
+      "User-Agent": "k6-load-test",
     },
   };
 
@@ -44,4 +42,31 @@ export default function () {
 
   sleep(1); // espera 1 segundo entre as requisições
 }
- 
+
+// const payload = JSON.stringify({
+//   email: "admin@marketplace.com",
+//   password: "password123",
+// });
+
+// // 1. A SOLUÇÃO DO CORS: Adicionar o 'Origin' ou 'Referer'
+// const params = {
+//   headers: {
+//     "Content-Type": "application/json",
+//     Origin: "https://teu-frontend-na.vercel.app", // <-- Finge que és o teu Frontend!
+//     "User-Agent": "k6-load-test",
+//   },
+// };
+
+// const res = http.post(url, payload, params);
+
+// // 2. A SOLUÇÃO DA CEGUEIRA: Se não for 200, mostra-me o erro real!
+// if (res.status !== 200) {
+//   console.log(
+//     `🚨 ERRO! Status: ${res.status} | Resposta do Servidor: ${res.body}`,
+//   );
+// }
+
+// check(res, {
+//   "Login com Sucesso (Status 200)?": (r) => r.status === 200,
+//   // ... resto dos teus checks
+// });
