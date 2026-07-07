@@ -32,7 +32,8 @@ export  function  setup() {
 }
 
 export default function(data){
-    const url = "https://servidor-local-center-backend-qhq3.onrender.com/services/get-all-servico-detalhado"
+    // const url = "https://servidor-local-center-backend-qhq3.onrender.com/services/get-all-servico-detalhado"
+    const url = "http://api:8080/service/get-all-detailed"
 
     const params = {
         headers:{
