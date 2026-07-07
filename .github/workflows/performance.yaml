@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 name: Testes de Performance (k6)
 
 on:
@@ -25,31 +25,3 @@ jobs:
       # Passo D: Disparar o k6 por dentro da rede Docker!
       - name: 🚀 Executar Ataque k6
         run: docker compose run --rm k6_attacker run /app/src/script/teste-carga-servicos.js
-=======
-name: Testes de Performance (K6)
-
-on:
-  push:
-    branches: ["main", "dev"]
-
-jobs:
-  test-attack:
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: servidor-local # path to the folder with docker-compose.yml
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Levantar docker
-        run: docker compose up -d db api
-
-      - name: Esperar o db estar pronto
-        run: sleep 10
-
-      - name: Executar ataque do k6
-        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
->>>>>>> dev
