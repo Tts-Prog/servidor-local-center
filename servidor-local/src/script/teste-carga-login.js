@@ -11,10 +11,10 @@ export default function () {
     // "https://servidor-local-center-backend2.onrender.com/users/login"; 
   const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
-  const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
-  });
+    const payload = JSON.stringify({
+        email: "z@gmail.com",
+        password: "9999",
+    });
 
   // const headers = {
   //   "Content-Type": "application/json",
