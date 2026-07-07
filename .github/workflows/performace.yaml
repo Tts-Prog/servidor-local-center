@@ -1,0 +1,23 @@
+name: teste de performace k6
+
+on:
+   push 
+     branches: [ 'main', 'deve' ]
+jobs:
+  teste-attrack:
+    runs-on: ubuntu-latest
+
+
+    
+    steps:
+      - name: fazer checkout
+        uses: actions/checkout@v4
+
+      - name: levanta doker
+        run: docker compose up -d db api
+
+      - name: espera o db estar pronto
+        run: SLEEP 10
+
+      - name: EXECUTAR O ATAKE K6
+        run: docker compose run --rm --service-ports k6_attacker run /src/scripts/teste-carga-login.js

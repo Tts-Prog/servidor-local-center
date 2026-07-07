@@ -2,15 +2,14 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-  vus: 50,
-  duration: "2m",
+  vus: 60,
+  duration: "60s",
 };
 
 export function setup() {
-  const loginUrl =
-    "https://servidor-local-center-backend2.onrender.com/users/login";
+  const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
 
-   const payload = JSON.stringify({
+  const payload = JSON.stringify({
     email: "elvizoarez1@gmail.com",
     password: "Webpass2334!",
   });
@@ -19,7 +18,7 @@ export function setup() {
     headers: {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-      origin: "https://servidor-local-center-three.vercel.app",
+      origin: "https://servidor-local-center-three.vercel.app/service/",
     },
   };
 
@@ -29,8 +28,7 @@ export function setup() {
 }
 
 export default function (data) {
-  const url =
-    "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado";
+  const url = "https://servidor-local-center-backend2.onrender.com/";
 
   const params = {
     headers: {
@@ -50,6 +48,7 @@ export default function (data) {
     "Sucesso: ": (r) => r.status === 200,
     "Rápido (< 500ms)": (r) => r.timings.duration < 500,
     "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
+       console.log(`Status: ${r.status} ${r.timings.duration} ${res}`)
   });
 
   sleep(1);

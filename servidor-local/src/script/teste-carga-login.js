@@ -28,17 +28,17 @@ export  function setup() {
 }
 
 export default function (data) {
-const url = "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado"
-const params = {
-  headers:{
+  const url = "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado"
+  const params = {
+   headers:{
     "Authorization":`Bearer ${data.token}`,
     "Content-Type":"application/json",   
     "User-Agent": "k6-load-test",
   },
-  user:{
+   user:{
     role:"admin"
   }
-}
+  }
 
   const res = http.get(url, params)
 
