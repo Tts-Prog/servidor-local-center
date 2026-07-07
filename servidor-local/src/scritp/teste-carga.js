@@ -1,13 +1,13 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-const options = {
-  vus: 30,
-  duration: "2m",
+export const options = {
+  vus: 20,
+  duration: "30s",
 };
 
 export default function () {
-  const unl = "https://servidor-local-center-backend2.onrender.com/users/login";
+  const url = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
     email: "vozinha@gmail.com",
@@ -15,12 +15,11 @@ export default function () {
   });
 
   const headers = {
-    "Content- Type": "application/json",
-    "Oigin": "https://gulugulu-9kcz.vercel.app/login",
-    "User-Agent": "k6-load-test",
+    "Content-Type": "application/json",
+    "Origin": "https://servidor-local-center-three.vercel.app",
   };
 
-  const response = http.post(unl, payload, { headers: headers });
+  const response = http.post(url, payload, { headers: headers });
 
   check(response, {
     "Login com sucesso (Status 200)": (r) => r.status === 200,
