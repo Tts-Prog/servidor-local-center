@@ -7,13 +7,16 @@ on:
 jobs:
   test-attack:
     runs-on: ubuntu-latest
+  defautl:
+    run: 
+      working-directory: servidor-local
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Levantar docker
-        run: docker compose -f "servidor-local/docker-compose.yml" up -d db-2 api-2
+        run: docker compose up -d db-2 api-2
 
       - name: Esperar o db estar pronto
         run: sleep 10
