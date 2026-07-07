@@ -31,6 +31,8 @@ export function setup() {
 export default function (data) {
     const url = "https://servidor-local-center-backend-wt4z.onrender.com/services/get-all-servico-detalhado"; // URL do endpoint a ser testado
 
+  // const url = "http://api:8080/service/get-all-detailed";
+
     const params = {
         headers: {
             Authorization: `Bearer ${data.token}`, // usa o token retornado na função setup
