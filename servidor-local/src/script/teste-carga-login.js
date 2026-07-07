@@ -3,17 +3,17 @@ import { check, sleep } from "k6";
 
 export const options = {
   vus: 20, // número de usuários virtuais
-  duration: "2m", // duração do teste
+  duration: "30s", // duração do teste
 };
 
 export default function () {
   // const url = "https://servidor-local-center-backend2.onrender.com/users/login"; // URL do endpoint a ser testado
   const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
-    const payload = JSON.stringify({
-        email: "z@gmail.com",
-        password: "9999",
-    });
+  const payload = JSON.stringify({
+    email: "z@gmail.com",
+    password: "9999",
+  });
 
   // const headers = {
   //   "Content-Type": "application/json",
