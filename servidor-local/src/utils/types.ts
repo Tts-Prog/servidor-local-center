@@ -103,6 +103,7 @@ export interface PrestadorDBType {
     minimo_desconto: number,
     nif: string,
     profissao: string,
+    id_utilizador: string,
     enable: boolean,
     created_at: string,
     updated_at: string
