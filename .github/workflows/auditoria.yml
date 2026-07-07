@@ -7,9 +7,10 @@ on:
 jobs:
   test-attack:
     runs-on: ubuntu-latest
-  defautls:
-    run: 
-      working-directory: servidor-local
+    
+    defautls:
+      run: 
+        working-directory: servidor-local
 
     steps:
       - name: Checkout
