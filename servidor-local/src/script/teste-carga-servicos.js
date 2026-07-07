@@ -19,7 +19,7 @@ export function setup() {
     headers: {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-      origin: "https://servidor-local-center-three.vercel.app",
+      Origin: "https://servidor-local-center-three.vercel.app",
     },
   };
 
@@ -29,8 +29,7 @@ export function setup() {
 }
 
 export default function (data) {
-  const url =
-    "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado";
+  const url = "http://api:8080/service/get-all-detailed";
 
   const params = {
     headers: {
