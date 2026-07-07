@@ -7,8 +7,8 @@ on:
 jobs:
   test-attack:
     runs-on: ubuntu-latest
-    
-    defautls:
+
+    defaults:
       run: 
         working-directory: servidor-local
 
