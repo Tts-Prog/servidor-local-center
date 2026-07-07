@@ -1,17 +1,58 @@
-import http from 'k6/http';
-import { sleep } from 'k6';
+import http from "k6/http"
+import {check, sleep} from "k6"
 
-// Configuração dos testes
 export const options = {
-  vus: 60,
-  duration: '1m',
-};
-
-// Cenário de teste
-export default function () {
-  // Substitua pelo URL do sistema que deseja auditar
-  http.get('https://k6.io'); 
-  
-  // Pausa de 1 segundo entre as requisições de cada utilizador
-  sleep(1); 
+    vus: 60,
+    duration: "1m",
 }
+
+//export  function  setup() {const url = "https://servidor-local-center-backend-0yv2.onrender.com/users/login"
+export  function  setup() {const url = "https://api:8080/users/login"
+
+
+
+    const payload = JSON.stringify({
+        email: "furria1@gmail.com",
+        password: "labanta2526",
+    });
+    
+    const params = {
+        headers:{
+            "Content-Type":"application/json",
+            "Origin":"https://servidor-local-center.vercel.app",
+            "User-Agent":"k6-load-test",
+        },
+    };
+    const res = http.post(url, payload, params);
+
+    return { token: res.json("token") }
+       
+}
+
+export default function(data){
+    const url ="https://servidor-local-center-backend-0yv2.onrender.com/services/get-all-servico-detalhado"
+
+    const params = {
+        headers:{
+           Autorization:`Bearer ${data.token}`,
+           "Content-Type":"application/json",
+           "User-Agent":"k6-load-test",
+        },
+
+        user:{
+            role:"ADMIN"
+        }
+    }
+    const res = http.get(url, params);
+
+    check(res, {
+        "Sucesso: ": (r) => r.status === 200,
+        "Rapido ( < 500ms): ": (r) => r.timings.duration < 500,
+        "Erro de servidor (Erro 502/504): ": (r) => r.status >= 500,
+        
+    })
+    sleep(1);
+    
+}
+
+
