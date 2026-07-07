@@ -18,7 +18,7 @@ export function setup() {
     headers: {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-      origin: "https://servidor-local-center-three.vercel.app/service/",
+      origin: "https://servidor-local-center-three.vercel.app",
     },
   };
 
@@ -28,7 +28,7 @@ export function setup() {
 }
 
 export default function (data) {
-  const url = "https://servidor-local-center-backend2.onrender.com/";
+  const url = "http://localhost:8080/";
 
   const params = {
     headers: {
@@ -48,8 +48,8 @@ export default function (data) {
     "Sucesso: ": (r) => r.status === 200,
     "Rápido (< 500ms)": (r) => r.timings.duration < 500,
     "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
-       console.log(`Status: ${r.status} ${r.timings.duration} ${res}`)
   });
+  
 
   sleep(1);
 }

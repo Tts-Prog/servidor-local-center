@@ -13,11 +13,13 @@ const db = new Pool({
 db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
     .catch((error) => console.error("Erro ao conectar ao banco de dados PostgreSQL:", error.stack));
+
 db.on("error", (err, client) => {
-  console.error(
-    "⚠️ Erro de fundo no Pool do PostgreSQL. Tentando recuperar...",
-    err.message,
-  );
-  // Não fazemos process.exit(-1) para a API continuar viva!
+    console.error(
+        "⚠️ Erro de fundo no Pool do PostgreSQL. Tentando recuperar...",
+        err.message,
+    );
+    // Não fazemos process.exit(-1) para a API continuar viva!
 });
+
 export default db

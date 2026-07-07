@@ -7,8 +7,8 @@ export const options = {
 };
 
 export function setup() {
-  const loginUrl =
-    "https://servidor-local-center-backend2.onrender.com/users/login";
+  // const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
+  const loginUrl = "http://api:8080/users/login";
 
    const payload = JSON.stringify({
     email: "elvizoarez1@gmail.com",

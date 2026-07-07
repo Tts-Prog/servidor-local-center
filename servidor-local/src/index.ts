@@ -29,6 +29,7 @@ app.use(express.json()); // para interpretar o corpo das requisições como JSON
 
 // liberta o front-end de aceder ao back-end
 app.use(cors({
+
     origin: [
         "http://localhost:3000",
         "https://stiven-gulugulu.vercel.app",
@@ -57,6 +58,7 @@ app.use(cors({
         "https://gulugulu-ten.vercel.app",
         "https://again-liart.vercel.app",
         "https://processo-kappa.vercel.app",
+        "https://gulugulu-three.vercel.app",
         "https://gulugulu2.vercel.app"
     ],
     credentials: true,
@@ -87,8 +89,13 @@ app.use("/prestacao-servico", prestacaoServicoRouter)
 app.use("/empresa", empresaRouter)
 app.use("/categoria", categoriaRouter)
 
-// rota da documentação swagger
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// rota da documentação swagger — serve spec JSON + Swagger UI
+app.get("/docs-json", (req: Request, res: Response) => {
+    res.json(swaggerSpec);
+});
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: { url: "/docs-json" },
+}));
 
 // ***************** graphql ***************** //
 //cria o servidor graphql
