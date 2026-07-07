@@ -2,8 +2,5 @@
   "dependencies": {
     "@types/pg": "^8.20.0",
     "pg": "^8.21.0"
-  },
-  "devDependencies": {
-    "@types/node": "^25.9.2"
   }
 }
