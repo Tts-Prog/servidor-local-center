@@ -29,12 +29,13 @@ export function setup() {
         }
     }
 
-    const res = http.post(loginURL, payload, params);
-    return { token: res.json("token") }
+  const res = http.post(loginURL, payload, params);
+
+  return { token: res.json("token") };
 }
 
-export default function(data){
-    const url = "https://servidor-local-center-backend-w1rr.onrender.com/services/get-all-servico-detalhado"
+export default function (data) {
+  const url = "http://api-2:8081/service/get-all-detailed";
 
     const params = {
         headers:{

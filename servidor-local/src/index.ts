@@ -86,8 +86,13 @@ app.use("/prestacao-servico", prestacaoServicoRouter)
 app.use("/empresa", empresaRouter)
 app.use("/categoria", categoriaRouter)
 
-// rota da documentação swagger
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// rota da documentação swagger — serve spec JSON + Swagger UI
+app.get("/docs-json", (req: Request, res: Response) => {
+    res.json(swaggerSpec);
+});
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: { url: "/docs-json" },
+}));
 
 // ***************** graphql ***************** //
 //cria o servidor graphql
