@@ -7,7 +7,7 @@ on:
 jobs:
   test-attack:
     runs-on: ubuntu-latest
-  defautl:
+  defautls:
     run: 
       working-directory: servidor-local
 
