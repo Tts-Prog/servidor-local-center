@@ -13,34 +13,32 @@ export const options = {
 
 export function setup() {
 
-  const url = "http://api:8081/users/login";
+  const url = "http://api:8080/users/login";
   //const url = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-      email: "eu.strong@gmail.com",
-      password: "rambo123",
+      email: "test@gmail.com",
+      password: "123"
   });
 
   const params = {
     headers: {
       "Content-Type": "application/json",
-      Origin: "https://gulugulu2.vercel.app/services",
+      Origin: "https://gulugulu2.vercel.app/service",
       "User-Agent": "k6-load-test",
     },
+
+    user: {
+      role: "ADMIN",
+    }
   };
 
-  const response = http.post(url, payload, params);
-  console.log("STATUS LOGIN:", response.status);
-console.log("BODY LOGIN:", response.body);
+  const res = http.post(url, payload, params);
 
-  check(response, {
-    "Login Bem-sucedido": (r) => r.status === 200,
-  });
-
-  const body = JSON.parse(response.body);
+  console.log("res: ", res.json());
 
   return {
-    token: body.token,
+    token: res.json().data.token
   };
   
 }
@@ -52,14 +50,18 @@ export default function (data) {
     },
   });*/
 
-  const res = http.get("https://servidor-local-center-vhbq.onrender.com/", {
+  const res = http.get("http://api:8080/service", {
     headers: {
      Authorization: `Bearer ${data.token}`,
+     "content-Type": "application/json",
+     "User-Agent": "k6-load-test",
     },
   });
 
   check(res, {
     "Serviços OK": (r) => r.status === 200,
+    "rapido": (r) => r.timings.duration < 500,
+    "erro de servidor (Erro 502/504)": (r) => r.status <= 500,
   });
 
   sleep(1);
