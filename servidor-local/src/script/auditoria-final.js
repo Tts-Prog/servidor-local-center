@@ -14,10 +14,10 @@ export const options = {
 
 export function setup() {
     //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
-    const loginURL = "http://api-2:8081/users/login"; // URL do endpoint a ser testado
+    const loginUrl = "http://api-2:8081/users/login"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
-        email: "wilson@gmail.com",
+        email: "rodrigo@gmail.com",
         password: "123456789"
     });
     
@@ -25,16 +25,24 @@ export function setup() {
         headers: {
             "Content-Type": "application/json",
             "user-agent": "k6-load-teste",
-            origin: "https://gulugulu-teal.vercel.app/services/",
+            origin: "https://gulugulu-teal.vercel.app",
         }
     }
 
-    const res = http.post(loginURL, payload, params);
-    return { token: res.json("token") }
+  const res = http.post(loginUrl, payload, params);
+
+  return { token: res.json().data.token };
 }
 
-export default function(data){
-    const url = "https://servidor-local-center-backend-w1rr.onrender.com/"
+export default function (data) {
+  const url = "http://api-2:8081/service/create";
+
+  const payload = JSON.stringify({
+      nome: "Servico de Limpeza",
+      descricao: "Servico de Limpeza Profissional para residentes e empresa",
+      categoria: "Limpeza",
+      enabled_at: true
+    })
 
     const params = {
         headers:{
@@ -46,13 +54,14 @@ export default function(data){
             role: "admin"
         }
     }
-    const res = http.get (url,params)
+    
+    const res = http.post (url,payload,params)
 
     check(res, {
         "sucesso": (r) => r.status === 200,
         "Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500,
         "erro de servidor (Erro 502/504)": (r) => r.status >= 500,
     });
-
+    
     sleep(1);
 }

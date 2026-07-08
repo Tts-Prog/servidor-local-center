@@ -14,7 +14,7 @@ export const options = {
 
 export function setup() {
     //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
-    const loginUrl = "http://api:8080/users/login"; // URL do endpoint a ser testado
+    const loginUrl = "http://api-2:8081/users/login"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
         email: "wilson@gmail.com",
@@ -30,15 +30,12 @@ export function setup() {
     }
 
   const res = http.post(loginUrl, payload, params);
-  if (res.status !== 200) {
-  console.log(`🚨 ERRO! Status: ${res.status} | Resposta: ${res.body}`);
-}
 
-  return { token: res.json("token") };
+  return { token: res.json().data.token };
 }
 
 export default function (data) {
-  const url = "http://api:8080/service/get-all-detailed";
+  const url = "http://api-2:8081/service/create";
 
     const params = {
         headers:{
@@ -57,6 +54,10 @@ export default function (data) {
         "Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500,
         "erro de servidor (Erro 502/504)": (r) => r.status >= 500,
     });
+    
+    if (res.status !== 200) {
+  console.log(`🚨 ERRO! Status: ${res.status} | Resposta: ${res.body}`);
+}
 
     sleep(1);
 }
