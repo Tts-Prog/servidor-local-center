@@ -8,7 +8,7 @@ export const options = {
 
 export function setup () {
     // const loginUrl = "https://servidor-local-center-backend-36dd.onrender.com/users/login";
-    const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
+    const loginUrl = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
 
     const payload = JSON.stringify({
@@ -44,7 +44,7 @@ export default function (data) {
         }
     }
 
-    const res = hhttp.get(url, params)
+    const res = http.get(url, params)
 
     check(res, {
         "Sucesso:": (r) => r.status === 200,

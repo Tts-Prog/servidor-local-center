@@ -26,7 +26,7 @@ export function setup () {
 
     const res = http.post(loginUrl, payload, params);
 
-    return {token: res.json("token") };
+    return {token: res.json().data.token};
 }
 
 export default function (data) {
@@ -44,7 +44,7 @@ export default function (data) {
         }
     }
 
-    const res = hhttp.get(url, params)
+    const res = http.get(url, params)
 
     check(res, {
         "Sucesso:": (r) => r.status === 200,
