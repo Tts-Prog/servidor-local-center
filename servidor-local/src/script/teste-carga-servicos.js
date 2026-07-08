@@ -19,7 +19,7 @@ export function setup() {
     headers: {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-      orgin: "https://servidor-local-center-three.vercel.app",
+      Origin: "https://servidor-local-center-three.vercel.app",
     },
   };
 
