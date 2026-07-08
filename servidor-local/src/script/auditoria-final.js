@@ -7,28 +7,29 @@ export const options = {
 };
 
 export function setup() {
-  const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
+  // const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
+  const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
+    email: "2@gmail.com",
+    password: "123456789",
   });
 
   const params = {
     headers: {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-      origin: "https://servidor-local-center-three.vercel.app",
+      origin: "https://servidor-local-center-three.vercel.app/",
     },
   };
 
   const res = http.post(loginUrl, payload, params);
 
-  return { token: res.json("token") };
+  return { token: res.json().data.token }; //retorna o token
 }
 
 export default function (data) {
-  const url = "http://api:8080/service/";
+  const url = "http://api:8080/service/create"
 
   const params = {
     headers: {
@@ -36,13 +37,21 @@ export default function (data) {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
     },
+    
+    
 
     user: {
       role: "ADMIN",
     },
   };
+   const payload = JSON.stringify({
+    nome: "Servico de Limpeza",
+    descricao: "Servico de Limpeza Profissional para residentes e empresa",
+    categoria: "Limpeza",
+    enabled_at: true
+  });
 
-  const res = http.get(url, params);
+  const res = http.post(url, payload,params);
 
   check(res, {
     "Sucesso: ": (r) => r.status === 200,

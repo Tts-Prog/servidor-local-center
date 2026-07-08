@@ -13,8 +13,8 @@ const EmpresaRoute = {
 
 const router = Router();
 
-router.get(EmpresaRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), EmpresaController.getAll);
-router.get(EmpresaRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), EmpresaController.get);
+router.get(EmpresaRoute.getAll,EmpresaController.getAll);
+router.get(EmpresaRoute.getById,EmpresaController.get);
 
 router.use(AuthMiddleware);
 

@@ -7,12 +7,12 @@ export const options = {
 };
 
 export default function () {
-  const url = "https://servidor-local-center-backend2.onrender.com/users/login"; // URL do endpoint a ser testado
-  // const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
+  // const url = "https://servidor-local-center-backend2.onrender.com/users/login"; // URL do endpoint a ser testado
+  const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
   const payload = JSON.stringify({
-    email: "z@gmail.com",
-    password: "9999",
+    email: "1@gmail.com",
+    password: "123456789",
   });
 
   const params = {
@@ -24,23 +24,8 @@ export default function () {
   };
 
   const res = http.post(url, payload, params);
-  return { token: res.json("token") };
-}
-
-export default function (data) {
-  const url = "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado"
-  const params = {
-   headers:{
-    "Authorization":`Bearer ${data.token}`,
-    "Content-Type":"application/json",   
-    "User-Agent": "k6-load-test",
-  },
-   user:{
-    role:"admin"
+  if(res.status !== 200){
   }
-  }
-
-  const res = http.get(url, params)
 
   check(res, {
     "GET com Sucesso (Status 200)?": (r) => r.status === 200,

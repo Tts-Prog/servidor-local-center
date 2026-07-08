@@ -14,8 +14,8 @@ const OrcamentoRoute = {
 
 const router = Router();
 
-router.get(OrcamentoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), OrcamentoController.getAll);
-router.get(OrcamentoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), OrcamentoController.get);
+router.get(OrcamentoRoute.getAll, OrcamentoController.getAll);
+router.get(OrcamentoRoute.getById,OrcamentoController.get);
 
 router.use(AuthMiddleware);
 
