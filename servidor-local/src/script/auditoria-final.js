@@ -18,14 +18,14 @@ export function Setup(){
     const params = {
         headers: {
             "Content-Type": "application/json",
-            Origin: "https://gulugulu-ten.vercel.app/service/",
+            Origin: "https://gulugulu-ten.vercel.app/login/",
             "User-Agent": "K6 load test"
         }
     };
 
     const res = http.post(url, payload, params);
 
-    return{token: res.json("token")}
+    return{token: res.json().data.token}
 };
 
 
