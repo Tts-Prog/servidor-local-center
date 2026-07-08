@@ -15,8 +15,8 @@ const CategoriaRoute = {
 
 const router = Router();
 
-router.get(CategoriaRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), CategoriaController.getAll);
-router.get(CategoriaRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), CategoriaController.get);
+router.get(CategoriaRoute.getAll);
+router.get(CategoriaRoute.getById);
 
 router.use(AuthMiddleware);
 

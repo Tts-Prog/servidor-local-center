@@ -25,12 +25,12 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
-  return { token: res.json("token") };
+  return { token: res.json().data.token };
 }
 
 export default function (data) {
-  const url =
-    "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado";
+  const url = "http://api:8080/service/get-all-detailed";
+   // "https://servidor-local-center-backend2.onrender.com/services/get-all-servico-detalhado";
 
   const params = {
     headers: {

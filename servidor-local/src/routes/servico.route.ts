@@ -14,9 +14,9 @@ const ServicoRoute = {
 
 const router = Router();
 
-router.get(ServicoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAll);
-router.get(ServicoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.get);
-router.get(ServicoRoute.getAllDetailed, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAllServicoDetalhado);
+router.get(ServicoRoute.getAll);
+router.get(ServicoRoute.getById);
+router.get(ServicoRoute.getAllDetailed);
 
 router.use(AuthMiddleware);
 
