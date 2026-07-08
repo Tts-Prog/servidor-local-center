@@ -25,7 +25,7 @@ export function setup() {
 
     const response = http.post(loginUrl, payload, params);
 
-    return { token: response.json("token") }; // retorna o token de autenticação para ser usado nas requisições subsequentes
+    return { token: response.json().data.token}; // retorna o token de autenticação para ser usado nas requisições subsequentes
 }
 
 export default function (data) {
