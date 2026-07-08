@@ -3,7 +3,7 @@ import { check, sleep } from "k6";
 
 export const options = {
   vus: 60,
-  duration: "1m",
+  duration: "60s",
   thresholds: {
     http_req_failed: ["rate==0"],
     http_req_duration: ["p(95)<600"],
@@ -13,17 +13,18 @@ export const options = {
 
 export function setup() {
 
-  const url = "http://api:8080/users/login";
+  const url = "http://api:8081/users/login";
+  //const url = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "varelaannette0@gmail.com",
-    password: "1999",
+      email: "eu.strong@gmail.com",
+      password: "rambo123",
   });
 
   const params = {
     headers: {
       "Content-Type": "application/json",
-      Origin: "https://gulugulu2.vercel.app/",
+      Origin: "https://gulugulu2.vercel.app/services",
       "User-Agent": "k6-load-test",
     },
   };
@@ -45,7 +46,13 @@ console.log("BODY LOGIN:", response.body);
 }
 
 export default function (data) {
-  const res = http.get("http://api:8080/api/servicos", {
+  /*const res = http.get("http://api:8080/api/servicos", {
+    headers: {
+     Authorization: `Bearer ${data.token}`,
+    },
+  });*/
+
+  const res = http.get("https://servidor-local-center-vhbq.onrender.com/", {
     headers: {
      Authorization: `Bearer ${data.token}`,
     },

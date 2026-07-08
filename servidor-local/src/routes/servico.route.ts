@@ -13,11 +13,13 @@ const ServicoRoute = {
     getAllDetailed: "/get-all-detailed"
 };
 
-router.use(AuthMiddleware);
 
-router.get(ServicoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAll);
-router.get(ServicoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.get);
-router.get(ServicoRoute.getAllDetailed, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), ServicoController.getAllServicoDetalhado);
+
+router.get(ServicoRoute.getAll, ServicoController.getAll);
+router.get(ServicoRoute.getById, ServicoController.get);
+router.get(ServicoRoute.getAllDetailed, ServicoController.getAllServicoDetalhado);
+
+router.use(AuthMiddleware);
 
 router.post(ServicoRoute.create, authorize([Role.ADMIN]), ServicoController.createServico);
 router.put(ServicoRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), ServicoController.update);
