@@ -19,13 +19,14 @@ services:
     build: .
     # image: servidor-local
     environment:
-      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor-local
+      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor_local
       - DB_PG_HOST=db
       - DB_PG_PORT=5432
       - DB_PG_NAME=servidor_local
       - DB_PG_USER=root
       - DB_PG_PASSWORD=Webpass2334!
       - PORT=8080
+      - JWT_SECRET=slcnoibcidbliabaukvlusgcuildsbciuewbuicbeiucbeucw
     depends_on:
       - db
     ports: 
