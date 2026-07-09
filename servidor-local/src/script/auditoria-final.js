@@ -17,7 +17,7 @@ export function setup() {
   //const url = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-      email: "test@gmail.com",
+      email: "teste4@gmail.com",
       password: "123"
   });
 
@@ -50,13 +50,19 @@ export default function (data) {
     },
   });*/
 
-  const res = http.get("http://api:8080/service", {
+  const res = http.get("http://api:8080/service/", {
     headers: {
      Authorization: `Bearer ${data.token}`,
      "content-Type": "application/json",
      "User-Agent": "k6-load-test",
     },
   });
+
+
+   if (res.status !== 200) {
+    console.log("SERVICE STATUS:", res.status);
+    console.log("SERVICE BODY:", res.body);
+  }
 
   check(res, {
     "Serviços OK": (r) => r.status === 200,
