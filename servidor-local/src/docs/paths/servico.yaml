@@ -145,7 +145,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  \service/all-detailed:
+  /service/get-all-detailed:
     get:
       summary: Listar todos os servicos detalhados
       tags:
