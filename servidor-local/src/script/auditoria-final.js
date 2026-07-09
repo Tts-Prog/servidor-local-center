@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { check , sleep } from 'k6';
+import { check, sleep } from 'k6';
 
 export const options = {
     vus: 60,
@@ -10,14 +10,14 @@ export const options = {
         http_req_duration: ['p(95)<600'],
     },
 };
-
+const url = 'http://api:8080';
 export function setup() {
-
+    
     const login = http.post(
         'http://api:8080/users/login',
         JSON.stringify({
-            email: 'admin@email.com',
-            password: '123456'
+            email: "kleber900@gmail.com",
+            password: "123456789"
         }),
         {
             headers: {
@@ -41,7 +41,8 @@ export default function (data) {
             }
         }
     );
-
+    // console.log(res.status);
+    // // console.log(res.body);
     check(res, {
         'Status OK': (r) => r.status == 200 || r.status == 503
     });

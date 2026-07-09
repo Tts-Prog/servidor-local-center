@@ -19,6 +19,8 @@ services:
       - DB_PG_USER=root
       - DB_PG_PASSWORD=rootpassword
       - PORT:8080
+      - JWT_SECRET="fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj"
+
     ports:
       - "8080:8080"
     depends_on:

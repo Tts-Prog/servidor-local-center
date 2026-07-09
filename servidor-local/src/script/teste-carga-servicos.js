@@ -26,7 +26,7 @@ const loginUrl = "https://api:8080/users/login";
     };
 
     const res = http.post(loginUrl, payload, params);
-    return { token: res.json("token ") };
+    return { token: res.json().data.token};
 }
 
 
