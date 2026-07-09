@@ -1,50 +1,53 @@
-import http from 'k6/http';
-import { check, sleep, fail } from 'k6';
-
+import http from "k6/http";
+import {check, sleep} from "k6";
 
 export const options = {
     vus: 60,
-    duration: '1m'
-};
-
-const BASE_URL = 'http://api:8080';
+    duration: "1m"
+}
 
 export function setup() {
-    const loginUrl = `${BASE_URL}/api/users/login`;
-    const payload = JSON.stringify
-        ({
-            email: 'helioideino@gmail.com',
-            password: 'micro1234',
-        });
+    //const loginUrl = "https://servidor-local-center-1rnu.onrender.com/users/login"
+    const loginUrl = "http://api:8080/users/login"
+    const payload = JSON.stringify({
+        email: "helioideino11@gmail.com",
+        password: "micro12345"
+    });
+
     const params = {
-        headers: { 'Content-Type': 'application/json' }
-    };
+        headers: {
+            "Content-Type": "application/json",
+            "User-Agent": "k6-load-test",
+            origin: "https://processo-kappa.vercel.app/",
+        },
+    }
 
     const res = http.post(loginUrl, payload, params);
 
-    const checkLogin = check(res, {
-        'Login com sucesso (200)': (r) => r.status === 200,
-        'Token extraído': (r) => r.json('token') !== undefined,
-    });
 
-    return { token: res.json('token') };
+    return { token: res.json().data.token}
 }
 
+export default function(data) {
+    const url = "http://api:8080/service/get-all-detailed"
 
-export default function (data) {
-    const url = "https://servidor-local-center-1rnu.onrender.com/users"
     const params = {
-        headers: {
-            'Authorization': `Bearer ${data.token}`,
-            'Content-Type': 'application/json',
+        headrs: {
+            Authorization: `Bearer ${data.token}`,
+            "Content-Type": "application/json",
+            "User-Agent": "k6-load-test",
         },
-    };
+        user: {
+            role:"ADMIN"
+        }
+    }
+    const res = http.get(url,params)
 
-    const res = http.get(`${BASE_URL}/api/servicos`, params);
+    check(res,{
+        "Sucesso: ": (r) => r.status ===200,
+        "Rapido (<500)": (r) => r.timings.duration < 500,
+        "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
+    })
 
-    check(res, {
-        'Resposta esperada (200 ou 503)': (r) => r.status === 200 || r.status === 503,
-    });
-
-    sleep(1);
+    sleep(1)
 }

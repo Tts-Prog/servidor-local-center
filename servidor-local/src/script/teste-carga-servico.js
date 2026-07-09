@@ -24,7 +24,7 @@ export function setup() {
 
     const res = http.post(loginUrl, payload, params);
 
-    return { token: res.json("token")}
+    return { token: res.json().data.token}
 }
 
 export default function(data) {
