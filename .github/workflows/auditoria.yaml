@@ -8,8 +8,7 @@ jobs:
   test-attack:
     runs-on: ubuntu-latest
 
-
-      run:
+    run:
         working-directory: servidor-local # path to the folder with docker-compose.yml
 
     steps:
