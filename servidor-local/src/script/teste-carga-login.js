@@ -7,7 +7,7 @@ export const options = {
 };
 
 export default function () {
-  // const url = "https://servidor-local-center-backend2.onrender.com/users/login"; // URL do endpoint a ser testado
+  // const url = "https://servidor-local-center-backend-ifql.onrender.com/users/login"; // URL do endpoint a ser testado
   const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
@@ -22,7 +22,7 @@ export default function () {
     const params = {
     headers: {
         "Content-Type": "application/json",
-      Origin: "https://servidor-local-center-three.vercel.app", // <-- Finge que és o teu Frontend!
+      Origin: "https://gulugulu-amber.vercel.app", // <-- Finge que és o teu Frontend!
         "User-Agent": "k6-load-test",
     },
     };

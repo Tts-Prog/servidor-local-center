@@ -1,4 +1,4 @@
-name: Testes de Performance (K6)
+ame: Testes de Performance (K6)
 
 on:
   push:
@@ -23,4 +23,4 @@ jobs:
         run: sleep 10
 
       - name: Executar ataque do k6
-        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
+        run: docker compose run --rm k6_attack run /app/src/script/auditoria-final.js

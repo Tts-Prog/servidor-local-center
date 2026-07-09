@@ -2,17 +2,18 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-    vus: 50,
-    duration: "2m",
+    vus: 60,
+    duration: "1m",
 }
 
 export function setup() {
-    // const loginUrl = "https://servidor-local-center-backend-ifql.onrender.com/users/login";
+    // const loginUrl = 
+    // "https://servidor-local-center-backend-ifql.onrender.com/users/login";
     const loginUrl = "http://api:8080/users/login";
 
     const payload = JSON.stringify({
-    email: "analopes@gmail.com",
-    password: "321",
+    email: "lauralopes@gmail.com",
+    password: "3214",
     });
 
     const params = {
@@ -25,12 +26,11 @@ export function setup() {
 
     const res = http.post(loginUrl, payload, params);
 
-    return { token: res.json().data.token };
+    return { token: res.json("token") }
 }
 
 export default function(data) {
-    //const url ="https://servidor-local-center-backend-ifql.onrender.com/services/get-all-servico-detalhado"
-    const url = "https://api:8080/service/get-all-detailed";
+    const url ="https://servidor-local-center-backend-ifql.onrender.com/prestador/"
 
     const params = {
         headers: {
