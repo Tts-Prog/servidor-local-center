@@ -18,7 +18,7 @@ services:
       - DB_PG_NAME=servidor_local
       - DB_PG_USER=root
       - DB_PG_PASSWORD=rootpassword
-      - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj
+      - JWT_SECRET=slcnoibcidbliabaukvlusgcuildsbciuewbuicbeiucbeucw
       - PORT=8080
     ports:
       - "8080:8080"
