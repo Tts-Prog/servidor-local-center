@@ -8,13 +8,13 @@ export const options = {
 
 export function setup() {
   //const loginUrl =
-    // "https://servidor-local-center-backend2.onrender.com/users/login";
-  const loginUrl = "https://servidor-local-center-three.vercel.app/login";
+  // "https://servidor-local-center-backend2.onrender.com/users/login";
+  const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
     email: "elvizoarez1@gmail.com",
     password: "Webpass2334!",
-  });
+  }); 
 
 
   const params = {
@@ -43,7 +43,7 @@ export default function (data) {
     user: {
       role: "ADMIN",
     },
-    
+
   };
 
   const payload = JSON.stringify({
