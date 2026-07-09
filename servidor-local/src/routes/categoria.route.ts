@@ -16,7 +16,7 @@ const CategoriaRoute = {
 const router = Router();
 
 router.get(CategoriaRoute.getAll, CategoriaController.getAll);
-router.get(CategoriaRoute.getById, CategoriaController.get);
+router.get(CategoriaRoute.getById,  CategoriaController.get);
 
 router.use(AuthMiddleware);
 
