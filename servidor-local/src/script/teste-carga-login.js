@@ -11,8 +11,8 @@ export default function () {
   const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
   const payload = JSON.stringify({
-    email: "z@gmail.com",
-    password: "9999",
+    email: "kleber900@gmail.com",
+    password: "123456789"
   });
 
   // const headers = {
@@ -40,8 +40,8 @@ export default function () {
     "CPU Esgotado (Erro 502/504)": (r) => r.status >= 500, // não deve retornar erro de CPU esgotado
   });
 
-  sleep(1); 
-  
+  sleep(1);
+
   // espera 1 segundo entre as requisições
 }
 
