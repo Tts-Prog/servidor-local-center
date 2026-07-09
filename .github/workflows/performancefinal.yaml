@@ -1,26 +1,26 @@
-name: Auditoria de Performance (CI/CD)
+name: Testes de Performance (K6)
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: ["main", "dev"]
 
 jobs:
-  performance-test:
+  test-attack:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: servidor-local 
+
     steps:
-      - name: Checkout do Código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Levantar Ambiente (Docker Compose)
-        run: |
-          docker-compose up -d --build
-          echo "A aguardar que os serviços fiquem operacionais..."
-          sleep 15 # Tempo de tolerância para o PostgreSQL/Node iniciar. 
-          # Idealmente, usem um script 'wait-for-it' ou verifiquem o healthcheck.
+      - name: Levantar docker
+        run: docker compose up -d db api
 
-      - name: Executar Teste de Carga k6
-        uses: grafana/k6-action@v2
-        with:
-          filename: ./k6/auditoria-final.js
+      - name: Esperar o db estar pronto
+        run: sleep 10
 
+      - name: Executar ataque do k6
+        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
