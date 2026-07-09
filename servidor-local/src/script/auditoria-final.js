@@ -3,7 +3,7 @@ import { check, sleep } from "k6";
 
 export const options = {
     vus: 20, // número de usuários virtuais
-    duration: "1m", // duração do teste
+    duration: "30s", // duração do teste
 };
 
 export default function setup() {
@@ -11,8 +11,8 @@ export default function setup() {
     const url = `http://api:8080/service/get-all-detailed`; // URL do endpoint a ser testado
 
     const payload = JSON.stringify({
-        email: "papygomes8735@gmail.com",
-        password: "12345678",
+        email: "kleber900@gmail.com",
+        password: "1234567898",
     });
 
     const params = {
