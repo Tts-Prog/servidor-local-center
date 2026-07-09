@@ -11,8 +11,8 @@ export function setup() {
   const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
+    email: "tmtse23@gmail.com",
+    password: "123456789",
   });
 
   const params = {
@@ -25,7 +25,7 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
-  return { token: res.json("token") };
+  return { token: res.json().data.token };
 }
 
 export default function (data) {

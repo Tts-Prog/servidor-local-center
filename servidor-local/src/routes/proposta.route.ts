@@ -16,8 +16,8 @@ const PropostaRoute = {
 
 const router = Router();
 
-router.get(PropostaRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PropostaController.getAll);
-router.get(PropostaRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PropostaController.get);
+router.get(PropostaRoute.getAll, PropostaController.getAll);
+router.get(PropostaRoute.getById, PropostaController.get);
 
 router.use(AuthMiddleware);
 
