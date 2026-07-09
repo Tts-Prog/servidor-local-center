@@ -11,8 +11,8 @@ export default function () {
   const url = "http://api:8080/users/login"; // URL do endpoint a ser testado
 
   const payload = JSON.stringify({
-    email: "kleber900@gmail.com",
-    password: "123456789"
+    email: " teste@gmail.com",
+    password: "12345"
   });
 
   // const headers = {

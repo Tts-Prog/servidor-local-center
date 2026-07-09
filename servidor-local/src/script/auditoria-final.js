@@ -12,12 +12,12 @@ export const options = {
 };
 const url = 'http://api:8080';
 export function setup() {
-    
+
     const login = http.post(
         'http://api:8080/users/login',
         JSON.stringify({
-            email: "kleber900@gmail.com",
-            password: "123456789"
+            email: " teste@gmail.com",
+            password: "12345"
         }),
         {
             headers: {
