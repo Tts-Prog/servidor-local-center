@@ -20,5 +20,6 @@ jobs:
       - name: Esperar o db estar pronto
         run: sleep 10
 
+
       - name: Executar ataque do k6
         run: docker compose run --rm k6_attack run /app/src/script/auditoria-final.js
