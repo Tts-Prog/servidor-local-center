@@ -1,8 +1,8 @@
-name: Testes de Performance (K6)
+name: Testes de Performance (K6) - Auditoria
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "fabio-dev"]
 
 jobs:
   test-attack:
