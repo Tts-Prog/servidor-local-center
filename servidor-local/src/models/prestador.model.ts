@@ -16,7 +16,7 @@ export const PrestadorModel = {
                 prestador.minimo_desconto,
                 prestador.nif,
                 prestador.profissao,
-                prestador.enable ?? true,
+                prestador.enabled ?? true,
                 new Date(),
                 new Date()
             ];
@@ -71,7 +71,7 @@ export const PrestadorModel = {
                 prestador.minimo_desconto,
                 prestador.nif,
                 prestador.profissao,
-                prestador.enable,
+                prestador.enabled,
                 new Date(),
                 id
             ];

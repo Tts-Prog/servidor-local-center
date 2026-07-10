@@ -104,7 +104,7 @@ export interface PrestadorDBType {
     nif: string,
     profissao: string,
     id_utilizador: string,
-    enable: boolean,
+    enabled: boolean,
     created_at: string,
     updated_at: string
 }
