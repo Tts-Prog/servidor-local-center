@@ -7,19 +7,14 @@ services:
       POSTGRES_DB: servidor_local  # Fixed typo
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
     networks:
       - app-network
 
   api:
     build: .
     environment:
-      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor_local
-      - DB_PG_HOST=db
+      - DATABASE_URL=postgresql://root:Webpass2334!@db_v2:5432/servidor_local
+      - DB_PG_HOST=db_v2
       - DB_PG_PORT=5432
       - DB_PG_NAME=servidor_local
       - DB_PG_USER=root
@@ -30,8 +25,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      db_v2:
-        condition: service_healthy
+      - db_v2
     restart: on-failure
     networks:
       - app-network

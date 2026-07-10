@@ -13,8 +13,8 @@ const PrestadorRoute = {
 
 const router = Router();
 
-router.get(PrestadorRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.getAll);
-router.get(PrestadorRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.get);
+router.get(PrestadorRoute.getAll, PrestadorController.getAll);
+router.get(PrestadorRoute.getById, PrestadorController.get);
 
 router.use(AuthMiddleware);
 

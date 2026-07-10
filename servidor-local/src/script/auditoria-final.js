@@ -10,8 +10,8 @@ export function setup() {
     const loginUrl = "http://api:8080/users/login"  // Keep this for Docker
 
     const payload = JSON.stringify({
-        email: "teste@gmail.com",
-        password: "12345"
+        email: "admin@gmail.com",
+        password: "admin"
     })
 
     const params = {
@@ -31,7 +31,7 @@ export function setup() {
         throw new Error(`Login failed: ${response.status}`)
     }
 
-    const token = response.json("token")
+    const token = response.json().data.token
     if (!token) {
         throw new Error("No token received")
     }
@@ -40,7 +40,7 @@ export function setup() {
 }
 
 export default function (data) {
-    const url = "http://api:8080/orcamento/"  // Changed to use Docker service name
+    const url = "http://api:8080/users/"  // Changed to use Docker service name
 
     const params = {
         headers: {
