@@ -6,9 +6,9 @@ const db = new Pool({
     password: process.env.PASSWORD || "sua_senha",
     database: process.env.DATABASE || "servidor_local",
     port: Number(process.env.PORT) || 5432,
-    ssl: process.env.DB_PG_SSL ? {
+    ssl: process.env.DB_PG_SSL === "true" ? {
         rejectUnauthorized: false
-    }
+    } : undefined
 });
 db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
