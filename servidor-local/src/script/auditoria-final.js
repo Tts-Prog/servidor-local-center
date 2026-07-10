@@ -11,15 +11,15 @@ export function setup() {
     const loginUrl = "http://api:8080/users/login"
 
     const payload = JSON.stringify({
-        email: "1@gmail.com",
-        password: "123456789"
+        email: "djeison31@gmail.com",
+        password: "admin1"
     });
 
     const params = {
         headers: {
             "Content-Type": "application/json",
             "User-Agent": "k6-load-test",
-            origin: "https://processo-kappa.vercel.app/",
+            origin: "again-liart.vercel.app",
         },
     }
 
@@ -34,7 +34,7 @@ export default function (data) {
     const url = "http://api:8080/service/create"
 
     const payload = JSON.stringify({
-        nome: "Servico de Limpeza",
+        nome: "Limpeza",
         descricao: "Servico de Limpeza Profissional para residentes e empresa",
         categoria: "Limpeza",
         enabled_at: "true"
