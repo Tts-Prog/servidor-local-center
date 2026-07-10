@@ -6,7 +6,7 @@ const db = new Pool({
     password: process.env.PASSWORD || "sua_senha",
     database: process.env.DATABASE || "servidor_local",
     port: Number(process.env.PORT) || 5432,
-    ssl: {
+    ssl: process.env.DB_PG_SSL ? {
         rejectUnauthorized: false
     }
 });

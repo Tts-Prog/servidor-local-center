@@ -1,11 +1,11 @@
 # paths/servico.yaml
 
 paths:
-  /service:
+  /servicos:
     get:
       summary: Listar todos os servicos
       tags:
-        - service
+        - servicos
       description: Retorna uma lista de todos os servicos disponiveis
       responses:
         "200":
@@ -23,11 +23,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /service/create:
+  /servicos/create:
     post:
       summary: Criar um novo servico
       tags:
-        - service
+        - servicos
       description: Criar um novo servico
       requestBody:
         required: true

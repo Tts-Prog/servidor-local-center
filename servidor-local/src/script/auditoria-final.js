@@ -25,7 +25,7 @@ export function setup() {
 
     const res = http.post(loginUrl, payload, params);
 
-    return { token: res.json().data.token };//retorna o token
+    return { token: res.json()?.data?.token };//retorna o token
 }
 
 export default function (data) {
@@ -41,6 +41,7 @@ export default function (data) {
             role: "ADMIN"
         }
     };
+    
 
     const payload = JSON.stringify({
         nome: "Manutencao de computador",
