@@ -84,6 +84,8 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
     }),
 }))
 
+initDatabase()
+
 // inicia o servidor na porta 8080 com SSL
 if (process.env.NODE_ENV === "development") {
     // inicia o servidor na porta 8080 com SSL
