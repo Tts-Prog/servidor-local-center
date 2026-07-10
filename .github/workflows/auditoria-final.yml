@@ -1,4 +1,4 @@
-name: Testes de Performance (K6) - Auditoria
+name: Testes de Performance (K6)
 
 on:
   push:
@@ -20,7 +20,10 @@ jobs:
         run: docker compose up -d db api
 
       - name: Esperar o db estar pronto
-        run: sleep 10
+        run: sleep 20
+
+      - name: Logs da API
+        run: docker run logs api
 
       - name: Executar ataque do k6
         run: docker compose run --rm --service-ports k6_attack run /app/src/script/auditoria-final.js
