@@ -50,7 +50,7 @@ export function authorize(roles: string[]) {
         if (!req.user) {
             return res.status(401).json({ message: "Utilizador nao autenticado" })
         }
-        if (!roles.includes(req.user.role.toLocaleLowerCase())) {
+        if (!roles.includes(req.user.role.toLowerCase())) {
             return res.status(403).json({ message: "Permissao insuficiente" });
         }
 

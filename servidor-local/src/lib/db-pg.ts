@@ -6,11 +6,7 @@ const db = new Pool({
     password: process.env.DB_PG_PASSWORD || "sua_senha",
     database: process.env.DB_PG_NAME || "servidor_local",
     port: Number(process.env.DB_PG_PORT) || 5432,
-<<<<<<< HEAD
-    ssl: process.env.DB_PG_SSL === " true" ?{ rejectUnauthorized: false} : undefined,
-=======
     ssl: process.env.DB_PG_SSL === "true" ? { rejectUnauthorized: false } : undefined
->>>>>>> dev
 
 });
 
@@ -18,15 +14,6 @@ db.connect()
     .then(() => console.log("Conexão com o banco de dados PostgreSQL estabelecida com sucesso!"))
     .catch((error) => console.error("Erro ao conectar ao banco de dados PostgreSQL:", error.stack));
 
-<<<<<<< HEAD
-db.on("error", (error, client) => {
-    console.error(
-        "Erro no cliente do banco de dados PostgreSQL:",
-        error.message,
-    )
-});
-// Não fazemos process.ext(-1) para a API continuar viva!
-=======
 db.on("error", (err, client) => {
     console.error(
         "⚠️ Erro de fundo no Pool do PostgreSQL. Tentando recuperar...",
@@ -34,6 +21,5 @@ db.on("error", (err, client) => {
     );
     // Não fazemos process.exit(-1) para a API continuar viva!
 });
->>>>>>> dev
 
 export default db
