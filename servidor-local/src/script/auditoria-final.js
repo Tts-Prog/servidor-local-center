@@ -12,9 +12,9 @@ export function setup() {
   const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
-  }); 
+    email: "rafael@gmail.com",
+    password: "0987654321",
+  });
 
 
   const params = {
@@ -27,7 +27,7 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
-  return { token: res.json("token") };
+  return { token: res.json().data.token };
 }
 
 export default function (data) {
@@ -47,8 +47,8 @@ export default function (data) {
   };
 
   const payload = JSON.stringify({
-    designacao: "Descrição teste",
-    icone: "icone teste",
+    designacao: "Lavagem",
+    icone: "https://example.com/icon-categoria.png"
   });
 
   const res = http.post(url, payload, params);
