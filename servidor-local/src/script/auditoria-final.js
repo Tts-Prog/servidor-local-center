@@ -30,7 +30,7 @@ export function setup() {
 }
 
 export default function(data) {
-    const url ="https://servidor-local-center-backend-ifql.onrender.com/prestador/"
+    const url ="https://servidor-local-center-backend-ifql.onrender.com/service/get-by-id/:id"
 
     const params = {
         headers: {
