@@ -1,4 +1,4 @@
-ame: Testes de Performance (K6)
+name: Testes de Performance (K6)
 
 on:
   push:
