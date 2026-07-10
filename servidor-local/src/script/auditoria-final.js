@@ -16,7 +16,8 @@ export function setup() {
     const params = {
         headers: {
             "Content-Type": "application/json",
-            userAgent: "k6-load-test",
+            "User-Agent": "k6-load-test",
+            origin: "gulugulu-kappa.vercel.app",
         },
     };
 
@@ -31,7 +32,7 @@ export function setup() {
 
 export default function (data) {
     // const url ="https://servidor-local-center-api-4fel.onrender.com/users/login"; // URL do endpoint a ser testado
-    const url = `http://api:8080/service/create/`; // URL do endpoint a ser testado
+    const url = "http://api:8080/service/create"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
         nome: "Limpeza DE CASA",
@@ -50,12 +51,9 @@ export default function (data) {
         },
     };
 
-    const res = http.get(url, payload, params);
-    if (res.status !== 200) {
-        // console.log(
-        //     `ERRO! Status: ${res.status} | Response do Servidor: ${res.body}`,
-        // );
-    }
+    const res = http.post(url, payload, params);
+    if (res.status !== 200) 
+    
 
     check(res, {
         "Login com sucesso (Status 200)": (r) => r.status === 200,
