@@ -16,6 +16,7 @@ export const ServiceModel = {
         new Date(),
       ];
       const result = await db.query<ServiceDBType>(query, values);
+      console.log("RESULT", result);
       if (result.rows.length === 0 || !result?.rows[0] || !result) return null;
       return result.rows[0];
     } catch (error) {

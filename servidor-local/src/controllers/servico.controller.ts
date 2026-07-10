@@ -19,6 +19,9 @@ export const ServicoController = {
 
         const createServiceResponse: ServiceDBType | null = await ServiceModel.create(newService);
 
+        
+        
+
         if (createServiceResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",

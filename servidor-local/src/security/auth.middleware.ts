@@ -47,10 +47,11 @@ export default function AuthMiddleware(req: Request, res: Response, next: NextFu
 // RBAC - Role Based Access Control
 export function authorize(roles: string[]) {
     return (req: Request, res: Response, next: NextFunction) => {
+        console.log("req", req)
         if (!req.user) {
             return res.status(401).json({ message: "Utilizador nao autenticado" })
         }
-        if (!roles.includes(req.user.role)) {
+        if (!roles.includes(req.user.role.toLowerCase())) {
             return res.status(403).json({ message: "Permissao insuficiente" });
         }
 

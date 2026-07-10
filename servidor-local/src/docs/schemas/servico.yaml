@@ -24,8 +24,8 @@ components:
           example: " Servico de Limpeza Profissional para residentes e empresa"
         categoria:
           type: string
-          example: "Limpeza"
-        enabled_at:
+          example: "b71c4fe9-49d7-4b8f-a585-5d5c13ecdb6e"
+        enabled:
           type: boolean
           example: true
         created_at:
