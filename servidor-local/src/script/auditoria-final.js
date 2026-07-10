@@ -12,8 +12,8 @@ export function setup() {
     const loginUrl = "http://api:8080/users/login";
 
     const payload = JSON.stringify({
-    email: "lauralopes@gmail.com",
-    password: "3214",
+    email: "djeisonalves@gmail.com",
+    password: "4332",
     });
 
     const params = {
@@ -26,11 +26,18 @@ export function setup() {
 
     const res = http.post(loginUrl, payload, params);
 
-    return { token: res.json("token") }
+    return { token: res.json().data.token };
 }
 
 export default function(data) {
-    const url ="https://servidor-local-center-backend-ifql.onrender.com/service/get-by-id/:id"
+    const url ="http://api:8080/service/create"
+
+    const payload = JSON.stringify({
+        nome: "Servico de Limpeza",
+        descricao: "Servico de Limpeza Profissional para residentes e empresa",
+        categoria: "Limpeza",
+        enabled_at: "true"
+    });
 
     const params = {
         headers: {
@@ -44,10 +51,10 @@ export default function(data) {
         }
     }
 
-    const res = http.get(url, params)
+    const res = http.post(url, payload, params)
 
     check(res, {
-        "Sucesso: ": (r) => r.status === 200,
+        "Sucesso": (r) => r.status === 200,
         "Rápido (< 500ms)": (r) => r.timings.duration < 500,
         "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
     })
