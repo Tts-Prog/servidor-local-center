@@ -2,7 +2,7 @@ name: Auditoria Final
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "djeison-dev"]
 
 jobs:
   auditoria:
