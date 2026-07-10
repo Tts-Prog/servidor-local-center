@@ -15,14 +15,14 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/componentes/schemas/Prestador"
+                  $ref: "#/components/schemas/Prestador"
         "404":
           description: "Nenhuma Prestador Encontrado"
           content:
             application/json:
               schemas:
                 type: object
-                $ref: "#/componentes/schemas/PrestadorResponseError"
+                $ref: "#/components/schemas/PrestadorResponseError"
 
   /prestador/create:
     post:
