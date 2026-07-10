@@ -7,39 +7,45 @@ import jwt from "jsonwebtoken";
 export const UsersController = {
 
     //  Criar utilizador
+
     async createUsers(req: Request, res: Response) {
-        const user: userType = req.body;
-        console.log("User " + user)
+        try {
+            const user: userType = req.body;
+            console.log("User " + user)
 
-        if (!user) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Campos obrigatórios em falta",
-                data: null,
+            if (!user) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Campos obrigatórios em falta",
+                    data: null,
+                };
+
+                return res.status(400).json(response);
+            }
+
+            if (!user.password) console.log("error user sem nada")
+
+            const createUserResponse = await UsersModel.create(user)
+
+            if (!createUserResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Erro ao criar utilizador",
+                    data: null,
+                };
+                return res.status(500).json(response);
+            }
+
+            const response: ResponseType<UserDBType> = {
+                status: "success",
+                message: "Utilizador criado com sucesso!",
+                data: createUserResponse as any,
             };
-
-            return res.status(400).json(response);
+            return res.status(200).json(response);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Erro inesperado no servidor" });
         }
-
-        if (!user.password) console.log("error user sem nada")
-
-        const createUserResponse = await UsersModel.create(user)
-
-        if (!createUserResponse) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Erro ao criar utilizador",
-                data: null,
-            };
-            return res.status(500).json(response);
-        }
-
-        const response: ResponseType<UserDBType> = {
-            status: "success",
-            message: "Utilizador criado com sucesso!",
-            data: createUserResponse as any,
-        };
-        return res.status(200).json(response);
     },
 
     //  Buscar todos utilizadores

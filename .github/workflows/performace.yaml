@@ -2,7 +2,7 @@ name: teste de performace k6
 
 on:
    push 
-     branches: [ 'main', 'deve' ]
+     branches: [ 'main', 'deve','stiven-dev' ]
 jobs:
   teste-attrack:
     runs-on: ubuntu-latest

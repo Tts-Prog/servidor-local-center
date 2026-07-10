@@ -3,7 +3,7 @@ import { check, sleep } from "k6";
 
 export const options = {
   vus: 60,
-  duration: "60s",
+  duration: "1m",
 };
 
 export function setup() {
@@ -44,7 +44,8 @@ export default function (data) {
       role: "ADMIN",
     },
   };
-   const payload = JSON.stringify({
+
+  const payload = JSON.stringify({
     nome: "Servico de Limpeza",
     descricao: "Servico de Limpeza Profissional para residentes e empresa",
     categoria: "Limpeza",

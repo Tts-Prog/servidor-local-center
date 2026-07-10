@@ -10,10 +10,10 @@
 components:
   schemas:
     # schema principal de servico
-    Servico:
+    :
       type: object
       properties:
-        id:
+        id:Servico
           type: integer
           example: 1
         nome:

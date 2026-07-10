@@ -30,8 +30,8 @@ services:
       - "8080:8080"
     volumes:
       - ./src:/app/src
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
 
   k6_attacker:
     #serviço de k6_attacker

@@ -6,6 +6,7 @@ import type { Request, Response } from "express";
 export const ServicoController = {
 
     async createServico(req: Request, res: Response) {
+    
         const newService: ServiceDBType = req.body
 
         if (!newService) {

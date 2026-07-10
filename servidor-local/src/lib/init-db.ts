@@ -164,7 +164,8 @@ export async function initDatabase(): Promise<void> {
 
         console.log("✅ Todas as tabelas foram verificadas/criadas com sucesso!");
     } catch (error) {
-        console.error("❌ Erro ao criar tabelas:", error);
-        throw error;
+        // console.error("❌ Erro ao criar tabelas:", error);
+        // throw error;
+         console.warn("⚠️ Banco de dados não disponível, rodando sem persistência");
     }
 }
