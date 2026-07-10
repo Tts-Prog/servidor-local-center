@@ -5,7 +5,10 @@ import { generateUUID } from "../utils/uuid.js";
 export const ServiceModel = {
   async create(newService: ServiceDBType): Promise<ServiceDBType | null> {
     try {
-      const query = `INSERT INTO tbl_servicos (id, nome, descricao, categoria, enabled, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
+      const query = `INSERT INTO tbl_servicos
+       (id, nome, descricao, categoria, enabled, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       RETURNING *`;
       const values = [
         generateUUID(),
         newService.nome,
@@ -27,7 +30,7 @@ export const ServiceModel = {
   async getAll(): Promise<ServiceDBType[] | null> {
     try {
       const result = await db.query<ServiceDBType>(`SELECT * FROM tbl_servicos`);
-      return result.rows.length > 0 ? result.rows : null;
+      return result.rows;
     } catch (error) {
       console.log(error);
       return null;
@@ -111,7 +114,7 @@ export const ServiceModel = {
         `;
       const values = [limit, offset];
       const result = await db.query<ServicoDetalhadoType>(query, values);
-      return result.rows.length > 0 ? result.rows : null;
+      return result.rows;
     } catch (error) {
       console.log(error);
       return null;

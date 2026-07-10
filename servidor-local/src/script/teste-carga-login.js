@@ -30,7 +30,7 @@ export default function () {
   check(res, {
     "GET com Sucesso (Status 200)?": (r) => r.status === 200,
     "GET Rápido (Tempo < 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
-    "CPU Esgotado (Erro 502/504)": (r) => r.status >= 500, // não deve retornar erro de CPU esgotado
+    "CPU Disponível (Status < 500)": (r) => r.status < 500, // não deve retornar erro de CPU esgotado
   });
 
   sleep(1);

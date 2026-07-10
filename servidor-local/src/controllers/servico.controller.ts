@@ -1,5 +1,5 @@
 import { ServiceModel } from "../models/servico.model.js";
-import type { ResponseType, ServiceDBType } from "../utils/types.js";
+import type { ResponseType, ServiceDBType, ServicoDetalhadoType } from "../utils/types.js";
 import type { Request, Response } from "express";
 
 
@@ -41,7 +41,7 @@ export const ServicoController = {
         const getAllServiceResponse: ServiceDBType[] | null = await ServiceModel.getAll()
 
 
-        if (!getAllServiceResponse) {
+        if (getAllServiceResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar servico",
@@ -177,13 +177,20 @@ export const ServicoController = {
 
         const getAllServicoDetalhadoResponse = await ServiceModel.getAllServicoDetalhado(LIMIT, OFFSET)
 
-        if (!getAllServicoDetalhadoResponse) {
+        if (getAllServicoDetalhadoResponse === null) {
             const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar servicos detalhados",
                 data: null,
             };
-            return res.status(404).json(response);
+            return res.status(500).json(response);
         }
+
+        const response: ResponseType<ServicoDetalhadoType[]> = {
+            status: "success",
+            message: "Servicos detalhados buscados com sucesso",
+            data: getAllServicoDetalhadoResponse,
+        };
+        return res.status(200).json(response);
     }
 }

@@ -50,7 +50,7 @@ export const UsersModel = {
         console.log(error);
         return null;
     }
-},
+  },
 
   async get(id: string): Promise<UserDBType | null> {
     try {

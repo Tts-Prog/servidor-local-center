@@ -57,7 +57,7 @@ export default function (data) {
   check(res, {
     "Sucesso: ": (r) => r.status === 200,
     "Rápido (< 500ms)": (r) => r.timings.duration < 500,
-    "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
+    "Sem erro de servidor (Status < 500)": (r) => r.status < 500,
   });
 
 
