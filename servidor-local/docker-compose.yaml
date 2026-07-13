@@ -21,8 +21,7 @@ services:
       - DB_PG_USER=root
       - DB_PG_PASSWORD=webpass2334!
       - PORT=8080
-      - JWT_SECRET=DHCJGBJGCBDCVCGVDCCHXSJNXWCBGDCJBHCJDNBCDECHYHCJNDCHNCHYUDGCBDHGCBHDCJKHD
-     
+      - JWT_SECRET=slcnoibcidbliabaukvlusgcuildsbciuewbuicbeiucbeucw
     depends_on:
       - db
     ports:

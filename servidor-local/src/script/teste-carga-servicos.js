@@ -11,8 +11,8 @@ export function setup() {
   const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
+    email: "tmtse23@gmail.com",
+    password: "123456789",
   });
 
   const params = {
@@ -25,8 +25,13 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
+<<<<<<< HEAD
   if (!res || !res?.body ) {
     console.error(" Failed to login:", res);
+=======
+  if (!res || !res?.body) {
+    console.error("Failed to login:", res);
+>>>>>>> dev
     return {};
   }
 
@@ -38,7 +43,6 @@ export default function (data) {
 
   const params = {
     headers: {
-      
       Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
