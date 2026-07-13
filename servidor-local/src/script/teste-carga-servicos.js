@@ -8,7 +8,7 @@ export const options = {
 
 export function setup() {
   //const loginUrl =
-    //"https://servidor-local-center-backend2.onrender.com/users/login";
+  //"https://servidor-local-center-backend2.onrender.com/users/login";
   const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
@@ -25,6 +25,11 @@ export function setup() {
   };
 
   const res = http.post(loginUrl, payload, params);
+
+  if (!res || !res?.body) {
+    console.error("Falha no login:", res.body);
+    return {};
+  }
 
   return { token: res.json("token") };
 }
