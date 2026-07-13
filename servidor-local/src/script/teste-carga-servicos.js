@@ -23,7 +23,11 @@ export function setup() {
         }
     }
 
-    const response = http.post(loginUrl, payload, params)
+    const response = http.post(loginUrl, payload, params);
+    if (!(response || !response?.body)) {
+        console.error("failed to login;", res);
+        return {}
+    }
 
     return { token: response.json("token") }
 }
