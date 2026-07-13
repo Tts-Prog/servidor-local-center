@@ -40,7 +40,7 @@ export default function (data) {
 
     const params = {
         headers: {
-            Authorization: `Bearer ${data.token}`, // usa o token retornado na função setup
+            Authorization: `Bearer ${data && data?.token ? data?.token : ""}`, // usa o token retornado na função setup
             "content-Type": "application/json",
             "user-Agent": "k6 load test", // cabeçalho User-Agent para identificar o teste
         },
