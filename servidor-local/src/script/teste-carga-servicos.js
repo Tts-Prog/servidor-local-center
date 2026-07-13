@@ -23,9 +23,14 @@ export function setup() {
         },
     };
 
-    const response = http.post(loginUrl, payload, params);
+    const res = http.post(loginUrl, payload, params);
 
-    return { token: response.json().data.token}; // retorna o token de autenticação para ser usado nas requisições subsequentes
+    if (!res || !res?.body) {
+        console.error("Failed to login", res);
+        return {};
+    }
+
+    return { token: res.json().data.token}; // retorna o token de autenticação para ser usado nas requisições subsequentes
 }
 
 export default function (data) {
@@ -45,9 +50,9 @@ export default function (data) {
         }
     };
 
-    const response = http.get(url, params);
+    const res = http.get(url, params);
 
-    check(response, {
+    check(res, {
         "Sucesso: ": (r) => r.status === 200,
         "Rápido (< 500ms)": (r) => r.timings.duration < 500, // tempo de resposta menor que 500ms
         "Erro de Servidor (Erro 502/504)": (r) => r.status <= 500, // não deve retornar erro de CPU esgotado   
