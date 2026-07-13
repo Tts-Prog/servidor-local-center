@@ -25,7 +25,12 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
-  return { token: res.json("token") };
+  if (!res || !res?.body ) {
+    console.error(" Failed to login:", res);
+    return {};
+  }
+
+  return { token: res.json().data.token };
 }
 
 export default function (data) {
