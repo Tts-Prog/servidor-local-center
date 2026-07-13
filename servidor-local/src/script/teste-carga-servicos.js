@@ -23,8 +23,13 @@ export function setup() {
     },
   };
 
-  
+
   const res = http.post(loginUrl, payload, params);
+
+  if (!res || !res?.body) {
+    console.error("Failed to login:", res);
+    return {};
+  }
 
   return { token: res.json("token") };
 }
@@ -34,7 +39,7 @@ export default function (data) {
 
   const params = {
     headers: {
-      Authorization: `Bearer ${data.token}`,
+      Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
     },
