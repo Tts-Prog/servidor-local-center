@@ -13,13 +13,13 @@ const PrestadorRoute = {
 
 const router = Router();
 
-router.get(PrestadorRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.getAll);
-router.get(PrestadorRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.get);
+router.get(PrestadorRoute.getAll,  PrestadorController.getAll);
+router.get(PrestadorRoute.getById, authorize([Role.ADMIN]), PrestadorController.get);
 
 router.use(AuthMiddleware);
 
 router.post(PrestadorRoute.create, authorize([Role.ADMIN]), PrestadorController.create);
-router.put(PrestadorRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), PrestadorController.update);
+router.put(PrestadorRoute.update, authorize([Role.ADMIN]), PrestadorController.update);
 router.delete(PrestadorRoute.delete, authorize([Role.ADMIN]), PrestadorController.delete);
 
 export { router };

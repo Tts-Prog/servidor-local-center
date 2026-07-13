@@ -14,14 +14,14 @@ const OrcamentoRoute = {
 
 const router = Router();
 
-router.get(OrcamentoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), OrcamentoController.getAll);
-router.get(OrcamentoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), OrcamentoController.get);
+router.get(OrcamentoRoute.getAll, authorize([Role.ADMIN]), OrcamentoController.getAll);
+router.get(OrcamentoRoute.getById, authorize([Role.ADMIN]), OrcamentoController.get);
 
 router.use(AuthMiddleware);
 
-router.post(OrcamentoRoute.create, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA]), OrcamentoController.create);
-router.put(OrcamentoRoute.update, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), OrcamentoController.update);
+router.post(OrcamentoRoute.create, authorize([Role.ADMIN]), OrcamentoController.create);
+router.put(OrcamentoRoute.update, authorize([Role.ADMIN]), OrcamentoController.update);
 router.delete(OrcamentoRoute.delete, authorize([Role.ADMIN]), OrcamentoController.delete);
-router.put(OrcamentoRoute.calcular, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), OrcamentoController.calculateBudget);
+router.put(OrcamentoRoute.calcular, authorize([Role.ADMIN]), OrcamentoController.calculateBudget);
 
 export { router };

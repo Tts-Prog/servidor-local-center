@@ -31,57 +31,7 @@ export const servicoModel = {
             if (!rows) return null
             return rows as NovoservicoType
         } catch (error) {
-<<<<<<< HEAD
-            console.log(error);
-            return null;
-        }
-    },
-
-
-    async getAll(): Promise<ServicoDBType[] | null> {
-        try {
-            const query = `SELECT * FROM tabela_servicos`;
-
-            const [rows] = await db.execute<ServicoDBType[] & RowDataPacket[]>(query);
-
-            return Array.isArray(rows) ? rows : [];
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    },
-
-
-    async get(id: string): Promise<ServicoDBType | null> {
-        try {
-            const query = `SELECT * FROM tabela_servicos WHERE id = ?`;
-
-            const value = [id];
-
-            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, value);
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] as ServicoDBType : null;
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    },
-
-    async getByIdOrcamento(idOrcamento: string): Promise<PrestacaoServicoDBType | null> {
-        try {
-            const [rows] = await db.execute<PrestacaoServicoDBType[] & RowDataPacket[]>(`
-                SELECT * FROM tbl_prestacao_servico
-                WHERE tbl_prestacao_servico.id_orcamento = ?
-                `, [idOrcamento])
-
-            if (Array.isArray(rows) && rows.length === 0) return null
-
-            return Array.isArray(rows) ? rows[0] as PrestacaoServicoDBType : null
-
-        } catch (error) {
-            console.log(error);
-=======
             console.log({ "error": error })
->>>>>>> 6882c7ff9db5db1972ef090b735c7803d73f7f73
             return null
         }
     },

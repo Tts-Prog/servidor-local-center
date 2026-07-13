@@ -22,10 +22,10 @@ router.post(UsersRoute.create, UsersController.createUsers);
 router.use(AuthMiddleware);
 
 router.get(UsersRoute.getAll, authorize([Role.ADMIN]), UsersController.getAll);
-router.get(UsersRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.getById);
-router.put(UsersRoute.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.update);
+router.get(UsersRoute.getById, authorize([Role.ADMIN]), UsersController.getById);
+router.put(UsersRoute.update, authorize([Role.ADMIN]), UsersController.update);
 router.delete(UsersRoute.delete, authorize([Role.ADMIN]), UsersController.delete);
-router.put(UsersRoute.updatePassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.updatePassword);
-router.put(UsersRoute.resetPassword, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), UsersController.resetPassword);
+router.put(UsersRoute.updatePassword, authorize([Role.ADMIN]), UsersController.updatePassword);
+router.put(UsersRoute.resetPassword, authorize([Role.ADMIN]), UsersController.resetPassword);
 
 export { router };

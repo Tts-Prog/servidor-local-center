@@ -26,6 +26,13 @@ export function setup() {
     }
     const res = http.post(loginUrl, payload, params);
 
+    if (!res || !res?.body) {
+        throw new Error("Falha ao fazer login")
+        return {}
+    }
+
+    console.log(res.json()); 
+
     return { token: res.json("token") }
 }
 export default function (data) {

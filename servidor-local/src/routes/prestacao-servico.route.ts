@@ -15,16 +15,16 @@ const PrestacaoServicoRoute = {
 
 const router = Router();
 
-router.get(PrestacaoServicoRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.getAll);
-router.get(PrestacaoServicoRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.get);
-router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhado, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.getAllPrestacaoServicoDetalhado);
+router.get(PrestacaoServicoRoute.getAll,  PrestacaoServicoController.getAll);
+router.get(PrestacaoServicoRoute.getById, PrestacaoServicoController.get);
+router.get(PrestacaoServicoRoute.getAllPrestacaoServicoDetalhado, PrestacaoServicoController.getAllPrestacaoServicoDetalhado);
 
 router.use(AuthMiddleware);
 
-router.post(PrestacaoServicoRoute.create, authorize([Role.ADMIN, Role.CLIENTE]), PrestacaoServicoController.create);
+router.post(PrestacaoServicoRoute.create, authorize([Role.ADMIN]), PrestacaoServicoController.create);
 router.put(PrestacaoServicoRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), PrestacaoServicoController.update);
 router.delete(PrestacaoServicoRoute.delete, authorize([Role.ADMIN]), PrestacaoServicoController.delete);
 
-router.get(PrestacaoServicoRoute.getPrestacaoServicoByCategoriaDetalhado, authorize([Role.ADMIN, Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PrestacaoServicoController.getAllPrestacaoServicoByCategoria);
+router.get(PrestacaoServicoRoute.getPrestacaoServicoByCategoriaDetalhado, authorize([Role.ADMIN]), PrestacaoServicoController.getAllPrestacaoServicoByCategoria);
 
 export { router };

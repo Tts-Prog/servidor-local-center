@@ -16,14 +16,14 @@ const PropostaRoute = {
 
 const router = Router();
 
-router.get(PropostaRoute.getAll, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PropostaController.getAll);
-router.get(PropostaRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PropostaController.get);
+router.get(PropostaRoute.getAll, PropostaController.getAll);
+router.get(PropostaRoute.getById, PropostaController.get);
 
 router.use(AuthMiddleware);
 
-router.post(PropostaRoute.create, authorize([Role.CLIENTE, Role.EMPRESA, Role.PRESTADOR]), PropostaController.create);
-router.put(PropostaRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), isOwner(PropostaModel, "owner"), PropostaController.update);
-router.delete(PropostaRoute.delete, authorize([Role.ADMIN, Role.EMPRESA, Role.PRESTADOR]), isOwner(PropostaModel, "owner"), PropostaController.delete);
-router.put(PropostaRoute.aceitar, authorize([Role.PRESTADOR, Role.EMPRESA, Role.CLIENTE]), PropostaController.aceitar);
+router.post(PropostaRoute.create, authorize([Role.ADMIN]), PropostaController.create);
+router.put(PropostaRoute.update, authorize([Role.ADMIN]),  PropostaController.update);
+router.delete(PropostaRoute.delete, authorize([Role.ADMIN]), PropostaController.delete);
+router.put(PropostaRoute.aceitar, authorize([Role.ADMIN]), PropostaController.aceitar);
 
 export { router };
