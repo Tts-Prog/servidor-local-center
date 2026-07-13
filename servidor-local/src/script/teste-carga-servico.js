@@ -24,6 +24,13 @@ export function setup() {
 
     const res = http.post(loginUrl, payload, params);
 
+    if(!res && res?.body) {
+        throw new Error("Failed to login")
+        return {}
+    }
+
+
+
     return { token: res.json().data.token}
 }
 
