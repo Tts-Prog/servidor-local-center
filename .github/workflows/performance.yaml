@@ -1,12 +1,16 @@
-name: Testes de Perforamce (k6)
+name: Testes de Performance (K6)
 
-on: 
+on:
   push:
     branches: ["main", "dev"]
 
 jobs:
   test-attack:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: servidor-local # path to the folder with docker-compose.yml
 
     steps:
       - name: Checkout
@@ -19,4 +23,4 @@ jobs:
         run: sleep 10
 
       - name: Executar ataque do k6
-        run: docker compose run --rm k6 run /app/src/scripts/teste-carga-servicos.js
+        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js

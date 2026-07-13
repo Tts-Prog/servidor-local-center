@@ -15,15 +15,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/componentes/schemas/Users"
+                  $ref: "#/components/schemas/Users"
 
         "404":
           description: "Nenhum utilizador Encontrado"
           content:
             application/json:
-              schemas:
+              schema:
                 type: object
-                $ref: "#/componentes/schemas/UsersResponseError"
+                $ref: "#/components/schemas/UsersResponseError"
                 
   /users/create:
     post:

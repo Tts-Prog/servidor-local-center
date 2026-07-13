@@ -1,58 +1,60 @@
-import http from "k6/http"
-import { check, sleep } from "k6"
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 export const options = {
-    vus: 50,
-    duration: "2m"
-}
+  vus: 50,
+  duration: "2m",
+};
 
 export function setup() {
-   //const loginUrl = "https://servidor-local-center-backend-npv5.onrender.com/users/login"
-    const loginUrl = "http://api.8080/users/login"
+  // const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
+  const loginUrl = "http://api:8080/users/login";
 
-    const payload = JSON.stringify({
-        email: "teste@gmail.com",
-        password: "12345"
-    })
+  const payload = JSON.stringify({
+    email: "tmtse23@gmail.com",
+    password: "123456789",
+  });
 
-    const params = {
-        headers: {
-            "Content-Type": "application/json",
-            "User-Agent": "K6 load test",
-            Origin: "https://gulugulu-nu.vercel.app/login"
-        }
-    }
+  const params = {
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "k6-load-test",
+      Origin: "https://servidor-local-center-three.vercel.app",
+    },
+  };
 
-    const response = http.post(loginUrl, payload, params);
-    if (!(response || !response?.body)) {
-        console.error("failed to login;", res);
-        return {}
-    }
+  const res = http.post(loginUrl, payload, params);
 
-    return { token: response.json("token") }
+  if (!res || !res?.body) {
+    console.error("Failed to login:", res);
+    return {};
+  }
+
+  return { token: res.json().data.token };
 }
 
 export default function (data) {
-    const url = "https://servidor-local-center-backend-npv5.onrender.com/services/get-all-servico-detalhado"
+  const url = "http://api:8080/service/get-all-detailed";
 
-    const params = {
-        headers: {
-            Authorization: `Bearer ${data && data?.token ? data.token : ""}`,
-            "Content-Type": "application/json",
-            "User-Agent": "K6 load test",
-        },
-        user: {
-            role: "ADMIN"
-        }
-    }
+  const params = {
+    headers: {
+      Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
+      "Content-Type": "application/json",
+      "User-Agent": "k6-load-test",
+    },
 
-    const res = http.get(url, params)
+    user: {
+      role: "ADMIN",
+    },
+  };
 
-    check(res, {
-        "sucesso: ": (r) => r.status === 200,
-        "rapido (< 500ms)": (r) => r.timings.duration < 500,
-        "Erro de servidor (Erro 502/504)": (r) => r.status <= 500,
-    })
+  const res = http.get(url, params);
 
-    sleep(1)
+  check(res, {
+    "Sucesso: ": (r) => r.status === 200,
+    "Rápido (< 500ms)": (r) => r.timings.duration < 500,
+    "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
+  });
+
+  sleep(1);
 }
