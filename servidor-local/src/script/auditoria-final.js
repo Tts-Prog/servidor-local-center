@@ -11,8 +11,8 @@ export function setup() {
     const loginUrl = "http://api:8080/users/login";
 
     const payload = JSON.stringify({
-        email: "[EMAIL_ADDRESS]",
-        password: "password123",
+        email: "adventista@gmail.com",
+        password: "admin123",
     });
 
     const params = {
@@ -25,7 +25,7 @@ export function setup() {
 
     const res = http.post(loginUrl, payload, params);
 
-    return { token: res.json()?.data?.token };//retorna o token
+    return { token: res.json().data.token };//retorna o token
 }
 
 export default function (data) {
@@ -41,7 +41,7 @@ export default function (data) {
             role: "ADMIN"
         }
     };
-    
+
 
     const payload = JSON.stringify({
         nome: "Manutencao de computador",

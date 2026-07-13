@@ -1,11 +1,11 @@
 import { Pool } from "pg";
 
 const db = new Pool({
-    host: process.env.HOSTNAME || "localhost",
-    user: process.env.USERNAME || "postgres",
-    password: process.env.PASSWORD || "sua_senha",
-    database: process.env.DATABASE || "servidor_local",
-    port: Number(process.env.PORT) || 5432,
+    host: process.env.DB_PG_HOST || "localhost",
+    user: process.env.DB_PG_USER || "postgres",
+    password: process.env.DB_PG_PASSWORD || "sua_senha",
+    database: process.env.DB_PG_NAME || "servidor_local",
+    port: Number(process.env.DB_PG_PORT) || 5432,
     ssl: process.env.DB_PG_SSL === "true" ? {
         rejectUnauthorized: false
     } : undefined
