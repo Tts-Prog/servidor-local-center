@@ -24,6 +24,11 @@ export function setup() {
 
     const response = http.post(loginUrl, payload, params)
 
+    if (!response && response?.body) {
+        console.error("Failed to login", response)
+        return {}
+    }
+
     // DEBUG LOGS: This will output to your terminal window
     console.log(`[SETUP] HTTP Status Code: ${response.status}`);
     console.log(`[SETUP] Full Response Body: ${response.body}`);
