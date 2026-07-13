@@ -19,6 +19,7 @@ jobs:
         run: sleep 10
 
       - name: Executar Auditoria com k6
+        working-directory: servidor-local
         run: docker compose run --rm k6_attack run /app/src/script/auditoria-final.js
 
       - name: Desligar os contentores
