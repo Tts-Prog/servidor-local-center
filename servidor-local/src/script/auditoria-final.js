@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+import { check } from 'k6';
 
 export const options = {
     vus: 60,
@@ -10,9 +10,8 @@ export const options = {
         http_req_duration: ['p(95)<600'],
     },
 };
-const url = 'http://api:8080';
-export function setup() {
 
+export function setup() {
     const login = http.post(
         'http://api:8080/users/login',
         JSON.stringify({
@@ -21,32 +20,29 @@ export function setup() {
         }),
         {
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         }
     );
 
+    const body = login.json();
+
     return {
-        token: login.json().token
+        token: body.token,
     };
 }
 
 export default function (data) {
-
     const res = http.get(
-        'http://api:8080/service',
+        'http://api:8080/prestador/get-by-id/1',
         {
             headers: {
-                Authorization: `Bearer ${data.token}`
-            }
+                Authorization: `Bearer ${data.token}`,
+            },
         }
     );
-    // console.log(res.status);
-    // // console.log(res.body);
+
     check(res, {
-        'Status OK': (r) => r.status == 200 || r.status == 503
+        'status 200 ou 503': (r) => r.status === 200 || r.status === 503,
     });
-
-
-    sleep(1);
 }
