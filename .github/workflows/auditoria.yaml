@@ -8,21 +8,23 @@ jobs:
   auditoria:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: servidor-local # path to the folder with docker-compose.yaml
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Levantar Docker
         run: docker compose up -d db api
-        working-directory: servidor-local
+        
       - name: Esperar a Base de Dados iniciar
         run: sleep 10
 
       - name: Executar Auditoria com k6
-        working-directory: servidor-local
         run: docker compose run --rm k6_attack run /app/src/script/auditoria-final.js
 
       - name: Desligar os contentores
         if: always()
-        working-directory: servidor-local
         run: docker compose down
