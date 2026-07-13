@@ -9,6 +9,10 @@ on:
 jobs:
   test-attack:
     runs-on: ubuntu-latest
+  
+    defaults:
+      run:
+        working-directory: servidor-local # path to the folder with docker-compose.yml
 
     steps:
       - name: Checkout
