@@ -2,7 +2,7 @@ name: Testes de Performance (K6)
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "Helio-dev"]
 
 jobs:
   test-attack:
