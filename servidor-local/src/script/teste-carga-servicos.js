@@ -23,6 +23,7 @@ export function setup() {
     },
   };
 
+  
   const res = http.post(loginUrl, payload, params);
 
   return { token: res.json("token") };
