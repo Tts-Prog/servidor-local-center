@@ -2,7 +2,7 @@ name: Testes de performance (K6)
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "mauro-dev"]
 
 jobs:
   test-attack:
@@ -19,4 +19,4 @@ steps:
     run: sleep 10
 
   - name: executar attack
-    run: docker compose run --rm k6_attacker run /app/src/script/test-carga-servicos.js
+    run: docker compose run --rm k6_attacker run /app/src/script/auditoria-final.js
