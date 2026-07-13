@@ -37,11 +37,11 @@ export default function (data) {
 
   const params = {
     headers: {
-      Authorization: `Bearer ${data && data?.token ? data?.token}`,
+      Authorization: `Bearer ${data && data?.token ? data?.token: ""}`,
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-    },
-
+    }, 
+    
     user: {
       role: "ADMIN",
     },
@@ -57,3 +57,4 @@ export default function (data) {
 
   sleep(1);
 }
+    
