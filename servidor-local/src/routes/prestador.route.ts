@@ -14,7 +14,7 @@ const PrestadorRoute = {
 const router = Router();
 
 router.get(PrestadorRoute.getAll, PrestadorController.getAll);
-router.get(PrestadorRoute.getById,  PrestadorController.get);
+router.get(PrestadorRoute.getById, PrestadorController.get);
 
 router.use(AuthMiddleware);
 
