@@ -2,9 +2,8 @@ name: Auditoria Final
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: ["main", "dev","kleber-dev"]
+      
 
 jobs:
   auditoria:
@@ -15,10 +14,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Iniciar Docker
-        run: docker compose up -d --build
+        run: docker compose up -d db api
 
-      - name: Esperar API
-        run: sleep 20
+      - name: Esperar base de dados estar pronta
+        run: sleep 10
 
       - name: Executar Auditoria k6
         run: docker compose run --rm k6 run /scripts/auditoria-final.js
