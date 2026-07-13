@@ -39,23 +39,23 @@ export default function(data) {
 
     const params = {
         headers: {
-            Authorization: `Bearer ${data.token}`,
+            Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
             "Content-Type": "application/json",
             "User-Agent": "k6-load-test",
         },
 
         users: {
-            role: "ADMIN"
-        }
+            role: "ADMIN",
+        },
     }
 
-    const res = http.get(url, params)
+    const res = http.get(url, params);
 
     check(res, {
         "Sucesso: ": (r) => r.status === 200,
         "Rápido (< 500ms)": (r) => r.timings.duration < 500,
         "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
-    })
+    });
 
     sleep(1);
 }
