@@ -2,7 +2,7 @@ name: Testes de Performance (K6)
 
 on:
   push:
-    branches: ["main", "dev" , "stiven-dev"]
+    branches: ["main", "dev", "stiven-dev"]
 
 jobs:
   test-attack:
