@@ -47,7 +47,7 @@ export default function (data) {
 
     const params = {
         headers: {
-            Authorization: `Bearer ${data.token}`,
+            Authorization: `Bearer ${data && data.token ? data?.token : ""}`,
             "Content-Type": "application/json",
             "User-Agent": "K6 load test",
         },
