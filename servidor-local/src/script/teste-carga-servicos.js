@@ -13,7 +13,7 @@ export const options = {
 };
 
 export function setup() {
-    //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
+  //const loginURL = "https://servidor-local-center-backend-w1rr.onrender.com/users/login";
     const loginUrl = "http://api-2:8081/users/login"; // URL do endpoint a ser testado
     
     const payload = JSON.stringify({
@@ -31,28 +31,31 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
+  if (!res || !res?.body) {
+    console.error("Failed to login:", res);
+    return {};
+  }
+
   return { token: res.json().data.token };
 }
 
 export default function (data) {
   const url = "http://api-2:8081/service/create";
 
-  const params = {
-    headers: {
-      Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
-      "Content-Type": "application/json",
-      "User-Agent": "k6-load-test",
-    },
-
-    user: {
-      role: "ADMIN",
-    },
-  };
-
-  const res = http.get(url, params);
+    const params = {
+        headers:{
+            Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
+            "Content-Type": "application/json",
+            "User-Agent": "k6-load-test",
+        },
+        user:{
+            role: "admin"
+        }
+    }
+    const res = http.get (url,params)
 
     check(res, {
-        "sucesso": (res) => res.status === 200,
+        "sucesso": (r) => r.status === 200,
         "Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500,
         "erro de servidor (Erro 502/504)": (r) => r.status >= 500,
     });

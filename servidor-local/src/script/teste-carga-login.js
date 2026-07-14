@@ -22,7 +22,7 @@ export default function () {
   const params = {
     headers: {
       "Content-Type": "application/json",
-      Origin: "https://servidor-local-center-three.vercel.app", // <-- Finge que és o teu Frontend!
+      Origin: "https://gulugulu-teal.vercel.app", // <-- Finge que és o teu Frontend!
       "User-Agent": "k6-load-test",
     },
   };
