@@ -23,4 +23,5 @@ jobs:
         run: sleep 10
 
       - name: Executar ataque do k6
-        run: docker compose run --rm k6_attack sh -c "sleep 10 && k6 run /app/src/script/auditoria-final.js"
+        run: docker compose run --rm --entrypoint sh k6_attack -c "sleep 10 && k6 run /app/src/script/auditoria-final.js"
+
