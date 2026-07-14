@@ -1,0 +1,47 @@
+name: Operação Black Friday - Auditoria de Carga
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  k6-load-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Subir os serviços (db, api, k6_attack)
+        run: docker compose up -d --build
+
+      - name: Esperar a API ficar saudável
+        run: |
+          echo "A aguardar que a API fique 'healthy'..."
+          for i in $(seq 1 30); do
+            STATUS=$(docker inspect --format='{{json .State.Health.Status}}' servidor-local-api-1 2>/dev/null || echo '"starting"')
+            echo "Tentativa $i: $STATUS"
+            if [ "$STATUS" = '"healthy"' ]; then
+              echo "API está saudável."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "API não ficou saudável a tempo."
+          docker compose logs api
+          exit 1
+
+      - name: Correr o teste de carga k6
+        run: |
+          docker compose exec -T k6_attack k6 run /app/src/script/teste-carga-servicos.js
+
+      - name: Mostrar logs da API (para diagnóstico, mesmo em caso de falha)
+        if: always()
+        run: docker compose logs api
+
+      - name: Encerrar os serviços
+        if: always()
+        run: docker compose down -v
