@@ -37,20 +37,22 @@ export function setup() {
 export default function (data) {
   const url = "http://api-2:8081/service/create";
 
-    const params = {
-        headers:{
-            Authorization:`Bearer ${data.token}`,
-            "Content-Type" : "application/json",
-            "user-agent": "k6-load-teste",
-        },
-        user:{
-            role: "admin"
-        }
-    }
-    const res = http.get (url,params)
+  const params = {
+    headers: {
+      Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
+      "Content-Type": "application/json",
+      "User-Agent": "k6-load-test",
+    },
+
+    user: {
+      role: "ADMIN",
+    },
+  };
+
+  const res = http.get(url, params);
 
     check(res, {
-        "sucesso": (r) => r.status === 200,
+        "sucesso": (res) => res.status === 200,
         "Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500,
         "erro de servidor (Erro 502/504)": (r) => r.status >= 500,
     });
