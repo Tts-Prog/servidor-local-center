@@ -2,9 +2,9 @@ name: Operação Black Friday - Auditoria de Carga
 
 on:
   push:
-    branches: [main]
+    branches: ["main", "dev", "JuniorOliveira"]
   pull_request:
-    branches: [main]
+    branches: ["main", "dev", "JuniorOliveira"]
   workflow_dispatch: {}
 
 jobs:
