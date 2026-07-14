@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=servidor_local
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=fatcho05
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d servidor_local"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    #volumes:
+    # - db_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    image: servidor-local
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://root:fatcho05@db:5432/servidor_local
+      - DB_PG_HOST=db
+      - DB_PG_PORT=5432
+      - DB_PG_DATABASE=servidor_local
+      - DB_PG_USER=root
+      - DB_PG_PASSWORD=fatcho05
+      - JWT_SECRET=local-k6-test-secret
+      - PORT=8080
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/app/src
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:8080/health').then(r => process.exit(r.status === 200 || r.status === 503 ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  k6_attack:
+    image: grafana/k6:latest
+    volumes:
+      - ./src:/app/src
+    entrypoint: ["tail"]
+    command: ["-f", "/dev/null"]
+    depends_on:
+      - api
+    ports:
+      - "5666:5665"
+    environment:
+      - K6_WEB_DASHBOARD=true
+      #- K6_WEB_DASHBOARD_HOST=0.0.0.0
+
+volumes:
+  db_data:

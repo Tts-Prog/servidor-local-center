@@ -182,7 +182,14 @@ export const ServicoController = {
                 message: "Erro ao buscar servicos detalhados",
                 data: null,
             };
-            return res.status(404).json(response);
+            return res.status(503).json(response);
         }
+
+        const response: ResponseType<typeof getAllServicoDetalhadoResponse> = {
+            status: "success",
+            message: "Servicos detalhados buscados com sucesso",
+            data: getAllServicoDetalhadoResponse,
+        };
+        return res.status(200).json(response);
     }
 }

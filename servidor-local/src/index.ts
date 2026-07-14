@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { type Request, type Response } from "express";
+import express, { type NextFunction, type Request, type Response } from "express";
 import cors from "cors";
 import https from "https";
 import fs from "fs";
@@ -19,6 +19,7 @@ import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
 import statusMonitor from 'express-status-monitor';
 import morgan from "morgan";
+import { checkDatabaseConnection } from "./lib/db-pg.js";
 
 const app = express();
 
@@ -73,8 +74,18 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
 
+app.get("/health", async (req: Request, res: Response) => {
+    const databaseReady = await checkDatabaseConnection();
+
+    return res.status(databaseReady ? 200 : 503).json({
+        status: databaseReady ? "ok" : "degraded",
+        database: databaseReady ? "up" : "down",
+    });
+});
+
 // rotas do express
 app.use("/service", serviceRouter)
+app.use("/services", serviceRouter)
 app.use("/users", usersRouter)
 app.use("/orcamento", orcamentoRouter)
 app.use("/proposta", propostaRouter)
@@ -108,7 +119,42 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
 }))
 
 // Criar tabelas na base de dados se não existirem
-await initDatabase();
+if (await checkDatabaseConnection()) {
+    try {
+        await initDatabase();
+    } catch (error) {
+        console.error("Erro ao inicializar a base de dados:", error);
+    }
+} else {
+    console.error("API iniciada em modo degradado: base de dados indisponivel.");
+}
+
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+    if (res.headersSent) {
+        return next(error);
+    }
+
+    const message = error instanceof Error ? error.message : String(error);
+    const databaseErrorPatterns = [
+        "ECONNREFUSED",
+        "connection terminated",
+        "Connection terminated",
+        "database",
+        "timeout",
+        "terminating connection",
+    ];
+    const isDatabaseError = databaseErrorPatterns.some((pattern) => message.includes(pattern));
+
+    console.error("Erro tratado pela API:", message);
+
+    return res.status(isDatabaseError ? 503 : 500).json({
+        status: "error",
+        message: isDatabaseError
+            ? "Base de dados temporariamente indisponivel"
+            : "Erro interno do servidor",
+        data: null,
+    });
+});
 
 const PORT = Number(process.env.PORT) || 8080;
 
