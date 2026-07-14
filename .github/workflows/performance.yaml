@@ -23,4 +23,4 @@ jobs:
         run: sleep 10
 
       - name: Executar ataque do k6
-        run: docker compose run --rm --service-ports run /app/src/script/teste-carga-servicos.js
+        run: docker compose run --rm --service-ports k6_attacker run /app/src/script/teste-carga-servicos.js
