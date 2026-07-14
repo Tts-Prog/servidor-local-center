@@ -2,18 +2,33 @@ name: Operação Black Friday - Auditoria de Carga
 
 on:
   push:
-    branches: ["main", "dev", "JuniorOliveira"]
+    branches: [main]
   pull_request:
-    branches: ["main", "dev", "JuniorOliveira"]
+    branches: [main]
   workflow_dispatch: {}
 
 jobs:
   k6-load-test:
     runs-on: ubuntu-latest
 
+    # Ajusta este caminho se o teu docker-compose.yml estiver noutra pasta.
+    # No teu caso local, o ficheiro fica em: servidor-local-center/servidor-local/docker-compose.yml
+    defaults:
+      run:
+        working-directory: ./servidor-local
+
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+
+      - name: Confirmar localização do docker-compose.yml (diagnóstico)
+        run: |
+          echo "Diretório atual:"
+          pwd
+          echo "Ficheiros aqui:"
+          ls -la
+          echo "A procurar docker-compose.yml em todo o repositório:"
+          find .. -maxdepth 3 -iname "docker-compose*.yml"
 
       - name: Subir os serviços (db, api, k6_attack)
         run: docker compose up -d --build
