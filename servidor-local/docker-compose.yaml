@@ -46,10 +46,3 @@ services:
     environment: 
       - K6_WEB_DASHBOARD=true
       # - K6_WEB_DASHBOARD_HOST=0.0.0.0
-    
-  
-
-
-
-  
-    
