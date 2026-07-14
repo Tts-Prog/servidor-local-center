@@ -25,13 +25,8 @@ export function setup() {
 
   const res = http.post(loginUrl, payload, params);
 
-<<<<<<< HEAD
-  if (!res || !res?.body ) {
-    console.error(" Failed to login:", res);
-=======
   if (!res || !res?.body) {
     console.error("Failed to login:", res);
->>>>>>> dev
     return {};
   }
 
@@ -63,4 +58,3 @@ export default function (data) {
 
   sleep(1);
 }
-//13/07/2026
