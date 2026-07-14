@@ -9,6 +9,10 @@ jobs:
   test-attack: # Nome do job
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: servidor-local
+
     steps:
       # Passo A: Descarregar o nosso código para a máquina do GitHub
       - name: 📥 Clonar o Repositório
