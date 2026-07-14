@@ -13,7 +13,7 @@ export function setup () {
 
     const payload = JSON.stringify({
         email: "nilsonjoao647@gmail.com",
-        password: "ism@el123456789000"
+        password: "ism@el1234567890"
     });
 
     const params = {
