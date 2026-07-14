@@ -24,24 +24,26 @@ export function setup() {
   };
 
   const res = http.post(loginUrl, payload, params);
-  
+
   if (!res || !res?.body) {
-    console.error("Falha ao fazer login:", res);
-    return {};
+    console.error(`Falha no login: `, res);
+    return { };
   }
-  return { token: res.json("token") };
+
+  return { token: res.json().data.token};
 }
 
 export default function (data) {
   const url = "http://api:8080/service/get-all-detailed";
 
+
   const params = {
     headers: {
-      Authorization: `Bearer ${data && data?.token ? data?.token: ""}`,
+      Authorization: `Bearer ${data && data?.token ? data.token : ""}`,
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-    }, 
-    
+    },
+
     user: {
       role: "ADMIN",
     },
@@ -57,4 +59,3 @@ export default function (data) {
 
   sleep(1);
 }
-    
