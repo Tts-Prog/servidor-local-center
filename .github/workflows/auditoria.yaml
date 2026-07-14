@@ -28,7 +28,7 @@ jobs:
           docker compose logs api
 
       - name: Executar ataque do k6
-        run: docker compose run --rm k6_attack run /app/src/script/auditoria.js
+        run: docker compose run --rm k6_attack run /app/src/script/auditoria-final.js
 
       - name: Mostrar logs se falhar
         if: failure()
