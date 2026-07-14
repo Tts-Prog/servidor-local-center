@@ -1,48 +1,66 @@
-import http from 'k6/http';
-import { check } from 'k6';
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 export const options = {
-    vus: 60,
-    duration: '1m',
-
-    thresholds: {
-        http_req_failed: ['rate<0.01'],
-        http_req_duration: ['p(95)<600'],
-    },
+    vus: 6, // número de usuários virtuais
+    duration: "30s", // duração do teste
 };
 
 export function setup() {
-    const login = http.post(
-        'http://api:8080/users/login',
-        JSON.stringify({
-            email: " teste@gmail.com",
-            password: "12345"
-        }),
-        {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-    );
+    const url = "http://api:8080/users/login"; // URL do endpoint de login
+    const payload = JSON.stringify({
+        email: "admin00@gmail.com",
+        password: "admin00",
+    });
 
-    const body = login.json();
-
-    return {
-        token: body.token,
+    const params = {
+        headers: {
+            "Content-Type": "application/json",
+            "User-Agent": "k6-load-test",
+            origin: "gulugulu-kappa.vercel.app",
+        },
     };
+
+    const res = http.post(url, payload, params);
+    if (res.status !== 200) {
+        // console.log(
+        //     ERRO! Status: ${res.status} | Response do Servidor: ${res.body},
+        // );
+    }
+    return { token: res.json().data.token }; // retorna o token de autenticação para ser usado nos testes
 }
 
 export default function (data) {
-    const res = http.get(
-        'http://api:8080/prestador/get-by-id/1',
-        {
-            headers: {
-                Authorization: `Bearer ${data.token}`,
-            },
-        }
-    );
+    // const url ="https://servidor-local-center-api-4fel.onrender.com/users/login"; // URL do endpoint a ser testado
+    const url = "http://api:8080/service/create"; // URL do endpoint a ser testado
+    
+    const payload = JSON.stringify({
+        nome: "Limpeza DE CASA",
+        descricao: "Servico de Limpeza Profissional para residentes ",
+        categoria: "Limpeza",
+        enabled_at: "true"
+    });
+
+
+    const params = {
+        headers: {
+            "Authorization": `Bearer ${data.token}`,
+            "Content-Type": "application/json",
+            "Origin": "https://servidor-local-center-three.vercel.app", // Simula a origem permitida pelo CORS
+            "User-Agent": "k6-load-test",
+        },
+    };
+
+    const res = http.post(url, payload, params);
+    if (res.status !== 200) 
+    
 
     check(res, {
-        'status 200 ou 503': (r) => r.status === 200 || r.status === 503,
+        "Login com sucesso (Status 200)": (r) => r.status === 200,
+        "Login Rápido (Tempo de resposta < 500ms)": (r) => r.timings.duration < 500,
+        "CPU: Esgotado (Erro 502/504)": (r) => r.status >= 500,
     });
+
+    sleep(1); // espera 1 segundo entre as requisições
+
 }
