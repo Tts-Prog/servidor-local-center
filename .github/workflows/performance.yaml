@@ -1,5 +1,6 @@
 name: Testes de Performance (K6)
 
+
 on:
   push:
     branches: ["main", "dev", "fabio-dev"]
@@ -27,7 +28,7 @@ jobs:
           - PORT={{secret.PORT}}
           - DB_PG_PASSWORD={{secret.DB_PG_PASSWORD}}
           
-        run: docker compose up -d db api
+        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
 
       - name: Esperar o db estar pronto
         run: sleep 10
