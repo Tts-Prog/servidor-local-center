@@ -19,6 +19,7 @@ jobs:
 
       - name: 🐳 Levantar Infraestrutura (Docker Compose) 
         env: 
+          DATABASE_URL=${{secrets.DATABASE_URL}}
           JWT_SECRET=${{secrets.JWT_SECRET}}
           DB_PG_HOST=${{secrets.DB_PG_HOST}}
           DB_PG_PORT=${{secrets.DB_PG_PORT}}
