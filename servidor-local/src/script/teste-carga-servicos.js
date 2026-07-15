@@ -11,15 +11,15 @@ export function setup() {
   const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "elvizoarez1@gmail.com",
-    password: "Webpass2334!",
+    email: "kleber900@gmail.com",
+    password: "123456789",
   });
 
   const params = {
     headers: {
       "Content-Type": "application/json",
       "User-Agent": "k6-load-test",
-      Origin: "https://servidor-local-center-three.vercel.app",
+      "Origin": "https://servidor-local-center-three.vercel.app",
     },
   };
 

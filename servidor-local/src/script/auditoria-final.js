@@ -1,5 +1,5 @@
 import http from "k6/http";
-import { check, sleep } from "k6";
+import { check, sleep, fail } from "k6"; // Adicionado "fail" para abortar se o setup falhar
 
 export const options = {
     vus: 6, // número de usuários virtuais
@@ -7,33 +7,41 @@ export const options = {
 };
 
 export function setup() {
-    const url = "http://api:8080/users/login"; // URL do endpoint de login
+    const registerUrl = "http://api:8080/users/register"; // Ajuste para a sua rota real de registo se for diferente
+    const loginUrl = "http://api:8080/users/login";
+
     const payload = JSON.stringify({
-        email: "admin00@gmail.com",
-        password: "admin00",
+        email: "klebercorreia000@gmail.com",
+        password: "ADMIN",
+        nome: "Kleber Teste" // Adicione campos exigidos pelo seu registo se necessário
     });
 
     const params = {
         headers: {
             "Content-Type": "application/json",
             "User-Agent": "k6-load-test",
-            origin: "gulugulu-kappa.vercel.app",
+            "Origin": "https://vercel.app",
         },
     };
 
-    const res = http.post(url, payload, params);
+    // 1. Tenta registar o utilizador primeiro (ignora se já existir)
+    http.post(registerUrl, payload, params);
+
+    // 2. Faz o login
+    const res = http.post(loginUrl, payload, params);
+
     if (res.status !== 200) {
-        // console.log(
-        //     ERRO! Status: ${res.status} | Response do Servidor: ${res.body},
-        // );
+        console.log(`[SETUP ERRO] Status: ${res.status} | Resposta: ${res.body}`);
+        fail(`O login do Setup falhou com status ${res.status}`);
     }
-    return { token: res.json().data.token }; // retorna o token de autenticação para ser usado nos testes
+
+    const responseJson = res.json();
+    return { token: responseJson.data.token };
 }
 
 export default function (data) {
-    // const url ="https://servidor-local-center-api-4fel.onrender.com/users/login"; // URL do endpoint a ser testado
-    const url = "http://api:8080/service/create"; // URL do endpoint a ser testado
-    
+    const url = "http://api:8080/service/create";
+
     const payload = JSON.stringify({
         nome: "Limpeza DE CASA",
         descricao: "Servico de Limpeza Profissional para residentes ",
@@ -41,26 +49,24 @@ export default function (data) {
         enabled_at: "true"
     });
 
-
     const params = {
         headers: {
             "Authorization": `Bearer ${data.token}`,
             "Content-Type": "application/json",
-            "Origin": "https://servidor-local-center-three.vercel.app", // Simula a origem permitida pelo CORS
+            "Origin": "https://servidor-local-center-three.vercel.app",
             "User-Agent": "k6-load-test",
         },
     };
 
     const res = http.post(url, payload, params);
-    if (res.status !== 200) 
-    
+
+    // Corrigido: Removido o "if" incompleto que quebrava a sintaxe
 
     check(res, {
-        "Login com sucesso (Status 200)": (r) => r.status === 200,
-        "Login Rápido (Tempo de resposta < 500ms)": (r) => r.timings.duration < 500,
-        "CPU: Esgotado (Erro 502/504)": (r) => r.status >= 500,
+        "Criação com sucesso (Status 200)": (r) => r.status === 200 || r.status === 21, // Ajustado o texto do check para refletir a rota /service/create
+        "Resposta Rápida (Tempo < 500ms)": (r) => r.timings.duration < 500,
+        "Erro de Servidor (Status >= 500)": (r) => r.status >= 500,
     });
 
-    sleep(1); // espera 1 segundo entre as requisições
-
+    sleep(1);
 }

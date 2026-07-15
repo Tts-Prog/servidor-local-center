@@ -2,7 +2,7 @@ name: Testes de Performance (K6)
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main", "dev", "kleber-dev"]
 
 jobs:
   test-attack:
@@ -13,10 +13,31 @@ jobs:
         working-directory: servidor-local # path to the folder with docker-compose.yml
 
     steps:
+
+      - name: 🐳 Levantar API (Ligada à BD Live)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+        run: |
+          DATABASE_URL=$DATABASE_URL \
+          JWT_SECRET=$JWT_SECRET \
+          docker compose up -d api
+
+      
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Levantar docker
+        env:
+          - DATABASE_URL= ${{ secrets.DATABASE_URL }}
+          - JWT_SECRET= ${{ secrets.JWT_SECRET }}
+          - PORT= ${{ secrets.PORT }}
+          - DB_PG_HOST= ${{ secrets.DB_PG_HOST }}
+          - DB_PG_PORT= ${{ secrets.DB_PG_PORT }} 
+          - DB_PG_NAME= ${{ secrets.DB_PG_NAME }}
+          - DB_PG_USER= ${{ secrets.DB_PG_USER }}
+          - DB_PG_PASSWORD= ${{ secrets.DB_PG_PASSWORD }}
         run: docker compose up -d db api
 
       - name: Esperar o db estar pronto
