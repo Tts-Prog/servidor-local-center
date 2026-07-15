@@ -18,15 +18,17 @@ jobs:
 
       - name: Levantar docker
         env:
-          -DATABASE_URL=${{secrets.DATABASE_URL}}
-          -JWT_SECRET=${{secrets.JWT_SECRET}}
-          -PORT=${{secrets.PORT}}
-          -DB_PG_HOST=${{secrets.DB_PG_HOST}}
-          -DB_PG_PORT=${{secrets.DB_PG_PORT}}
-          -DB_PG_NAME=${{secrets.DB_PG_NAME}}
-          -DB_PG_USER=${{secrets.DB_PG_USER}}
-          -DB_PG_PASSWORD=${{secrets.DB_PG_PASSWORD}}
+          DATABASE_URL=${{secrets.DATABASE_URL}}
+          JWT_SECRET=${{secrets.JWT_SECRET}}
+          PORT=${{secrets.PORT}}
+          DB_PG_HOST=${{secrets.DB_PG_HOST}}
+          DB_PG_PORT=${{secrets.DB_PG_PORT}}
+          DB_PG_NAME=${{secrets.DB_PG_NAME}}
+          DB_PG_USER=${{secrets.DB_PG_USER}}
+          DB_PG_PASSWORD=${{secrets.DB_PG_PASSWORD}}
         run: docker compose up -d db api
+
+
 
       - name: Esperar o db estar pronto
         run: sleep 10
