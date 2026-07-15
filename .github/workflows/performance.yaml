@@ -1,4 +1,3 @@
-
 name: Testes de Performance (k6)
 
 on:
@@ -18,8 +17,15 @@ jobs:
       - name: 📥 Clonar o Repositório
         uses: actions/checkout@v4
 
-      # Passo B: Levantar a API e a Base de Dados (exatamente como fazemos no nosso PC)
-      - name: 🐳 Levantar Infraestrutura (Docker Compose)
+      - name: 🐳 Levantar Infraestrutura (Docker Compose) 
+        env: 
+          JWT_SECRET=${{secrets.JWT_SECRET}}
+          DB_PG_HOST=${{secrets.DB_PG_HOST}}
+          DB_PG_PORT=${{secrets.DB_PG_PORT}}
+          DB_PG_NAME=${{secrets.DB_PG_NAME}}
+          DB_PG_USER=${{secrets.DB_PG_USER}}
+          DB_PG_PASSWORD=${{secrets.DB_PG_PASSWORD}} 
+          PORT=${{secrets.PORT}}
         run: docker compose up -d db api
 
       # Passo C: Dar 10 segundos para o PostgreSQL inicializar completamente
