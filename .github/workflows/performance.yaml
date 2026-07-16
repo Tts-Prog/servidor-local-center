@@ -18,8 +18,8 @@ jobs:
       
       - name: Levantar API (Ligada à BD Live)
         env:
-          - DATABASE_URL=${{ secrets.DATABASE_URL }}
-          - JWT_SECRET=${{ secrets.JWT_SECRET }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
 
       - name: Levantar docker
         env:
