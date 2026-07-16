@@ -34,5 +34,5 @@ jobs:
         run: sleep 10
 
       - name: Executar ataque do k6
-        run: docker compose run --rm --entrypoint sh k6_attack -c "sleep 10 && k6 run /app/src/script/auditoria-final.js"
+        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
 
