@@ -16,8 +16,7 @@ db.on("error", (err, client) => {
     console.error(
         "⚠️ Erro de fundo no Pool do PostgreSQL. Tentando recuperar...",
         err.message,
-    );
+    ); 
     // Não fazemos process.exit(-1) para a API continuar viva!
 });
-
 export default db

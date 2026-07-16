@@ -56,7 +56,9 @@ app.use(cors({
         "https://again-liart.vercel.app",
         "https://processo-kappa.vercel.app",
         "https://gulugulu-three.vercel.app",
-        "https://gulugulu2.vercel.app"
+        "https://gulugulu2.vercel.app",
+        "https://symmetrical-broccoli-69qrvgrjr7gvfr5r5-8080.app.github.dev"
+
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
