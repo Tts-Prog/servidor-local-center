@@ -7,7 +7,7 @@ export const options = {
 }
 
 export function setup() {
-    const loginUrl = "https://api:8080/users/login"  // Keep this for Docker
+    const loginUrl = "http://api:8080/users/login"  // Keep this for Docker
 
     const payload = JSON.stringify({
         email: "admin@gmail.com",
@@ -40,16 +40,13 @@ export function setup() {
 }
 
 export default function (data) {
-    const url = "https://api:8080/users/"  // Changed to use Docker service name
+    const url = "http://api:8080/users/"  // Changed to use Docker service name
 
     const params = {
         headers: {
             Authorization: `Bearer ${data.token}`,  // Fixed typo
             "Content-Type": "application/json",
             "User-Agent": "K6 load test",
-        },
-        user: {
-            role: "ADMIN"
         }
     }
 
