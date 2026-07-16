@@ -34,7 +34,7 @@ export default function (data) {
     const url = "http://api:8080/service/create"
 
     const payload = JSON.stringify({
-        nome: "Limpeza",
+        nome: "Servico de Limpeza",
         descricao: "Servico de Limpeza Profissional para residentes e empresa",
         categoria: "Limpeza",
         enabled_at: "true"
