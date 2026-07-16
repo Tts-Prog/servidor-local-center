@@ -2,7 +2,7 @@ name: k6 execution
 
 on:
   push:
-    branches: [""]
+    branches: ["wilson-dev"]
 
 jobs:
   test-attack:
