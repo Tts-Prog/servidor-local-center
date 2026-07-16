@@ -13,9 +13,10 @@ jobs:
         working-directory: servidor-local # path to the folder with docker-compose.yml
 
     steps:
-
-     - name: Levantar docker
-       env:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Levantar docker
+        env:
          DATABASE_URL: ${{secrets.DATABASE_URL}}
          JWT_SECRET: ${{secrets.JWT_SECRET}}
          PORT: ${{secrets.PORT}}
@@ -24,10 +25,10 @@ jobs:
          DB_PG_NAME: ${{secrets.DB_PG_NAME}}
          DB_PG_USER: ${{secrets.DB_PG_USER}}
          DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}}  
-       run: docker compose up -d api
+        run: docker compose up -d api
 
-     - name: Esperar o db estar pronto
-       run: sleep 10
+      - name: Esperar o db estar pronto
+        run: sleep 10
 
-     - name: Executar ataque do k6
-       run: docker compose run --rm --service-ports k6_attacker run /app/src/script/teste-carga-servicos.js
+      - name: Executar ataque do k6
+        run: docker compose run --rm --service-ports k6_attacker run /app/src/script/teste-carga-servicos.js
