@@ -18,16 +18,17 @@ jobs:
 
       - name: Levantar docker
         env:
-          - DATABASE_URL=${{ secrets.DATABASE_URL }}
-          - DB_PG_HOST=${{ secrets.DB_PG_HOST }}
-          - DB_PG_PORT=${{ secrets.DB_PG_PORT }}
-          - DB_PG_DATABASE=${{ secrets.DB_PG_DATABASE }}
-          - DB_PG_USER=${{ secrets.DB_PG_USER }}
-          - DB_PG_PASSWORD=${{ secrets.DB_PG_PASSWORD }}
-          - JWT_SECRET=${{ secrets.JWT_SECRET }}
-          - PORT=${{ secrets.PORT }}
+          - DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          - DB_PG_HOST: ${{ secrets.DB_PG_HOST }}
+          - DB_PG_PORT: ${{ secrets.DB_PG_PORT }}
+          - DB_PG_DATABASE: ${{ secrets.DB_PG_DATABASE }}
+          - DB_PG_USER: ${{ secrets.DB_PG_USER }}
+          - DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
+          - JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          - PORT: ${{ secrets.PORT }}
           
-        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET
+          # Passamos as variáveis para o contentor da API e levantamos apenas a API
+        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET 
          docker compose up -d api
 
       - name: Esperar o db estar pronto
