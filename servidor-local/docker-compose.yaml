@@ -28,7 +28,7 @@ services:
       - ./src:/app/src
 
 
-  k6_attac:
+  k6_attack:
     image: grafana/k6:latest
     volumes:
       - ./src:/app/src
