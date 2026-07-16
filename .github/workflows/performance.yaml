@@ -13,12 +13,6 @@ jobs:
         working-directory: servidor-local # path to the folder with docker-compose.yml
 
     steps:
-     - name: 🐳 Levantar API (Ligada à BD Live)
-       env:
-         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-         JWT_SECRET: ${{ secrets.JWT_SECRET }}
-       # Passamos as variáveis para o contentor da API e levantamos apenas a API
-       run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
 
      - name: Levantar docker
        env:
