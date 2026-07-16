@@ -56,7 +56,8 @@ app.use(cors({
         "https://again-liart.vercel.app",
         "https://processo-kappa.vercel.app",
         "https://gulugulu-three.vercel.app",
-        "https://gulugulu2.vercel.app"
+        "https://gulugulu2.vercel.app",
+        "https://psychic-funicular-97rq6966q5q7fx6r7-8080.app.github.dev/"
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],

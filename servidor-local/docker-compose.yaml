@@ -30,7 +30,7 @@ services:
   k6_attack:
     image: grafana/k6:latest
     volumes:
-      - .:/app
+      - ./src:/app/src
     command: ["sleep", "infinity"]
     depends_on:
       - api
