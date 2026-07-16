@@ -26,8 +26,15 @@ jobs:
           DB_PG_NAME: ${{ secrets.DB_PG_NAME }}
           DB_PG_USER: ${{ secrets.DB_PG_USER }}
           DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
-          
+
         run: docker compose up -d db api
+
+      - name: 🐳 Levantar API (Ligada à BD Live)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        # Passamos as variáveis para o contentor da API e levantamos apenas a API
+        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
 
       - name: Esperar o db estar pronto
         run: sleep 10
