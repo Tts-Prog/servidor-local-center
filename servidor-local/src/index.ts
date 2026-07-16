@@ -59,7 +59,8 @@ app.use(cors({
         "https://again-liart.vercel.app",
         "https://processo-kappa.vercel.app",
         "https://gulugulu-three.vercel.app",
-        "https://gulugulu2.vercel.app"
+        "https://gulugulu2.vercel.app",
+        "https://bookish-space-waddle-69x9wx59gp9pfp97-8080.app.github.dev"
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
