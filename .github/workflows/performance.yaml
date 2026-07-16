@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Levantar docker
         env:
           - DATABASE_URL= ${{secrets.DATABASE_URL}}
