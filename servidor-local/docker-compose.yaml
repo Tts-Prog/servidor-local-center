@@ -14,7 +14,7 @@ services:
     build: .
     # image: servidor-local#
     environment:
-      - DATABASE_URL=postgresql://root:webpass2334!@db:5432/servidor_local
+      DATABASE_URL=postgresql://root:webpass2334!@db:5432/servidor_local
       - DB_PG_HOST=db
       - DB_PG_PORT=5432
       - DB_PG_DATABASE=servidor_local
