@@ -35,7 +35,7 @@ jobs:
           DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}}
           PORT: ${{secrets.PORT}}
 
-        run: docker compose up -d db api
+        run: docker compose up -d api
 
       # Passo C: Dar 10 segundos para o PostgreSQL inicializar completamente
       - name: ⏳ Esperar pela Base de Dados
