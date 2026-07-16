@@ -36,4 +36,4 @@ jobs:
 
       # Passo D: Disparar o k6 por dentro da rede Docker!
       - name: 🚀 Executar Ataque k6
-        run: docker compose run --rm --service-ports k6_attack run /app/src/script/teste-carga-servicos.js
+        run: docker compose run --rm --service-ports k6_attack-2 run /app/src/script/teste-carga-servicos.js
