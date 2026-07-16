@@ -19,7 +19,20 @@ jobs:
          JWT_SECRET: ${{ secrets.JWT_SECRET }}
        # Passamos as variáveis para o contentor da API e levantamos apenas a API
        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
-       
+
+     - name: 🐳 Levantar Infraestrutura (Docker Compose) 
+       env:
+         DATABASE_URL: ${{secrets.DATABASE_URL}}
+         JWT_SECRET: ${{secrets.JWT_SECRET}}
+         DB_PG_HOST: ${{secrets.DB_PG_HOST}}
+         DB_PG_PORT: ${{secrets.DB_PG_PORT}}
+         DB_PG_NAME: ${{secrets.DB_PG_NAME}}
+         DB_PG_USER: ${{secrets.DB_PG_USER}}
+         DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}} 
+         PORT: ${{secrets.PORT}}
+
+       run: docker compose up -d db api
+
      - name: Esperar o db estar pronto
        run: sleep 10
 
