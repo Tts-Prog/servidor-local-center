@@ -20,7 +20,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          PORT: ${{ secrets.PORT }}
+          PORT: 8989
           DB_PG_HOST: ${{ secrets.DB_PG_HOST }}
           DB_PG_PORT: ${{ secrets.DB_PG_PORT }}
           DB_PG_NAME: ${{ secrets.DB_PG_NAME }}
