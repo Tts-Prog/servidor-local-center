@@ -30,10 +30,9 @@ export function setup() {
     return {};
   }
 
-  return { token: res.json().data.token };
-}
+  return { token: res.json("token ") } };
 
-export default function (data) {
+export default function (data) { 
   const url = "http://api:8080/service/get-all-detailed";
 
   const params = {
