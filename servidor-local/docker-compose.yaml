@@ -18,7 +18,7 @@ services:
     #serviço do servidor local
     build: . # Constrói a vossa API a partir do Dockerfile
     environment:
-      #DATABASE_URL: "postgresql://root:Webpass2334!@db:5432/servidor-local"
+      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor-local
       - DB_PG_HOST=db
       - DB_PG_USER=root
       - DB_PG_PORT=5432
