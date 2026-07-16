@@ -40,29 +40,27 @@ export function setup() {
 }
 
 export default function (data) {
-  const url = "http://api-2:8080/service/create";
+  const url = "http://api-2:8080/service/get-all-detailed";
 
-    const params = {
-        headers:{
-            Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
-            "Content-Type": "application/json",
-            "User-Agent": "k6-load-test",
-        },
-        user:{
-            role: "admin"
-        }
-    }
-    const res = http.get (url,params)
+  const params = {
+    headers: {
+      Authorization: `Bearer ${data && data?.token ? data?.token : ""}`,
+      "Content-Type": "application/json",
+      "User-Agent": "k6-load-test",
+    },
 
-    check(res, {
-        "sucesso": (r) => r.status === 200,
-        "Rapido (Tempo < 500ms)": (r) => r.timings.duration < 500,
-        "erro de servidor (Erro 502/504)": (r) => r.status >= 500,
-    });
-    
-    if (res.status !== 200) {
-  console.log(`🚨 ERRO! Status: ${res.status} | Resposta: ${res.body}`);
-}
+    user: {
+      role: "ADMIN",
+    },
+  };
 
-    sleep(1);
+  const res = http.get(url, params);
+
+  check(res, {
+    "Sucesso: ": (r) => r.status === 200,
+    "Rápido (< 500ms)": (r) => r.timings.duration < 500,
+    "Erro de servidor (Erro 502/504)": (r) => r.status >= 500,
+  });
+
+  sleep(1);
 }
