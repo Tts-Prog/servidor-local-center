@@ -75,6 +75,7 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
 
+//ojertg
 // rotas do express
 app.use("/service", serviceRouter)
 app.use("/users", usersRouter)
