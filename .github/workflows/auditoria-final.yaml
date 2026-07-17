@@ -1,4 +1,4 @@
-name: Testes de Performance (K6) - Auditoria final
+name: Testes de Performance (K6)
 
 on:
   push:
