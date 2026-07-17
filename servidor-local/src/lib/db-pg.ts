@@ -1,5 +1,7 @@
 import { Pool } from "pg";
+import dns from "dns";
 
+dns.setDefaultResultOrder("ipv4first");
 const db = new Pool({
     host: process.env.DB_PG_HOST || "localhost",
     user: process.env.DB_PG_USER || "postgres",
