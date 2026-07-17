@@ -35,7 +35,7 @@ export function setup() {
 }
 
 export default function(data) {
-    const url = "https://servidor-local-center-1rnu.onrender.com/get-all-servico-detalhado"
+    const url = "https://servidor-local-center-1rnu.onrender.com/servico"
 
     const params = {
         headrs: {
