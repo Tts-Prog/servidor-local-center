@@ -25,7 +25,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./src:/app/src
+      - ./:/app
   
   k6_attack:
     image: grafana/k6:latest
