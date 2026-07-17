@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:15
     environment:
-        POSTGRES_USER: root
-        POSTGRES_PASSWORD: Webpass2334!
-        POSTGRES_DB: servidor_local
+        POSTGRES_PASSWORD: ${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
+        POSTGRES_USER: ${DB_PG_USER:?Set DB_PG_USER}
+        POSTGRES_DB: ${DB_PG_NAME:?Set DB_PG_NAME}
     ports:
         - "5432:5432"
 
@@ -13,12 +13,12 @@ services:
     build: .
     #image: servidor-local
     environment:
-      - DATABASE_URL:postgresql://root:Webpass2334!@db:5432/servidor_local
-      - DB_PG_HOST=db
-      - DB_PG_PORT=5432
-      - DB_PG_NAME=servidor_local
-      - DB_PG_USER=root
-      - DB_PG_PASSWORD=Webpass2334!
+      - DATABASE_URL:${DATABASE_URL:?Set DATABASE_URL}
+      - DB_PG_HOST=${DB_PG_HOST:?Set DB_PG_HOST}
+      - DB_PG_PORT=${DB_PG_PORT:?Set DB_PG_PORT}
+      - DB_PG_NAME=${DB_PG_NAME:?Set DB_PG_NAME}
+      - DB_PG_USER=${DB_PG_USER:?Set DB_PG_USER}
+      - DB_PG_PASSWORD=${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
       - PORT=8080
       - JWT_SECRET=slcnoibcidbliabaukvlusgcuildsbciuewbuicbeiucbeu
     depends_on:
