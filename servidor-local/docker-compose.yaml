@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: rootpassword
-      POSTGRES_DB: servidor_local
+      POSTGRES_USER=${POSTGRES_USER:? SET POSTGRES_USER}
+      POSTGRES_PASSWORD=${POSTGRES_PASSWORD:? SET POSTGRES_PASSWORD}
+      POSTGRES_DB=${POSTGRES_DB:? SET POSTTGRES_DB}
     ports:
       - "5432:5432"
 
