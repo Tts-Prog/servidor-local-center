@@ -26,8 +26,7 @@ jobs:
           DB_PG_NAME: ${{ secrets.DB_PG_NAME }}
           DB_PG_USER: ${{ secrets.DB_PG_USER }}
           DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
-        run: echo "Configuração de ambiente da API pronta"
-
+        run: echo "Configuração de ambiente da API pronta"  
       - name: Levantar docker
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
