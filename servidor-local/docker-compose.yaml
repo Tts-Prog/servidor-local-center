@@ -20,7 +20,7 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
 
-  k6_attacker:
+  grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
@@ -28,3 +28,20 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
+  
+  k6_attacker:
+    #serviço de k6_attacker
+    image: grafana/k6:latest #imagem de k6_attacker
+    volumes:
+      - ./src:/app/src
+    command: [ "sleep", "infinity" ]
+    depends_on:
+      - api
+    ports:
+      - "5665:5665"
+    environment:
+      - K6_WEB_DASHBOARD=true
+      # - K6_WEB_DASHBOARD_HOST: 0.0.0.0
+
+
+  
