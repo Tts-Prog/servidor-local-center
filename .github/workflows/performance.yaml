@@ -27,9 +27,12 @@ jobs:
             DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}}
         run: docker compose up -d api
 
-      - name: Esperar o db estar pronto
-        run: sleep 10
+      - name: Esperar a API estar pronta
+        run: sleep 15
 
       - name: Executar ataque do k6
+        env:
+            DATABASE_URL: ${{secrets.DATABASE_URL}}
+            JWT_SECRET: ${{secrets.JWT_SECRET}}
         run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
   

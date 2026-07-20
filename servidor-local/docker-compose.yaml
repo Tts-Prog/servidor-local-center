@@ -4,9 +4,26 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
+      - DB_PG_HOST=${DB_PG_HOST}
+      - DB_PG_PORT=${DB_PG_PORT}
+      - DB_PG_NAME=${DB_PG_NAME}
+      - DB_PG_USER=${DB_PG_USER}
+      - DB_PG_PASSWORD=${DB_PG_PASSWORD}
       - NODE_OPTIONS=--dns-result-order=ipv4first # 👈 Corrige o erro ENETUNREACH do Prisma/Neon
     ports:
       - "8080:8080"
+
+  k6_attack:
+    image: grafana/k6:latest
+    volumes:
+      - ./src/script:/app/src/script # 👈 Monta os scripts k6 no container
+    depends_on:
+      - api
+    environment:
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+    networks:
+      - default
 
   prometheus:
     image: prom/prometheus:latest
