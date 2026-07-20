@@ -1,14 +1,37 @@
 
 name: servidor-local-center
 services:
-  api:
-    build: .
+  #serviços a serem executados
+  db:
+    #serviço de base de dados
+    image: postgres:15 #imagem da base de dados
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - NODE_OPTIONS=--dns-result-order=ipv4first # 👈 Corrige o erro ENETUNREACH do Prisma/Neon
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: Webpass2334!
+      POSTGRES_DB: servidor_local
+    ports:
+      - "5432:5432"
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
+
+  api:
+    #serviço do servidor local
+    build: . # Constrói a vossa API a partir do Dockerfile
+    environment:
+      - DATABASE_URL
+      - DB_PG_HOST
+      - DB_PG_USER
+      - DB_PG_PORT
+      - DB_PG_NAME
+      - DB_PG_PASSWORD
+      - JWT_SECRET
+      - PORT
     ports:
       - "8080:8080"
+    volumes:
+      - ./src:/app/src
+    # depends_on:
+    #   - db
 
   prometheus:
     image: prom/prometheus:latest
@@ -28,7 +51,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
-  
+
   k6_attacker:
     #serviço de k6_attacker
     image: grafana/k6:latest #imagem de k6_attacker
@@ -42,6 +65,3 @@ services:
     environment:
       - K6_WEB_DASHBOARD=true
       # - K6_WEB_DASHBOARD_HOST: 0.0.0.0
-
-
-  
