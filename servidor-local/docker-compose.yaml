@@ -1,48 +1,30 @@
 
 name: servidor-local-center
 services:
-  #serviços a serem executados
-  db:
-    #serviço de base de dados
-    image: postgres:15 #imagem da base de dados
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: Webpass2334!
-      POSTGRES_DB: servidor_local
-    ports:
-      - "5432:5432"
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
-
   api:
-    #serviço do servidor local
-    build: . # Constrói a vossa API a partir do Dockerfile
+    build: .
     environment:
-       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL}
-       DB_PG_HOST: ${DB_PG_HOST:?Set DB_PG_HOST}
-       DB_PG_USER: ${DB_PG_USER:?Set DB_PG_USER}
-       DB_PG_PORT: ${DB_PG_PORT:?Set DB_PG_PORT}
-       DB_PG_NAME: ${DB_PG_NAME:?Set DB_PG_NAME}
-       DB_PG_PASSWORD: ${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
-       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
-       PORT: ${PORT:?Set PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_OPTIONS=--dns-result-order=ipv4first # 👈 Corrige o erro ENETUNREACH do Prisma/Neon
     ports:
       - "8080:8080"
-    volumes:
-      - ./src:/app/src
-    # depends_on:
-    #   - db
 
-  k6_attacker:
-    #serviço de k6_attacker
-    image: grafana/k6:latest #imagem de k6_attacker
-    volumes:
-      - ./src:/app/src
-    command: [ "sleep", "infinity" ]
-    depends_on:
-      - api
+  prometheus:
+    image: prom/prometheus:latest
     ports:
-      - "5665:5665"
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
     environment:
-      - K6_WEB_DASHBOARD=true
-      # - K6_WEB_DASHBOARD_HOST: 0.0.0.0
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
