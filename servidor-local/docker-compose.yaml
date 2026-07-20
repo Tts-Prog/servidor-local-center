@@ -20,7 +20,7 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
 
-  grafana:
+  k6_attacker:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
