@@ -1,24 +1,16 @@
 
-services: 
-  db: 
+services:
+  db:
     image: postgres:15
     environment:
-      # - host=db
-      # - port=5432
-      # - name=servidor-local
-      # - user=root
-      # - password=Webpass2334!
       - POSTGRES_PASSWORD=Webpass2334!
       - POSTGRES_USER=root
       - POSTGRES_DB=servidor_local
-    ports: 
+    ports:
       - "5432:5432"
-    #volumes: 
-    # - postgres_data:/var/lib/postgresql/data
-  
-  api: 
+
+  api:
     build: .
-    # image: servidor-local
     environment:
       - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor_local
       - DB_PG_HOST=db
@@ -27,23 +19,43 @@ services:
       - DB_PG_USER=root
       - DB_PG_PASSWORD=Webpass2334!
       - PORT=8080
-      -  JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj
+      - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     depends_on:
       - db
-    ports: 
+    ports:
       - "8080:8080"
-    volumes: 
-      - ./src:/app/src 
+    volumes:
+      - ./src:/app/src
 
-  k6_attack: 
+  k6_attack:
     image: grafana/k6:latest
     volumes:
       - ./src:/app/src
     command: ["sleep", "infinity"]
     depends_on:
       - api
+      - prometheus
     ports:
       - "5665:5665"
     environment:
       - K6_WEB_DASHBOARD=true
-      #- K6_WEB_DASHBOARD_HOST=0.0.0.0
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--enable-feature=remote-write-receiver"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus

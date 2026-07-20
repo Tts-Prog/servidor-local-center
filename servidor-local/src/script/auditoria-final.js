@@ -11,8 +11,8 @@ export function setup() {
     const loginUrl = "http://api:8080/users/login"
 
     const payload = JSON.stringify({
-        email: "djeison.adventista@gmail.com",
-        password: "$2a5125j.pn.Zt9gCshBcT8J.QIxO6N995ZnqG/PVD:PVGrkpKt5PB4HCOK"
+        email: "djeison31@gmail.com",
+        password: "admin1"
     });
 
     const params = {
