@@ -13,14 +13,15 @@ services:
     build: .
     #image: servidor-local
     environment:
-      - DATABASE_URL:${DATABASE_URL:?Set DATABASE_URL}
+      - DATABASE_URL=${DATABASE_URL}
       - DB_PG_HOST=${DB_PG_HOST:?Set DB_PG_HOST}
       - DB_PG_PORT=${DB_PG_PORT:?Set DB_PG_PORT}
       - DB_PG_NAME=${DB_PG_NAME:?Set DB_PG_NAME}
       - DB_PG_USER=${DB_PG_USER:?Set DB_PG_USER}
       - DB_PG_PASSWORD=${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
       - PORT=8080
-      - JWT_SECRET=slcnoibcidbliabaukvlusgcuildsbciuewbuicbeiucbeu
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     depends_on:
       - db
     ports: 
@@ -40,7 +41,25 @@ services:
     environment: 
       - K6_WEB_DASHBOARD=true
       # - K6_WEB_DASHBOARD_HOST=0.0.0.0
-    
+  
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--enable-feature=remote-write-receiver"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
 
 
 
