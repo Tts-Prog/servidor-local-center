@@ -17,40 +17,22 @@ services:
   api:
     #serviço do servidor local
     build: . # Constrói a vossa API a partir do Dockerfile
-    environment:
-      - DATABASE_URL
-      - DB_PG_HOST
-      - DB_PG_USER
-      - DB_PG_PORT
-      - DB_PG_NAME
-      - DB_PG_PASSWORD
-      - JWT_SECRET
-      - PORT
+    env:
+         DATABASE_URL: ${{secrets.DATABASE_URL}}
+         JWT_SECRET: ${{secrets.JWT_SECRET}}
+         PORT: ${{secrets.PORT}}
+         DB_PG_HOST: ${{secrets.DB_PG_HOST}}
+         DB_PG_PORT: ${{secrets.DB_PG_PORT}}
+         DB_PG_NAME: ${{secrets.DB_PG_NAME}}
+         DB_PG_USER: ${{secrets.DB_PG_USER}}
+         DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}}
+    run: docker compose up -d api 
     ports:
       - "8080:8080"
     volumes:
       - ./src:/app/src
     # depends_on:
-    #   - db
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    depends_on:
-      - prometheus
+    #   - dbZZZZZZZZZZZZZZZZZZ
 
   k6_attacker:
     #serviço de k6_attacker
