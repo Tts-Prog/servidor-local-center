@@ -10,32 +10,30 @@ services:
 
   api:
     build: .
-    #image: servidor-local
     environment:
-      - DATABASE_URL=postgresql://root:rootpassword@db:5432/Servidor-local
-      - DB_PG_HOST=db
-      - DB_PG_PORT=5432
-      - DB_PG_NAME=servidor_local
-      - DB_PG_USER=root
-      - DB_PG_PASSWORD=rootpassword
-      - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj   
-      - PORT=8080
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_PG_HOST=${DB_PG_HOST}
+      - DB_PG_PORT=${DB_PG_PORT}
+      - DB_PG_NAME=${DB_PG_NAME}
+      - DB_PG_USER=${DB_PG_USER}
+      - DB_PG_PASSWORD=${DB_PG_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_OPTIONS=--dns-result-order=ipv4first # 👈 Corrige o erro ENETUNREACH do Prisma/Neon
     ports:
       - "8080:8080"
     depends_on:
       - db
     volumes:
-      - ./src:/app/src
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
 
-  k6_attack:
-    image: grafana/k6:latest
-    volumes:
-      - ./src:/app/src
-    command: ["sleep","infinity"]
-    depends_on:
-      - api
+  grafana:
+    image: grafana/grafana:latest
     ports:
-      - "5665:5665"
+      - "3000:3000"
     environment:
-      - K6_WEB_DASHBOARD=true
-    # - K6_WEB_DASHBOARD_HOST=0.0.0.0 
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
