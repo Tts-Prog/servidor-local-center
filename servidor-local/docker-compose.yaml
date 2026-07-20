@@ -18,14 +18,14 @@ services:
     #serviço do servidor local
     build: . # Constrói a vossa API a partir do Dockerfile
     environment:
-      - DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL}
-      - DB_PG_HOST: ${DB_PG_HOST:?Set DB_PG_HOST}
-      - DB_PG_USER: ${DB_PG_USER:?Set DB_PG_USER}
-      - DB_PG_PORT: ${DB_PG_PORT:?Set DB_PG_PORT}
-      - DB_PG_NAME: ${DB_PG_NAME:?Set DB_PG_NAME}
-      - DB_PG_PASSWORD: ${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
-      - JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
-      - PORT: ${PORT:?Set PORT}
+       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL}
+       DB_PG_HOST: ${DB_PG_HOST:?Set DB_PG_HOST}
+       DB_PG_USER: ${DB_PG_USER:?Set DB_PG_USER}
+       DB_PG_PORT: ${DB_PG_PORT:?Set DB_PG_PORT}
+       DB_PG_NAME: ${DB_PG_NAME:?Set DB_PG_NAME}
+       DB_PG_PASSWORD: ${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
+       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
+       PORT: ${PORT:?Set PORT}
     ports:
       - "8080:8080"
     volumes:
