@@ -1,0 +1,5 @@
+global:
+  scrape_interval: 5s
+
+
+   docker compose up -d db api --build --force-recreate
