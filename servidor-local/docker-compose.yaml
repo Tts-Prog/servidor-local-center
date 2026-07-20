@@ -1,30 +1,32 @@
 services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: servidor_local
+    ports:
+      - "5432:5432"
+
   api:
     build: .
+    # image: servidor-local-api-2 
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - PORT=${PORT}
-      - DB_PG_HOST=${DB_PG_HOST}
-      - DB_PG_PORT=${DB_PG_PORT}
-      - DB_PG_NAME=${DB_PG_NAME}
-      - DB_PG_USER=${DB_PG_USER}
-      - DB_PG_PASSWORD=${DB_PG_PASSWORD}
-      - NODE_OPTIONS=--dns-result-order=ipv4first # 👈 Corrige o erro ENETUNREACH do Prisma/Neon
+      # - DATABASE_URL="postgresql://root:rootpassword:5432/servidor-local"
+      - DB_PG_HOST=db
+      - DB_PG_PORT=5432
+      - DB_PG_NAME=servidor_local
+      - DB_PG_USER=root
+      - DB_PG_PASSWORD=rootpassword
+      - JWT_SECRET=slcnoibcidbliabaukvlusgcuildsbciuewbuicbeiucbeucw
+      - PORT=8080
+      - NODE_OPTIONS=--dns-result-order=ipv4first
     ports:
       - "8080:8080"
-
-  k6_attack:
-    image: grafana/k6:latest
-    volumes:
-      - ./src/script:/app/src/script # 👈 Monta os scripts k6 no container
     depends_on:
-      - api
-    environment:
-      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
-    networks:
-      - default
-
+      - db
+    volumes:
+      - ./src:/app/src
   prometheus:
     image: prom/prometheus:latest
     ports:
@@ -43,3 +45,16 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
+
+  k6_attack:
+    image: grafana/k6:latest
+    volumes:
+      - ./src:/app/src
+    command: [ "sleep", "infinity" ]
+    depends_on:
+      - api
+    ports:
+      - "5665:5665"
+    environment:
+      - K6_WEB_DASHBOARD=true
+      # - K6_WEB_DASHBOARD_HOST=0.0.0.0
