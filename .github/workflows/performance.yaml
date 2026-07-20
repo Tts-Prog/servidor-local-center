@@ -31,5 +31,5 @@ jobs:
         run: sleep 15
 
       - name: Executar ataque do k6
-        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js
+        run: docker compose run --rm k6_attack run /home/k6/script/teste-carga-servicos.js
   

@@ -49,7 +49,7 @@ services:
   k6_attack:
     image: grafana/k6:latest
     volumes:
-      - ./src:/app/src # 👈 script disponível em /app/src/script/
+      - ./src/script:/home/k6/script # 👈 monta em WORKDIR do k6
     depends_on:
       - api
     ports:
