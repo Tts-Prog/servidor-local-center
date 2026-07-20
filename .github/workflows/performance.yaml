@@ -16,6 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Levantar API
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
+      
       - name: Levantar docker
         env:
           DATABASE_URL:${{secrets.DATABASE_URL}}
