@@ -28,7 +28,7 @@ jobs:
           DB_PG_USER: ${{ secrets.DB_PG_USER }}
           DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
 
-        run: docker compose up -d api-2
+        run:DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api-2
 
       # Passo C: Dar 10 segundos para o PostgreSQL inicializar completamente
       - name: ⏳ Esperar pela Base de Dados
