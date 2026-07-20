@@ -2,7 +2,7 @@ name: Testes de Performance (K6)
 
 on:
   push:
-    branches: ["main", "dev", "cleiton-dev"]
+    branches: [main, dev, cleiton-dev]
 
 jobs:
   test-attack:
@@ -12,14 +12,24 @@ jobs:
       run:
         working-directory: servidor-local # path to the folder with docker-compose.yml
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DB_PG_HOST: ${{ secrets.DB_PG_HOST }}
+      DB_PG_PORT: ${{ secrets.DB_PG_PORT }}
+      DB_PG_NAME: ${{ secrets.DB_PG_NAME }}
+      DB_PG_USER: ${{ secrets.DB_PG_USER }}
+      DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      PORT: ${{ secrets.PORT }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Levantar docker
-        run: docker compose up -d db api
+        run: docker compose up -d api
 
-      - name: Esperar o db estar pronto
+      - name: Esperar a API iniciar
         run: sleep 10
 
       - name: Executar ataque do k6
