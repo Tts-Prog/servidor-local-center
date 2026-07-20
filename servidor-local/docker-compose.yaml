@@ -22,33 +22,12 @@ services:
       - DB_PG_NAME=${DB_PG_NAME:-Set DB_PG_NAME}
       - PORT=${PORT:-Set PORT}
       - JWT_SECRET=${JWT_SECRET:-Set JWT_SECRET}
-      - NODE_OPTIONS=--dns-result-order=ipv4first
-
     depends_on:
       - db
     ports:
       - "8080:8080"
     volumes:
       - ./src:/app/src
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--enable-feature=remote-write-receiver"
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    depends_on:
-      - prometheus
 
   k6_attack:
     image: grafana/k6:latest
