@@ -2,9 +2,9 @@ services:
   db-2:
     image: postgres:15
     environment:
-      - POSTGRES_USER=${DB_PG_USER:7Set DB_PG_USER}
-      - POSTGRES_PASSWORD=${DB_PG_PASSWORD:7Set DB_PG_PASSWORD}
-      - POSTGRES_DB=${DB_PG_NAME:7Set DB_PG_NAME}
+      - POSTGRES_USER=${DB_PG_USER:?Set DB_PG_USER}
+      - POSTGRES_PASSWORD=${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
+      - POSTGRES_DB=${DB_PG_NAME:?Set DB_PG_NAME}
     ports:
       - "5432:5432"
 
@@ -12,14 +12,14 @@ services:
     build: .
     # image: servidor-local
     environment:
-      - DATABASE_URL=${DATABASE_URL:7Set DATABASE_URL}
-      - DB_PG_HOST=${DB_PG_HOST:7Set DB_PG_HOST}
-      - DB_PG_PORT=${DB_PG_PORT:7Set DB_PG_PORT}
-      - DB_PG_USER=${DB_PG_USER:7Set DB_PG_USER}
-      - DB_PG_PASSWORD=${DB_PG_PASSWORD:7Set DB_PG_PASSWORD}
-      - DB_PG_NAME=${DB_PG_NAME:7Set DB_PG_NAME}
-      - PORT=${PORT:7Set PORT}
-      - JWT_SECRET=${JWT_SECRET:7Set JWT_SECRET}
+      - DATABASE_URL=${DATABASE_URL:?Set DATABASE_URL}
+      - DB_PG_HOST=${DB_PG_HOST:?Set DB_PG_HOST}
+      - DB_PG_PORT=${DB_PG_PORT:?Set DB_PG_PORT}
+      - DB_PG_USER=${DB_PG_USER:?Set DB_PG_USER}
+      - DB_PG_PASSWORD=${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
+      - DB_PG_NAME=${DB_PG_NAME:?Set DB_PG_NAME}
+      - PORT=${PORT:?Set PORT}
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET}
     ports:
       - "8080:8080"
     volumes:
