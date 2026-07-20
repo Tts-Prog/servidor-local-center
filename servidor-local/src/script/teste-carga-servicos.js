@@ -2,10 +2,12 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-  vus: 50,
-  duration: "2m",
+  stages: [
+    { duration: "30s", target: 50 },
+    { duration: "1m", target: 200 }, // 200 utilizadores em simultâneo!
+    { duration: "30s", target: 0 },
+  ],
 };
-
 export function setup() {
   // const loginUrl = "https://servidor-local-center-backend2.onrender.com/users/login";
   const loginUrl = "http://api:8080/users/login";
