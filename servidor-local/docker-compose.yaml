@@ -18,14 +18,14 @@ services:
     #serviço do servidor local
     build: . # Constrói a vossa API a partir do Dockerfile
     environment:
-      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor-local
-      - DB_PG_HOST=db
-      - DB_PG_USER=root
-      - DB_PG_PORT=5432
-      - DB_PG_NAME=servidor_local
-      - DB_PG_PASSWORD=Webpass2334!
-      - JWT_SECRET=fuiguifweu9qgerwiog3rg3r53erqoigepq
-      - PORT=8080
+      - DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL}
+      - DB_PG_HOST: ${DB_PG_HOST:?Set DB_PG_HOST}
+      - DB_PG_USER: ${DB_PG_USER:?Set DB_PG_USER}
+      - DB_PG_PORT: ${DB_PG_PORT:?Set DB_PG_PORT}
+      - DB_PG_NAME: ${DB_PG_NAME:?Set DB_PG_NAME}
+      - DB_PG_PASSWORD: ${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
+      - JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
+      - PORT: ${PORT:?Set PORT}
     ports:
       - "8080:8080"
     volumes:
