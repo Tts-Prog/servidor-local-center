@@ -25,7 +25,7 @@ jobs:
             DB_PG_NAME: ${{secrets.DB_PG_NAME}}
             DB_PG_USER: ${{secrets.DB_PG_USER}}
             DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}}
-        run: docker compose up -d db api
+        run: docker compose up -d api
 
       - name: Esperar o db estar pronto
         run: sleep 10
