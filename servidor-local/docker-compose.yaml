@@ -7,6 +7,8 @@ services:
       POSTGRES_DB: servidor_local
     ports:
       - "5432:5432"
+    networks:
+      - app-network
 
   api:
     build: .
@@ -27,6 +29,9 @@ services:
       - db
     volumes:
       - ./src:/app/src
+    networks:
+      - app-network
+
   prometheus:
     image: prom/prometheus:latest
     ports:
@@ -36,6 +41,8 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
+    networks:
+      - app-network
 
   grafana:
     image: grafana/grafana:latest
@@ -45,6 +52,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
+    networks:
+      - app-network
 
   k6_attack:
     image: grafana/k6:latest
@@ -57,3 +66,9 @@ services:
     environment:
       - K6_WEB_DASHBOARD=true
       - K6_WEB_DASHBOARD_HOST=0.0.0.0
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
