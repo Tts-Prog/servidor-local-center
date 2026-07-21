@@ -26,10 +26,24 @@ export function setup() {
   const res = http.post(loginUrl, payload, params);
 
   if (!res || !res?.body) {
-    console.error("failed to login", res);
+    console.error("Login request failed (no response body):", res?.status);
     return {};
   }
-  return { token: res.json().data.token };
+
+  let json;
+  try {
+    json = res.json();
+  } catch (e) {
+    console.error("Login response is not valid JSON. Status:", res.status, "Body:", res.body);
+    return {};
+  }
+
+  if (!json || !json.data || !json.data.token) {
+    console.error("Login response missing data.token. Status:", res.status, "Body:", res.body);
+    return {};
+  }
+
+  return { token: json.data.token };
 }
 
 export default function (data) {
