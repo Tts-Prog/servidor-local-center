@@ -31,7 +31,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
@@ -41,6 +42,20 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
     depends_on:
       - prometheus
+
+  K6_attacker:
+    image: grafana/k6:latest
+    entrypoint: ["k6"]
+    command: ["version"]
+    volumes:
+      - ./src/script:/scripts:ro
+    depends_on:
+      - api
+      - prometheus
+    environment:
+    - API_BASE_URL=http://api:8080
+    - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+    - K6_PROMETHEUS_RW_TREND_STATS=p(95), avg, min, max
