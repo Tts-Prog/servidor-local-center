@@ -2,8 +2,11 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export const options = {
-  vus: 50,
-  duration: "2m",
+  stages: [
+    { duration: "30s", target: 50 },
+    { duration: "1m", target: 200 }, // 200 utilizadores em simultâneo!
+    { duration: "30s", target: 0 },
+  ],
 };
 
 export function setup() {
@@ -11,8 +14,8 @@ export function setup() {
   const loginUrl = "http://api:8080/users/login";
 
   const payload = JSON.stringify({
-    email: "tmtse23@gmail.com",
-    password: "123456789",
+    email: "teste1gmail.com",
+    password: "teste1",
   });
 
   const params = {
@@ -30,6 +33,7 @@ export function setup() {
     return {};
   }
 
+  // console.log("JSON:", JSON.stringify(body));
   return { token: res.json().data.token };
 }
 

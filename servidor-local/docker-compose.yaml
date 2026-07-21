@@ -35,42 +35,68 @@ services:
       - ./src:/app/src 
 
 
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  #   command:
+  #     - "--config.file=/etc/prometheus/prometheus.yml"
+  #     - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
+
   prometheus:
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/promotheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
-
+      - "--web.enable-remote-write-receiver"
   
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
     depends_on:
       - prometheus
 
-  k6_attack: 
-    image: grafana/k6:latest
-    volumes:
-      - ./src:/app/src
-    command: ["sleep", "infinity"]
-    depends_on: 
-      - api 
-    ports: 
-      - "5665:5665"
-    environment: 
-      - K6_WEB_DASHBOARD=true
-      # - K6_WEB_DASHBOARD_HOST=0.0.0.0
+  # k6_attack: 
+  #   image: grafana/k6:latest
+  #   volumes:
+  #     - ./src:/app/src
+  #   command: ["sleep", "infinity"]
+  #   depends_on: 
+  #     - api 
+  #   ports: 
+  #     - "5665:5665"
+  #   environment: 
+  #     - K6_WEB_DASHBOARD=true
+  #     # - K6_WEB_DASHBOARD_HOST=0.0.0.0
     
   
-
-
+  k6_attack:
+    image: grafana/k6:latest
+    entrypoint: ["k6"]
+    command: ["version"]
+    volumes:
+      - ./src/script:/scripts:ro
+    depends_on:
+      - api
+      - prometheus
+    ports:
+      - "5665:5665"
+    environment:
+      - API_BASE_URL=http://api:8080
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_STATS=p(95),p(99),avg,min,max
+    # command: run /app/src/script/performance.js
+volumes:
+  prometheus_data:
 
   
     
