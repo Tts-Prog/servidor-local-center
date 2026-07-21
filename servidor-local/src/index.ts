@@ -19,6 +19,7 @@ import { resolvers, typeDefs } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
 import statusMonitor from 'express-status-monitor';
 import morgan from "morgan";
+import client from "prom-client";
 
 const app = express();
 
@@ -57,7 +58,8 @@ app.use(cors({
         "https://processo-kappa.vercel.app",
         "https://gulugulu-three.vercel.app",
         "https://gulugulu2.vercel.app",
-        "https://"
+        "https://localhost:3000",
+        "https://super-goggles-7v5g4rgqwr562rjvr-8080.app.github.dev"
     ],
     credentials: true,
     allowedHeaders: ["Content-Type", "authorization"],
@@ -115,6 +117,11 @@ app.use("/graphql", expressMiddleware(graphqlServer, {
         DB_NAME: process.env.DATABASE,
     }),
 }))
+
+app.get("/metrics", async (req: Request, res: Response) => {
+    res.set("Content-Type", client.register.contentType);
+    res.end(await client.register.metrics());
+});
 
 // Criar tabelas na base de dados se não existirem
 await initDatabase();

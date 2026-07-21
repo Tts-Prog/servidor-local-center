@@ -21,12 +21,42 @@ services:
       - DB_PG_PASSWORD=rootpassword
       - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv
       - PORT=8080
-      - NODE_ENV=production  # Add this
+      - NODE_ENV=production
+      - NODE_OPTIONS=--dns-result-order=ipv4first 
     ports:
       - "8080:8080"
     depends_on:
       - db_v2
     restart: on-failure
+    networks:
+      - app-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--enable-feature=remote-write-receiver"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-storage:/var/lib/grafana
     networks:
       - app-network
 
@@ -47,3 +77,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  grafana-storage:

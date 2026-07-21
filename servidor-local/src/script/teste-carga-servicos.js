@@ -2,9 +2,12 @@ import http from "k6/http"
 import { check, sleep, fail } from "k6" // Added fail
 
 export const options = {
-    vus: 50,
-    duration: "2m"
-}
+  stages: [
+    { duration: "30s", target: 50 },
+    { duration: "1m", target: 200 }, // 200 utilizadores em simultâneo!
+    { duration: "30s", target: 0 },
+  ],
+};
 
 export function setup() {
     const loginUrl = "http://api:8080/users/login"

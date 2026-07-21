@@ -1,5 +1,6 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import path from "path";
+import process from "process";
 const options = {
     definition: {
         openapi: `3.0.0`,
@@ -10,7 +11,7 @@ const options = {
         },
         servers: [
             {
-                url: `http://localhost:8080`,
+                url: `${process.env.NODE_ENV  === "development" ? "https://localhost:8080" : process.env.DATABASE_URL} `,
                 description: `dev`,
             }
         ],

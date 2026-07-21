@@ -5,3 +5,5 @@ maincontext.ts
 .env.*
 dist
 
+
+/src/generated/prisma
