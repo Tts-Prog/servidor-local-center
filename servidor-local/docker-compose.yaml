@@ -34,7 +34,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
+      - "--web.enable-remote-write-receiver" # 👈 Permite receber dados do k6
 
   grafana:
     image: grafana/grafana:latest
@@ -47,12 +47,18 @@ services:
 
   k6_attack-2:
     image: grafana/k6:latest
+    entrypoint: ["k6"]
+    command: ["version"]
     volumes:
       - ./src:/app/src
-    command: [ "sleep", "infinity" ]
     depends_on:
       - api-2
+      - prometheus
     ports:
       - "5665:5665"
     environment:
-      - K6_WEB_DASHBOARD=true
+      - API_BASE_URL=http://api-2:8080
+      - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
+      - K6_PROMETHEUS_RW_TREND_STATUS=p(95), p(99), avg, min, max
+volumes:
+  prometheus-data:
