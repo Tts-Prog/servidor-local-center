@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: servidor_local
+    ports:
+      - "5432:5432"
+
+  api:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://postgres.mxniybwmtgmuxihymlgp:webpass2334!@aws-1-eu-west-2.pooler.supabase.com:6543/postgres
+      - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfug
+      - DB_PG_HOST=aws-1-eu-west-2.pooler.supabase.com
+      - DB_PB_PORT=6543
+      - DB_PG_NAME=postgres
+      - DB_PG_USER=postgres.mxniybwmtgmuxihymlgp
+      - DB_PG_PASSWORD=webpass2334!
+      - PORT=8080 
+    ports: 
+      - "8080:8080"
+    depends_on:
+      - db
+
+  k6_attack:
+    image: grafana/k6:latest
+
+    volumes:
+      - ./src:/app/src
+    command: ["sleep","infinity"]
+    depends_on:
+      - api
+    ports:
+      - "5665:5665"
+    environment:
+      - K6_WEB_DASHBOARD=true
+      #- K6_WEB_DASHBOARD_HOST=0.0.0.0

@@ -1,0 +1,186 @@
+# paths/user.yaml
+
+paths:
+  /user:
+    get:
+      summary: listar todos os user
+      tags:
+        -User
+      description: Retomar uma lista de todos os user disponíveis
+    response:
+      "200":
+        description: Lista de user
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: "Nenhum user encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+
+  /service/create:
+    post:
+      summary: Criar um novo user
+      tags:
+        -User
+      description: Criar um novo user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schemas:
+              type: object
+              $ref: "#/components/schemas/createService"
+      Responses:
+        "200":
+          description: User criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "400":
+          description: User criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/get-by-id/{id}:
+    get:
+      summary: Buscar um user por ID
+      tags:
+        -User
+      description: Retomar um user especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador
+          schema:
+            type: integer
+            example: 1
+      Response:
+        "200":
+          description: User encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/User"
+        "404":
+          description: User não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/update/{id}:
+    put:
+      summary: Atualizar um user
+      tags:
+        -User
+      description: Atualiza um user especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do user a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      RequestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateService"
+      Responses:
+        "200":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: User não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/delete/{id}:
+    delete:
+      summary: Apagar um user
+      tags:
+        -User
+      description: Apagar um user especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do user a ser apagado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: User apagado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: User não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /users/login:
+    post:
+      summary: Login de um usuário
+      tags:
+        -Users
+      description: Faz login de um usuário
+      RequestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: Usuário logado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResponse"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResposeError"
+        "400":
+          description: Error ao logar usuário
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserResposeError"

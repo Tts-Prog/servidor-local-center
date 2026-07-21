@@ -1,0 +1,151 @@
+# paths/orcamento.yaml
+
+paths:
+  /orcamento:
+    get:
+      summary: listar todos os orcamento
+      tags:
+        -Orcamento
+      description: Retomar uma lista de todos os orcamento disponíveis
+    response:
+      "200":
+        description: Lista de orcamento
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Orcamento"
+        "404":
+          description: "Nenhum orcamento encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+
+  /service/create:
+    post:
+      summary: Criar um novo orcamento
+      tags:
+        -Orcamento
+      description: Criar um novo orcamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schemas:
+              type: object
+              $ref: "#/components/schemas/createService"
+      Responses:
+        "200":
+          description: Orcamento criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "400":
+          description: Orcamento criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/get-by-id/{id}:
+    get:
+      summary: Buscar um orcamento por ID
+      tags:
+        -Orcamento
+      description: Retomar um orcamento especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador
+          schema:
+            type: integer
+            example: 1
+      Response:
+        "200":
+          description: Orcamento encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Orcamento"
+        "404":
+          description: Orcamento não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/update/{id}:
+    put:
+      summary: Atualizar um orcamento
+      tags:
+        -Orcamento
+      description: Atualiza um orcamento especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do orcamento a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      RequestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateService"
+      Responses:
+        "200":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: Orcamento não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/delete/{id}:
+    delete:
+      summary: Apagar um orcamento
+      tags:
+        -Orcamento
+      description: Apagar um orcamento especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do orcamento a ser apagado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Orcamento apagado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: Orcamento não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"

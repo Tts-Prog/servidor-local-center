@@ -1,0 +1,151 @@
+# paths/prestador.yaml
+
+paths:
+  /prestador:
+    get:
+      summary: listar todos os prestador
+      tags:
+        -Proposta
+      description: Retomar uma lista de todos os prestador disponíveis
+    response:
+      "200":
+        description: Lista de prestador
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Prestador"
+        "404":
+          description: "Nenhum prestador encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+
+  /service/create:
+    post:
+      summary: Criar um novo prestador
+      tags:
+        -Proposta
+      description: Criar um novo prestador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schemas:
+              type: object
+              $ref: "#/components/schemas/createService"
+      Responses:
+        "200":
+          description: Prestador criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "400":
+          description: Prestador criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/get-by-id/{id}:
+    get:
+      summary: Buscar um prestador por ID
+      tags:
+        -Proposta
+      description: Retomar um prestador especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do utilizador
+          schema:
+            type: integer
+            example: 1
+      Response:
+        "200":
+          description: Prestador encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Prestador"
+        "404":
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/update/{id}:
+    put:
+      summary: Atualizar um prestador
+      tags:
+        -Proposta
+      description: Atualiza um prestador especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do prestador a ser atualizado
+          schema:
+            type: integer
+            example: 1
+      RequestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateService"
+      Responses:
+        "200":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
+
+  /service/delete/{id}:
+    delete:
+      summary: Apagar um prestador
+      tags:
+        -Proposta
+      description: Apagar um prestador especifico pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do prestador a ser apagado
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Prestador apagado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: Prestador não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResposeError"
