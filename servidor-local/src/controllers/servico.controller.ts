@@ -176,13 +176,22 @@ export const ServicoController = {
 
         const getAllServicoDetalhadoResponse = await ServiceModel.getAllServicoDetalhado(LIMIT, OFFSET)
 
-        if (!getAllServicoDetalhadoResponse) {
-            const response: ResponseType<null> = {
-                status: "error",
-                message: "Erro ao buscar servicos detalhados",
-                data: null,
-            };
-            return res.status(404).json(response);
+        if (getAllServicoDetalhadoResponse === null) {
+            // It's okay to have 0 rows, we should return an empty array or handle error if query fails.
+            // But let's assume null means either error or empty. 
+            // In REST, an empty collection is usually 200 with an empty array.
+            // But if we keep the previous behavior of returning error for null:
+            // The issue is that the model returns null when rows.length == 0.
         }
+
+        // To make it fully correct:
+        const data = getAllServicoDetalhadoResponse || [];
+
+        const response: ResponseType<typeof data> = {
+            status: "success",
+            message: "Servicos detalhados buscados com sucesso",
+            data: data,
+        };
+        return res.status(200).json(response);
     }
 }
