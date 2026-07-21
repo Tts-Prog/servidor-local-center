@@ -3,23 +3,20 @@ FROM node:22-alpine AS build
 
 WORKDIR /app
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-
 RUN corepack enable
 
 # Copy package files
 COPY package.json ./
 
 # Install ALL dependencies (including devDependencies for tsc + @types)
-RUN pnpm install --no-frozen-lockfile
+RUN npm ci || npm install 
 
 # Copy source code and tsconfig
 COPY tsconfig.json ./
 COPY src ./src
 
 # Compile TypeScript to JavaScript
-RUN pnpm run build
+RUN npm run build
 
 # ---- Stage 2: Production ----
 FROM node:22-alpine
@@ -29,16 +26,13 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 WORKDIR /app
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-
 RUN corepack enable
 
 # Copy package files
 COPY package.json ./
 
 # Install only production dependencies
-RUN pnpm install --prod --no-frozen-lockfile
+RUN npm install 
 
 # Copy compiled output from build stage
 COPY --from=build /app/dist ./dist
