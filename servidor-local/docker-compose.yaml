@@ -32,7 +32,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus-data:/prometheus
+      - prometheus_data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--web.enable-remote-write-receiver" # 👈 Permite receber dados do k6
@@ -59,3 +59,6 @@ services:
     - API_BASE_URL=http://api:8080
     - K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write
     - K6_PROMETHEUS_RW_TREND_STATS=p(95), avg, min, max
+
+volumes:
+  prometheus_data:
