@@ -36,7 +36,7 @@ export function setup() {
     return {};
   }
 
-  return { token: res.json().data.token };
+  return { token: res.json()?.data?.token };
 }
 
 export default function (data) {
