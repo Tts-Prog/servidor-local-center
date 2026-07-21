@@ -59,6 +59,8 @@ services:
     image: grafana/k6:latest
     volumes:
       - ./src/script:/home/k6/script # 👈 monta em WORKDIR do k6
+    entrypoint: ["k6"]
+    command: ["run", "/home/k6/script/teste-carga-servicos.js"]
     depends_on:
       - api
     ports:
