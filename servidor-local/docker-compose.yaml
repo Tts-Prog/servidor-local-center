@@ -3,23 +3,24 @@ services:
   db:
     image: postgres:15
     environment:
-      - POSTGRES_PASSWORD=Webpass2334!
-      - POSTGRES_USER=root
-      - POSTGRES_DB=servidor_local
+      - POSTGRES_USER=${POSTGRES_USER:? SET POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:? SET POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB:? SET POSTTGRES_DB}
     ports:
       - "5432:5432"
 
   api:
     build: .
+    #image: servidor-local
     environment:
-      - DATABASE_URL=postgresql://root:Webpass2334!@db:5432/servidor_local
-      - DB_PG_HOST=db
-      - DB_PG_PORT=5432
-      - DB_PG_NAME=servidor_local
-      - DB_PG_USER=root
-      - DB_PG_PASSWORD=Webpass2334!
-      - PORT=8080
-      - JWT_SECRET=fsjkfvhsduihjkcgdfjghdfghdcjkvhdfjkhcvnbjfghdfkjgnldfbjdfhguhfbjncvbhfghcvkjbnfdhgdhfçjvkjdhdfuhguidfhgcvjnbcvhbjfcngfjckbhdfughcjkbncvjkbhdkghcvkbncjkgfbhdvbcbvhcv.jvlkdfuvj
+      - DATABASE_URL=${DATABASE_URL:? Set DATABASE_URL}
+      - DB_PG_HOST=${DB_PG_HOST:?Set DB_PG_HOST}
+      - DB_PG_PORT=${DB_PG_PORT:?Set DB_PG_PORT}
+      - DB_PG_NAME=${DB_PG_NAME:?Set DB_PG_NAME}
+      - DB_PG_USER=${DB_PG_USER:?Set DB_PG_USER}
+      - DB_PG_PASSWORD=${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
+      - PORT=${PORT:?Set PORT}
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET}
       - NODE_OPTIONS=--dns-result-order=ipv4first
     depends_on:
       - db
@@ -27,7 +28,7 @@ services:
       - "8080:8080"
     volumes:
       - ./src:/app/src
-
+  
   k6_attack:
     image: grafana/k6:latest
     volumes:
@@ -35,11 +36,11 @@ services:
     command: ["sleep", "infinity"]
     depends_on:
       - api
-      - prometheus
     ports:
       - "5665:5665"
     environment:
       - K6_WEB_DASHBOARD=true
+      - K6_WEB_DASHBOARD_HOST=0.0.0.0
 
   prometheus:
     image: prom/prometheus:latest
@@ -50,7 +51,7 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--enable-feature=remote-write-receiver"
-
+  
   grafana:
     image: grafana/grafana:latest
     ports:
