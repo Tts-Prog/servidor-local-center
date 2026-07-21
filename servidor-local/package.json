@@ -2,6 +2,7 @@
   "name": "servidor-local",
   "version": "1.0.0",
   "description": "",
+  "packageManager": "pnpm@8.15.7",
   "license": "ISC",
   "author": "",
   "type": "module",
