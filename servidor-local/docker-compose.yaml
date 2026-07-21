@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:15
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-Set POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-Set POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB:-Set POSTGRES_DB}
+      - POSTGRES_DB=servidor_local
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=webpass2334!
     ports:
       - "5432:5432"
     #volumes:
@@ -14,40 +14,22 @@ services:
     build: .
     # image: servidor-local#
     environment:
-      - DATABASE_URL=${DATABASE_URL:-Set DATABASE_URL}
-      - DB_PG_HOST=${DB_PG_HOST:-Set DB_PG_HOST}
-      - DB_PG_PORT=${DB_PG_PORT:-Set DB_PG_PORT}
-      - DB_PG_USER=${DB_PG_USER:-Set DB_PG_USER}
-      - DB_PG_PASSWORD=${DB_PG_PASSWORD:-Set DB_PG_PASSWORD}
-      - DB_PG_NAME=${DB_PG_NAME:-Set DB_PG_NAME}
-      - PORT=${PORT:-Set PORT}
-      - JWT_SECRET=${JWT_SECRET:-Set JWT_SECRET}
-      - NODE_OPTIONS=--dns-result-order=ipv4first
+      - DATABASE_URL=postgresql://root:webpass2334!@db:5432/servidor_local
+      - DB_PG_HOST=db
+      - DB_PG_PORT=5432
+      - DB_PG_DATABASE=servidor_local
+      - DB_PG_USER=root
+      - DB_PG_PASSWORD=webpass2334!
+      - PORT=8080
+      - JWT_SECRET=DHCJGBJGCBDCVCGVDCCHXSJNXWCBGDCJBHCJDNBCDECHYHCJNDCHNCHYUDGCBDHGCBHDCJKHD
+     
     depends_on:
       - db
-    volumes:
-      - ./src:/app/src
     ports:
       - "8080:8080"
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
+      - ./src:/app/src
 
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    depends_on:
-      - prometheus
   k6_attack:
     image: grafana/k6:latest
     volumes:
