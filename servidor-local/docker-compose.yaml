@@ -35,7 +35,7 @@ services:
       - prometheus_data:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--enable-feature=remote-write-receiver" # 👈 Permite receber dados do k6
+      - "--web.enable-remote-write-receiver" # 👈 Permite receber dados do k6
 
   grafana:
     image: grafana/grafana:latest
