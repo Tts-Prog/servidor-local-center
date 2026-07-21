@@ -1,46 +1,48 @@
-name: Testes de Performance (k6)
+name: Testes de Performance (K6)
 
 on:
   push:
-    branches: ["main", "dev", "mauro-dev"] # Acorda sempre que houver push para a branch principal ou dev
+    branches: ["main", "dev", "mauro-dev"]
 
 jobs:
-  test-attack: # Nome do job
+  test-attack:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: servidor-local
+        working-directory: servidor-local # caminho para a pasta com docker-compose.yml
 
     steps:
-      # Passo A: Descarregar o nosso código para a máquina do GitHub
-      - name: 📥 Clonar o Repositório
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: 🐳 Levantar API (Ligada à BD Live)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        # Passamos as variáveis para o contentor da API e levantamos apenas a API
-        run: DATABASE_URL=$DATABASE_URL JWT_SECRET=$JWT_SECRET docker compose up -d api
+          PORT: ${{ secrets.PORT }}
+          DB_PG_HOST: ${{ secrets.DB_PG_HOST }}
+          DB_PG_PORT: ${{ secrets.DB_PG_PORT }}
+          DB_PG_NAME: ${{ secrets.DB_PG_NAME }}
+          DB_PG_USER: ${{ secrets.DB_PG_USER }}
+          DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
+        run: echo "Configuração de ambiente da API pronta"
 
-      - name: 🐳 Levantar Infraestrutura (Docker Compose)
+      - name: Levantar docker
         env:
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
-          JWT_SECRET: ${{secrets.JWT_SECRET}}
-          DB_PG_HOST: ${{secrets.DB_PG_HOST}}
-          DB_PG_PORT: ${{secrets.DB_PG_PORT}}
-          DB_PG_NAME: ${{secrets.DB_PG_NAME}}
-          DB_PG_USER: ${{secrets.DB_PG_USER}}
-          DB_PG_PASSWORD: ${{secrets.DB_PG_PASSWORD}}
-          PORT: ${{secrets.PORT}}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
+          DB_PG_HOST: ${{ secrets.DB_PG_HOST }}
+          DB_PG_PORT: ${{ secrets.DB_PG_PORT }}
+          DB_PG_NAME: ${{ secrets.DB_PG_NAME }}
+          DB_PG_USER: ${{ secrets.DB_PG_USER }}
+          DB_PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
 
         run: docker compose up -d api
 
-      # Passo C: Dar 10 segundos para o PostgreSQL inicializar completamente
-      - name: ⏳ Esperar pela Base de Dados
+      - name: Esperar o db estar pronto
         run: sleep 10
 
-      # Passo D: Disparar o k6 por dentro da rede Docker!
-      - name: 🚀 Executar Ataque k6
-        run: docker compose run --rm --service-ports k6_attack run /app/src/script/teste-carga-servicos.js
+      - name: Executar ataque do k6
+        run: docker compose run --rm k6_attack run /app/src/script/teste-carga-servicos.js

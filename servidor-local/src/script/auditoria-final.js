@@ -47,9 +47,6 @@ export default function (data) {
             Authorization: `Bearer ${data.token}`,  // Fixed typo
             "Content-Type": "application/json",
             "User-Agent": "K6 load test",
-        },
-        user: {
-            role: "ADMIN"
         }
     }
 
