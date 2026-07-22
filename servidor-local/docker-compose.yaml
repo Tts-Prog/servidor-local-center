@@ -26,6 +26,7 @@ services:
       DB_PG_PASSWORD: ${DB_PG_PASSWORD:?Set DB_PG_PASSWORD}
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
       PORT: ${PORT:?Set PORT}
+      API_URL: ${API_URL:?Set API_URL}
 
       NODE_OPTIONS: --dns-result-order=ipv4first
 
