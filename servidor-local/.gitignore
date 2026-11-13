@@ -5,3 +5,8 @@ maincontext.ts
 .env.*
 dist
 
+
+# TLS dev certificate: generate locally, never commit (see cert/README.md)
+cert/*.key
+cert/*.cert
+cert/*.pem
